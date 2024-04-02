@@ -71,19 +71,18 @@
         <table style="width: 100%">
             <tr>
                 <td>
-                    <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt=""
-                        style="width: 70px; height:80px">
+                    <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt=""
+                        style="width: 80px; height:80px">
                 </td>
-                <td style="text-align: center">
-                    <h3 style="font-family:'Cambria'; line-height:0px">CV PACIFIC & CV MAKMUR PERMATA</h3>
+                <td style="text-align: left">
+                    <h3 style="font-family:'Cambria'; line-height:0px">CV MAKMUR PERMATA</h3>
                     <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
                     <span style="font-family:'Times New Roman'">Jl. Perintis Kemerdekaan No. 160 Tasikmalaya</span><br>
                     <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
                     <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
                 </td>
                 <td>
-                    <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt=""
-                        style="width: 80px; height:80px">
+
                 </td>
             </tr>
         </table>
@@ -197,7 +196,12 @@
                         $awalmasakerja = date_create($nextmonth);
                         $akhirmasakerja = date_create($kontrak->sampai); // waktu sekarang
                         $diffmasakerja = date_diff($awalmasakerja, $akhirmasakerja);
-                        echo $diffmasakerja->y . ' tahun, ' . $diffmasakerja->m . ' bulan, ' . $diffmasakerja->d . ' Hari';
+                        echo $diffmasakerja->y .
+                            ' tahun, ' .
+                            $diffmasakerja->m .
+                            ' bulan, ' .
+                            $diffmasakerja->d .
+                            ' Hari';
                     @endphp
                 </th>
             </tr>

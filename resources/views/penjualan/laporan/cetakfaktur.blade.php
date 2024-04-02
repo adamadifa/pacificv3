@@ -62,10 +62,38 @@
                         <b>{{ $faktur->alamat_cabang }}</b>
                     </b>
                 @else
-                    <b>
-                        <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
-                        <b>{{ $cabang->alamat_cabang }}</b>
-                    </b>
+                    @php
+                        $pelanggan_pwt = [
+                            'PWT-00272',
+                            'PWT-00635',
+                            'PWT-05149',
+                            'PWT-02008',
+                            'PWT-02582',
+                            'PWT-02260',
+                            'PWT-02244',
+                            'PWT-02226',
+                            'PWT-02258',
+                            'PWT-04420',
+                            'PWT-02002',
+                            'PWT-03702',
+                            'PWT-05155',
+                            'PWT-02871',
+                            'PWT-04512',
+                        ];
+                    @endphp
+                    @if ($faktur->tgltransaksi <= '2024-03-14' && in_array($faktur->kode_pelanggan, $pelanggan_pwt))
+                        <b>CV MAKMUR PERMATA </b><br>
+                        <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota
+                            Tasikmalaya
+                            46182 <br>
+                            NPWP : 863860342425000</b>
+                    @else
+                        <b>
+                            <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
+                            <b>{{ $cabang->alamat_cabang }}</b>
+                        </b>
+                    @endif
+
                 @endif
 
             @endif
@@ -234,10 +262,37 @@
                             <b>{{ $faktur->alamat_cabang }}</b>
                         </b>
                     @else
-                        <b>
-                            <b> {{ strtoupper($cabang->nama_pt) }}</b><br>
-                            <b>{{ $cabang->alamat_cabang }}</b>
-                        </b>
+                        @php
+                            $pelanggan_pwt = [
+                                'PWT-00272',
+                                'PWT-00635',
+                                'PWT-05149',
+                                'PWT-02008',
+                                'PWT-02582',
+                                'PWT-02260',
+                                'PWT-02244',
+                                'PWT-02226',
+                                'PWT-02258',
+                                'PWT-04420',
+                                'PWT-02002',
+                                'PWT-03702',
+                                'PWT-05155',
+                                'PWT-02871',
+                                'PWT-04512',
+                            ];
+                        @endphp
+                        @if ($faktur->tgltransaksi <= '2024-03-14' && in_array($faktur->kode_pelanggan, $pelanggan_pwt))
+                            <b>CV MAKMUR PERMATA </b><br>
+                            <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota
+                                Tasikmalaya
+                                46182 <br>
+                                NPWP : 863860342425000</b>
+                        @else
+                            <b>
+                                <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
+                                <b>{{ $cabang->alamat_cabang }}</b>
+                            </b>
+                        @endif
                     @endif
                 @endif
             </b>

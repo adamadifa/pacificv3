@@ -108,7 +108,9 @@ class JurnalumumController extends Controller
             '1-1737',
             '6-1428',
             '6-1429',
-            '1-1738'
+            '1-1738',
+            '1-1739',
+            '6-1430'
         ];
 
         $hrd = [

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Akun {{ date("d-m-y") }}</title>
+    <title>Rekap Akun {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         LAPORAN MUTASI PRODUKSI<br>
@@ -143,11 +144,21 @@
                 <td><?php echo $no_bpbj; ?></td>
                 <td><?php echo $no_fsthp; ?></td>
                 <td><?php echo $no_mutasi; ?></td>
-                <td align="right"><?php if(!empty($jmlbpbj)) { echo rupiah($jmlbpbj); } ?></td>
-                <td align="right"><?php if(!empty($jmlmutasiin)) { echo rupiah($jmlmutasiin); } ?></td>
-                <td align="right"><?php if(!empty($jmlfsthp)) { echo rupiah($jmlfsthp); } ?></td>
-                <td align="right"><?php if(!empty($jmlmutasiout)) { echo rupiah($jmlmutasiout); } ?></td>
-                <td align="right"><?php if(!empty($saldoakhir)) { echo rupiah($saldoakhir); } ?></td>
+                <td align="right"><?php if (!empty($jmlbpbj)) {
+                    echo rupiah($jmlbpbj);
+                } ?></td>
+                <td align="right"><?php if (!empty($jmlmutasiin)) {
+                    echo rupiah($jmlmutasiin);
+                } ?></td>
+                <td align="right"><?php if (!empty($jmlfsthp)) {
+                    echo rupiah($jmlfsthp);
+                } ?></td>
+                <td align="right"><?php if (!empty($jmlmutasiout)) {
+                    echo rupiah($jmlmutasiout);
+                } ?></td>
+                <td align="right"><?php if (!empty($saldoakhir)) {
+                    echo rupiah($saldoakhir);
+                } ?></td>
 
             </tr>
             <?php
@@ -166,4 +177,5 @@
         </tfoot>
     </table>
 </body>
+
 </html>

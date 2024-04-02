@@ -82,7 +82,7 @@
     <!-- Each sheet element should have the class "sheet" -->
     <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
     <section class="sheet padding-10mm">
-        @if ($kontrak->id_perusahaan == 'MP')
+        @if ($kontrak->id_kantor == 'PST')
             <table style="width: 100%">
                 <tr>
                     <td style="width: 20%; text-align:center">
@@ -118,8 +118,7 @@
                             <h3 style="font-family:'Cambria'; line-height:0px">{{ $cabang->nama_pt }}</h3>
                             <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
                             <span style="font-family:'Times New Roman'">{{ $cabang->alamat_cabang }}</span><br>
-                            <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
-                            <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
+                            <span style="font-size: 12px">{{ $cabang->email }}</span><br>
                         @endif
                     </td>
                     <td>
@@ -156,14 +155,25 @@
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td>Jl. Perintis Kemerdekaan No.160 Tasikmalaya</td>
+                <td>
+                    @if ($kontrak->dari < '2024-03-01')
+                        Jl. Perintis Kemerdekaan No.160 Tasikmalaya
+                    @else
+                        {{ $cabang->alamat_cabang }}
+                    @endif
+                </td>
             </tr>
         </table>
         </p>
 
         <p>
-            Bertindak untuk dan atas nama {{ $kontrak->id_perusahaan == 'MP' ? 'CV Makmur Permata' : 'CV. Pacific' }}
-            berkedudukan di Tasikmalaya selanjutnya disebut <b>pihak kesatu.</b>
+            Bertindak untuk dan atas nama
+            @if ($kontrak->dari < '2024-03-01')
+                {{ $kontrak->id_perusahaan == 'MP' ? 'CV Makmur Permata' : 'CV. Pacific' }}
+            @else
+                {{ $cabang->nama_pt }}
+            @endif
+            berkedudukan di {{ $cabang->nama_cabang }} selanjutnya disebut <b>pihak kesatu.</b>
         </p>
 
         <p>
@@ -250,9 +260,14 @@
         <ol>
             <li>
                 Pihak Kedua menerima pekerjaan yang diberikan pihak
-                {{ $kontrak->id_perusahaan == 'MP' ? 'CV Makmur Permata' : 'CV. Pacific' }} dengan jabatan sebagai
-                {{ $kontrak->nama_jabatan }} yang berlokasi di
-                {{ $kontrak->id_kantor == 'PST' ? 'KANTOR PUSAT TASIKMALAYA' : 'CABANG ' . strtoupper($kontrak->nama_cabang) }}
+                @if ($kontrak->dari < '2024-03-01')
+                    {{ $kontrak->id_perusahaan == 'MP' ? 'CV Makmur Permata' : 'CV. Pacific' }} dengan jabatan sebagai
+                    {{ $kontrak->nama_jabatan }} yang berlokasi di
+                    {{ $kontrak->id_kantor == 'PST' ? 'KANTOR PUSAT TASIKMALAYA' : 'CABANG ' . strtoupper($kontrak->nama_cabang) }}
+                @else
+                    Perusahaan dengan Jabatan sebagai {{ $kontrak->nama_jabatan }}
+                @endif
+                yang berlokasi di {{ $cabang->nama_cabang }}
                 serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
             </li>
             <li>
