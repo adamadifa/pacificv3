@@ -14,7 +14,8 @@
     <!-- Set also "landscape" if you need -->
     <style>
         @page {
-            size: A4
+            size: A4;
+            zoom: 97%;
         }
 
         body {
