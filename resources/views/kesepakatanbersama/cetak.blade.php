@@ -396,7 +396,7 @@
                 <td style="text-align:center">MENYETUJUI</td>
             </tr>
             <tr>
-                <td style="height: 80px"></td>
+                <td style="height: 70px"></td>
                 <td></td>
                 <td></td>
             </tr>
