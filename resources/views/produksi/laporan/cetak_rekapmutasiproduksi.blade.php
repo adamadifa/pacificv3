@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Akun {{ date("d-m-y") }}</title>
+    <title>Rekap Akun {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAP MUTASI PRODUKSI<br>
@@ -84,12 +85,22 @@
             <tr style="font-weight: bold; font-size:11px">
                 <td><?php echo $no; ?></td>
                 <td><?php echo $m->nama_barang; ?></td>
-                <td align="right"><?php if($m->saldoawal !=0){echo rupiah($m->saldoawal); } ?></td>
-                <td align="right"><?php if($m->jmlbpbj !=0){echo rupiah($m->jmlbpbj); } ?></td>
-                <td align="right"><?php if($m->mutasi_in !=0){echo rupiah($m->mutasi_in); } ?></td>
-                <td align="right"><?php if($m->jmlfsthp !=0){echo rupiah($m->jmlfsthp); } ?></td>
-                <td align="right"><?php if($m->mutasi_out !=0){echo rupiah($m->mutasi_out); } ?></td>
-                <td align="right"><?php echo rupiah($saldoakhir);  ?></td>
+                <td align="right"><?php if ($m->saldoawal != 0) {
+                    echo rupiah($m->saldoawal);
+                } ?></td>
+                <td align="right"><?php if ($m->jmlbpbj != 0) {
+                    echo rupiah($m->jmlbpbj);
+                } ?></td>
+                <td align="right"><?php if ($m->mutasi_in != 0) {
+                    echo rupiah($m->mutasi_in);
+                } ?></td>
+                <td align="right"><?php if ($m->jmlfsthp != 0) {
+                    echo rupiah($m->jmlfsthp);
+                } ?></td>
+                <td align="right"><?php if ($m->mutasi_out != 0) {
+                    echo rupiah($m->mutasi_out);
+                } ?></td>
+                <td align="right"><?php echo rupiah($saldoakhir); ?></td>
             </tr>
             <?php $no++; } ?>
         </tbody>
@@ -107,4 +118,5 @@
     </table>
 
 </body>
+
 </html>

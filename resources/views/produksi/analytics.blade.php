@@ -81,8 +81,10 @@
                                                 <td class="text-right">{{ rupiah($permintaan) }}</td>
                                                 <td class="text-right">{{ rupiah($d->jmlrealisasi) }}</td>
                                                 <td class="text-center">
+
                                                     <span
                                                         class="badge bg-{{ $color }}">{{ ROUND($persen, 2) }}</span>
+
                                                 </td>
                                             </tr>
                                         @endforeach

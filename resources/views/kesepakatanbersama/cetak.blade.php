@@ -14,7 +14,8 @@
     <!-- Set also "landscape" if you need -->
     <style>
         @page {
-            size: A4
+            size: A4;
+            zoom: 97%;
         }
 
         body {
@@ -395,7 +396,7 @@
                 <td style="text-align:center">MENYETUJUI</td>
             </tr>
             <tr>
-                <td style="height: 80px"></td>
+                <td style="height: 70px"></td>
                 <td></td>
                 <td></td>
             </tr>

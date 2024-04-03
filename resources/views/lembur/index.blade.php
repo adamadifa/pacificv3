@@ -162,7 +162,10 @@
                                                 <th>Kategori</th>
                                                 <th>Istirahat</th>
                                                 <th style="width:25%">Keterangan</th>
+                                                <th>Head</th>
+                                                <th>GM</th>
                                                 <th>HRD</th>
+                                                <th>Dirut</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -196,6 +199,8 @@
                                                             ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>" . $d->keterangan_hrd . '</span>'
                                                             : '' !!}
                                                     </td>
+                                                    <td></td>
+                                                    <td></td>
                                                     <td>
                                                         @if (empty($d->hrd))
                                                             <i class="fa fa-history warning"></i>
@@ -207,6 +212,7 @@
                                                             @endif
                                                         @endif
                                                     </td>
+                                                    <td></td>
                                                     <td>
                                                         <div class="btn-group">
                                                             @if ($level == 'manager hrd' || $level == 'spv presensi')
