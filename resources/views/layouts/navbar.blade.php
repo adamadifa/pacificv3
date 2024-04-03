@@ -777,7 +777,7 @@
                                                     <span class="menu-item">Input Penjualan</span>
                                                 </a>
                                             </li>
-                                            @if (Auth::user()->kode_cabang == 'BKI' || Auth::user()->kode_cabang == 'SKB')
+                                            {{-- @if (Auth::user()->kode_cabang == 'BKI' || Auth::user()->kode_cabang == 'SKB')
                                                 <li
                                                     class="{{ request()->is(['inputpenjualanppn']) ? 'active' : '' }}">
                                                     <a href="/inputpenjualanppn">
@@ -785,7 +785,7 @@
                                                         <span class="menu-item danger">Penjualan (PPN)</span>
                                                     </a>
                                                 </li>
-                                            @endif
+                                            @endif --}}
                                         @endif
                                         @if ($level == 'admin pusat' || Auth::user()->kode_cabang == 'PST')
                                             <li class="{{ request()->is(['inputpenjualanppn']) ? 'active' : '' }}">
