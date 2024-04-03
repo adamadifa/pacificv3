@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Persediaan Barang Produksi {{ date("d-m-y") }}</title>
+    <title>Rekap Persediaan Barang Produksi {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAP PERSEDIAAN BARANG PRODUKSI<br>
@@ -127,36 +128,36 @@
                 <td><?php echo $d->nama_barang; ?></td>
                 <td><?php echo $kode_kategori; ?></td>
                 <td align="center"><?php echo $d->satuan; ?></td>
-                <td align="center"><?php if ($d->saldoawal != "0" and $d->saldoawal != "") {
-                                    echo number_format($d->saldoawal, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($d->gudang != "0" and $d->gudang != "") {
-                                    echo number_format($d->gudang, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($d->seasoning != "0" and $d->seasoning != "") {
-                                    echo number_format($d->seasoning, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($d->trial != "0" and $d->trial != "") {
-                                    echo number_format($d->trial, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($d->pemakaian != "0" and $d->pemakaian != "") {
-                                    echo number_format($d->pemakaian, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($d->retur != "0" and $d->retur != "") {
-                                    echo number_format($d->retur, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($d->lainnya != "0" and $d->lainnya != "") {
-                                    echo number_format($d->lainnya, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($saldoakhir != "0" and $saldoakhir != "") {
-                                    echo number_format($saldoakhir, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($d->opname != "0" and $d->opname != "") {
-                                    echo number_format($d->opname, 2);
-                                  }; ?></td>
-                <td align="center"><?php if ($saldoakhir - $d->opname != "0") {
-                                    echo number_format($saldoakhir - $d->opname, 2);
-                                  }; ?></td>
+                <td align="center"><?php if ($d->saldoawal != '0' and $d->saldoawal != '') {
+                    echo number_format($d->saldoawal, 2);
+                } ?></td>
+                <td align="center"><?php if ($d->gudang != '0' and $d->gudang != '') {
+                    echo number_format($d->gudang, 2);
+                } ?></td>
+                <td align="center"><?php if ($d->seasoning != '0' and $d->seasoning != '') {
+                    echo number_format($d->seasoning, 2);
+                } ?></td>
+                <td align="center"><?php if ($d->trial != '0' and $d->trial != '') {
+                    echo number_format($d->trial, 2);
+                } ?></td>
+                <td align="center"><?php if ($d->pemakaian != '0' and $d->pemakaian != '') {
+                    echo number_format($d->pemakaian, 2);
+                } ?></td>
+                <td align="center"><?php if ($d->retur != '0' and $d->retur != '') {
+                    echo number_format($d->retur, 2);
+                } ?></td>
+                <td align="center"><?php if ($d->lainnya != '0' and $d->lainnya != '') {
+                    echo number_format($d->lainnya, 2);
+                } ?></td>
+                <td align="center"><?php if ($saldoakhir != '0' and $saldoakhir != '') {
+                    echo number_format($saldoakhir, 2);
+                } ?></td>
+                <td align="center"><?php if ($d->opname != '0' and $d->opname != '') {
+                    echo number_format($d->opname, 2);
+                } ?></td>
+                <td align="center"><?php if ($saldoakhir - $d->opname != '0') {
+                    echo number_format($saldoakhir - $d->opname, 2);
+                } ?></td>
             </tr>
             <?php
           }
@@ -180,4 +181,5 @@
         </tfoot>
     </table>
 </body>
+
 </html>
