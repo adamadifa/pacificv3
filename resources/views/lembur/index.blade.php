@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <form action="{{ URL::current() }}">
-                                        @if (in_array($level, ['admin', 'manager hrd', 'spv presensi']))
+                                        @if (in_array($level, ['admin', 'manager hrd', 'spv presensi', 'direktur']))
 
                                             <div class="row">
                                                 <div class="col-2">
@@ -161,7 +161,7 @@
                                                 <th>Dept</th>
                                                 <th>Kategori</th>
                                                 <th>Istirahat</th>
-                                                <th style="width:25%">Keterangan</th>
+                                                {{-- <th style="width:25%">Keterangan</th> --}}
                                                 <th>Head</th>
                                                 <th>GM</th>
                                                 <th>HRD</th>
@@ -193,14 +193,34 @@
                                                             <span><i class="fa fa-close danger"></i></span>
                                                         @endif
                                                     </td>
-                                                    <td>{{ ucwords(strtolower($d->keterangan)) }}
+                                                    {{-- <td>{{ ucwords(strtolower($d->keterangan)) }}
                                                         <br>
                                                         {!! !empty($d->keterangan_hrd)
                                                             ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>" . $d->keterangan_hrd . '</span>'
                                                             : '' !!}
+                                                    </td> --}}
+                                                    <td>
+                                                        @if (empty($d->head))
+                                                            <i class="fa fa-history warning"></i>
+                                                        @else
+                                                            @if ($d->head == 1)
+                                                                <i class="feather icon-check success"></i>
+                                                            @else
+                                                                <i class="fa fa-close danger"></i>
+                                                            @endif
+                                                        @endif
                                                     </td>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td>
+                                                        @if (empty($d->gm))
+                                                            <i class="fa fa-history warning"></i>
+                                                        @else
+                                                            @if ($d->gm == 1)
+                                                                <i class="feather icon-check success"></i>
+                                                            @else
+                                                                <i class="fa fa-close danger"></i>
+                                                            @endif
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         @if (empty($d->hrd))
                                                             <i class="fa fa-history warning"></i>
@@ -212,11 +232,61 @@
                                                             @endif
                                                         @endif
                                                     </td>
-                                                    <td></td>
+                                                    <td>
+                                                        @if (empty($d->dirut))
+                                                            <i class="fa fa-history warning"></i>
+                                                        @else
+                                                            @if ($d->dirut == 1)
+                                                                <i class="feather icon-check success"></i>
+                                                            @else
+                                                                <i class="fa fa-close danger"></i>
+                                                            @endif
+                                                        @endif
+                                                    </td>
                                                     <td>
                                                         <div class="btn-group">
+                                                            @php
+                                                                $level_head = [
+                                                                    'spv maintenance',
+                                                                    'manager produksi',
+                                                                    'manager ga',
+                                                                ];
+                                                            @endphp
+                                                            @if (in_array($level, $level_head))
+                                                                @if (empty($d->head))
+                                                                    <a href="#"
+                                                                        kode_lembur="{{ Crypt::encrypt($d->kode_lembur) }}"
+                                                                        class="approve"><i
+                                                                            class="feather icon-external-link primary"></i></a>
+                                                                @elseif(!empty($d->head) && empty($d->gm))
+                                                                    <a href="/lembur/{{ Crypt::encrypt($d->kode_lembur) }}/batalkan"
+                                                                        class="warning">Batalkan</a>
+                                                                @endif
+                                                            @endif
+                                                            @if ($level == 'emf')
+                                                                @if (empty($d->gm) && !empty($d->head))
+                                                                    <a href="#"
+                                                                        kode_lembur="{{ Crypt::encrypt($d->kode_lembur) }}"
+                                                                        class="approve"><i
+                                                                            class="feather icon-external-link primary"></i></a>
+                                                                @elseif(!empty($d->gm) && empty($d->hrd))
+                                                                    <a href="/lembur/{{ Crypt::encrypt($d->kode_lembur) }}/batalkan"
+                                                                        class="warning">Batalkan</a>
+                                                                @endif
+                                                            @endif
                                                             @if ($level == 'manager hrd' || $level == 'spv presensi')
-                                                                @if (empty($d->hrd))
+                                                                @if (empty($d->hrd) && !empty($d->gm))
+                                                                    <a href="#"
+                                                                        kode_lembur="{{ Crypt::encrypt($d->kode_lembur) }}"
+                                                                        class="approve"><i
+                                                                            class="feather icon-external-link primary"></i></a>
+                                                                @elseif(!empty($d->hrd) && empty($d->dirut))
+                                                                    <a href="/lembur/{{ Crypt::encrypt($d->kode_lembur) }}/batalkan"
+                                                                        class="warning">Batalkan</a>
+                                                                @endif
+                                                            @endif
+                                                            @if ($level == 'direktur')
+                                                                @if (empty($d->dirut) && !empty($d->gm))
                                                                     <a href="#"
                                                                         kode_lembur="{{ Crypt::encrypt($d->kode_lembur) }}"
                                                                         class="approve"><i

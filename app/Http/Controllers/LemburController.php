@@ -16,6 +16,7 @@ class LemburController extends Controller
 {
     public function index(Request $request)
     {
+        $level = Auth::user()->level;
         $query = Lembur::query();
         // if (!empty($request->bulan)) {
         //     $query->whereRaw('MONTH(tanggal_dari)="' . $request->bulan . '"');
@@ -43,11 +44,19 @@ class LemburController extends Controller
         if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST") {
             $query->where('id_kantor', Auth::user()->kode_cabang);
         } else {
-            $level_search = array("manager hrd", "admin", "spv presensi");
+            $level_search = array("manager hrd", "admin", "spv presensi", "direktur");
             if (in_array(Auth::user()->level, $level_search)) {
                 if (!empty($request->id_kantor_search)) {
                     $query->where('id_kantor', $request->id_kantor_search);
                 }
+            } else if ($level == "manager ga") {
+                $query->where('kode_dept', 'GAF');
+            } else if ($level == "spv maintenance") {
+                $query->where('kode_dept', 'MTC');
+            } else if ($level == "manager produksi") {
+                $query->where('kode_dept', 'PRD');
+            } else if ($level == "emf") {
+                $query->whereIn('kode_dept', ['GAF', 'PRD', 'MTC', 'PDQ']);
             } else {
                 $query->where('id_kantor', 'PST');
                 $query->where('kode_dept', Auth::user()->kode_dept_presensi);
@@ -149,7 +158,7 @@ class LemburController extends Controller
 
     public function getkaryawan($kode_lembur, $id_kantor, $kode_dept)
     {
-        $level_access = array("manager hrd", "admin","spv presensi");
+        $level_access = array("manager hrd", "admin", "spv presensi");
         $level = Auth::user()->level;
         if ($id_kantor == "PCF" || $id_kantor == "PST") {
             if (in_array($level, $level_access)) {
@@ -360,11 +369,27 @@ class LemburController extends Controller
 
     public function approve(Request $request)
     {
+        $level_head = [
+            'spv maintenance',
+            'manager produksi',
+            'manager ga',
+        ];
 
+        $level_hrd = ["manager hrd", "spv presensi"];
+        $level = Auth::user()->level;
         $kode_lembur = Crypt::decrypt($request->kode_lembur);
         if (isset($request->approve)) {
             try {
-                DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['hrd' => 1]);
+
+                if (in_array($level, $level_head)) {
+                    DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['head' => 1]);
+                } else if ($level == "emf") {
+                    DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['gm' => 1]);
+                } else if (in_array($level, $level_hrd)) {
+                    DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['hrd' => 1]);
+                } else if ($level == "direktur") {
+                    DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['dirut' => 1]);
+                }
                 return Redirect::back()->with(['success' => 'Pengajuan Lembur Disetujui']);
             } catch (\Exception $e) {
                 return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
@@ -383,9 +408,26 @@ class LemburController extends Controller
 
     public function batalkan($kode_lembur)
     {
+        $level_head = [
+            'spv maintenance',
+            'manager produksi',
+            'manager ga',
+        ];
+
+        $level_hrd = ["manager hrd", "spv presensi"];
+        $level = Auth::user()->level;
         $kode_lembur = Crypt::decrypt($kode_lembur);
         try {
-            DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['hrd' => null]);
+            if (in_array($level, $level_head)) {
+                DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['head' => null]);
+            } else if ($level == "emf") {
+                DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['gm' => null]);
+            } else if (in_array($level, $level_hrd)) {
+                DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['hrd' => null]);
+            } else if ($level == "direktur") {
+                DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['dirut' => null]);
+            }
+
             return Redirect::back()->with(['success' => 'Pengajuan Lembur Dibatalkan']);
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
