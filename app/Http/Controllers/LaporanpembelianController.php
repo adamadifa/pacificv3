@@ -155,6 +155,7 @@ class LaporanpembelianController extends Controller
                 $join->on('detail_pembelian.kode_barang', '=', 'jurnal_koreksi.kode_barang');
             }
         );
+        $query->orderBy('pembelian.kode_supplier');
         $query->whereBetween('tgl_pembelian', [$dari, $sampai]);
         $query->groupByRaw('pembelian.kode_supplier,nama_supplier');
         $pmb = $query->get();
