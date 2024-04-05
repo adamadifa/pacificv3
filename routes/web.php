@@ -1336,7 +1336,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/getfaktur', [PenjualanController::class, 'getfaktur']);
     Route::get('/penjualan/create', [PenjualanController::class, 'create']);
     Route::get('/inputpenjualanv2', [PenjualanController::class, 'create_v2']);
-    Route::get('/inputpenjualanppn', [PenjualanController::class, 'create_v2']);
+    //Route::get('/inputpenjualanppn', [PenjualanController::class, 'create_v2']);
     Route::post('/penjualan/storebarangtemp', [PenjualanController::class, 'storebarangtemp']);
     Route::post('/penjualan/storebarangtempv2', [PenjualanController::class, 'storebarangtempv2']);
     Route::post('/penjualan/deletebarangtemp', [PenjualanController::class, 'deletebarangtemp']);
