@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Bahan Kemasan {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Bahan Kemasan {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,19 +32,19 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         LAPORAN BAHAN & KEMASAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
-        @if ($jenis_barang != "")
-        JENIS BARANG : {{ $jenis_barang }}
+        @if ($jenis_barang != '')
+            JENIS BARANG : {{ $jenis_barang }}
         @endif
         @php
-        $jenis = $jenis_barang;
+            $jenis = $jenis_barang;
         @endphp
         <br>
     </b>
@@ -52,6 +53,7 @@
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12; text-align:center">
                 <td>NO</td>
+                <td>KODE</td>
                 <td>NAMA BAHAN</td>
                 <td>JENIS</td>
                 <td>SATUAN</td>
@@ -110,6 +112,7 @@
             ?>
             <tr>
                 <td><?php echo $no; ?></td>
+                <td><?php echo $d->kode_barang; ?></td>
                 <td><?php echo $d->nama_barang; ?></td>
                 <td><?php echo $d->jenis_barang; ?></td>
                 <td><?php echo $d->satuan; ?></td>
@@ -122,7 +125,7 @@
                 <td align="right"><?php echo rupiah($totalharga); ?></td>
                 <?php } else { ?>
                 <td align="center"><?php echo rupiah($d->totalqty); ?></td>
-                <td align="center"><?php echo rupiah($d->totalharga / ($d->totalqty)); ?></td>
+                <td align="center"><?php echo rupiah($d->totalharga / $d->totalqty); ?></td>
                 <td align="right">{{ rupiah($d->jml_jk) }}</td>
                 <td align="right"><?php echo rupiah($totalharga); ?></td>
                 <?php } ?>
@@ -133,45 +136,46 @@
             ?>
             <?php if ($jenis == 'BAHAN') { ?>
             <tr bgcolor="#024a75" style="color:white">
-                <td colspan="8"><b>Total Bahan Baku</b></td>
+                <td colspan="9"><b>Total Bahan Baku</b></td>
                 <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanbaku); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
-                <td colspan="8"><b>Total Bahan Pembantu</b></td>
+                <td colspan="9"><b>Total Bahan Pembantu</b></td>
                 <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanpembantu); ?></b></td>
             </tr>
             <?php } else if ($jenis == 'KEMASAN') { ?>
             <tr bgcolor="#024a75" style="color:white">
-                <td colspan="8"><b>Total Bahan Kemasan</b></td>
+                <td colspan="9"><b>Total Bahan Kemasan</b></td>
                 <td></td>
                 <td align="right"><b><?php echo rupiah($totalkemasan); ?></b></td>
             </tr>
             <?php } else { ?>
             <tr bgcolor="#024a75" style="color:white">
-                <td colspan="8"><b>Total Bahan Baku</b></td>
+                <td colspan="9"><b>Total Bahan Baku</b></td>
                 <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanbaku); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
-                <td colspan="8"><b>Total Bahan Pembantu</b></td>
+                <td colspan="9"><b>Total Bahan Pembantu</b></td>
                 <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanpembantu); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
-                <td colspan="8"><b>Total Bahan Kemasan</b></td>
+                <td colspan="9"><b>Total Bahan Kemasan</b></td>
                 <td></td>
                 <td align="right"><b><?php echo rupiah($totalkemasan); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
-                <td colspan="8"><b>Total</b></td>
+                <td colspan="9"><b>Total</b></td>
                 <td></td>
-                <td align="right"><b><?php echo rupiah($totalkemasan+$totalbahanbaku+$totalbahanpembantu); ?></b></td>
+                <td align="right"><b><?php echo rupiah($totalkemasan + $totalbahanbaku + $totalbahanpembantu); ?></b></td>
             </tr>
             <?php } ?>
         </tbody>
 
     </table>
 </body>
+
 </html>
