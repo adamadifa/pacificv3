@@ -435,6 +435,9 @@ class LaporanpembelianController extends Controller
             $query->orWhereBetween('tgl_pembelian', [$dari, $sampai]);
             $query->where('jenis_barang', 'KEMASAN');
         }
+
+        $query->orderBy('jenis_barang');
+        $query->orderBy('detail_pembelian.kode_barang');
         $query->groupByRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang,jml_jk");
         $pmb = $query->get();
         if (isset($_POST['export'])) {
