@@ -558,7 +558,7 @@
                             <td align="center">{{ $loop->iteration }}</td>
                             <td>{{ $b->kode_barang }}</td>
                             <td>{{ $b->nama_barang }}</td>
-                            <td align="right">{{ rupiah($harga_dpp) }}</td>
+                            <td align="right">{{ rupiah($harga_dus_dpp) }}</td>
                             <td align="center">{{ $jmldus }}</td>
                             <td align="center">{{ $jmlpack }}</td>
                             <td align="center">{{ $jmlpcs }}</td>
