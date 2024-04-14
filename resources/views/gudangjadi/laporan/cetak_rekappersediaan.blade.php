@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Persediaan Gudang Jadi {{ date("d-m-y") }}</title>
+    <title>Rekap Persediaan Gudang Jadi {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAPITULASI PERSEDIAAN BARANG<br>
@@ -91,27 +92,27 @@
                 <td><?php echo $no; ?></td>
                 <td><?php echo $m->nama_barang; ?></td>
                 <td align="right"><?php if ($m->saldoawal != 0) {
-                                                            echo rupiah($m->saldoawal);
-                                                        } ?></td>
+                    echo rupiah($m->saldoawal);
+                } ?></td>
                 <td align="right"><?php if ($m->jmlfsthp != 0) {
-                                                            echo rupiah($m->jmlfsthp);
-                                                        } ?></td>
+                    echo rupiah($m->jmlfsthp);
+                } ?></td>
                 <td align="right"><?php if ($m->jmlrepack != 0) {
-                                                            echo rupiah($m->jmlrepack);
-                                                        } ?></td>
+                    echo rupiah($m->jmlrepack);
+                } ?></td>
                 <td align="right"><?php if ($m->jmllainlain_in != 0) {
-                                                            echo rupiah($m->jmllainlain_in);
-                                                        } ?></td>
+                    echo rupiah($m->jmllainlain_in);
+                } ?></td>
                 <td align="right"><?php if ($m->jmlsuratjalan != 0) {
-                                                            echo rupiah($m->jmlsuratjalan);
-                                                        } ?></td>
+                    echo rupiah($m->jmlsuratjalan);
+                } ?></td>
                 <td align="right"><?php if ($m->jmlreject != 0) {
-                                                            echo rupiah($m->jmlreject);
-                                                        } ?></td>
+                    echo rupiah($m->jmlreject);
+                } ?></td>
                 <td align="right"><?php if ($m->jmllainlain_out != 0) {
-                                                            echo rupiah($m->jmllainlain_out);
-                                                        } ?></td>
-                <td align="right"><?php echo rupiah($saldoakhir);  ?></td>
+                    echo rupiah($m->jmllainlain_out);
+                } ?></td>
+                <td align="right"><?php echo rupiah($saldoakhir); ?></td>
             </tr>
             <?php $no++;
             } ?>
@@ -131,4 +132,5 @@
         </tfoot>
     </table>
 </body>
+
 </html>

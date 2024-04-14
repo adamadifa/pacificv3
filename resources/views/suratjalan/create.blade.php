@@ -146,7 +146,7 @@
                     </tr>
                     <tr>
                         <th>Kode Produk</th>
-                        <th>Nama Barang</th>
+                        <th>Nama Produk</th>
                         <th>Jumlah</th>
                     </tr>
                 </thead>
