@@ -546,9 +546,9 @@
 
                             $jmlpcs = $sisapack;
 
-                            $harga_dus_dpp = (100 / 111) * $d->harga_dus;
-                            $harga_pack_dpp = (100 / 111) * $d->harga_pack;
-                            $harga_pcs_dpp = (100 / 111) * $d->harga_pcs;
+                            $harga_dus_dpp = (100 / 111) * $b->harga_dus;
+                            $harga_pack_dpp = (100 / 111) * $b->harga_pack;
+                            $harga_pcs_dpp = (100 / 111) * $b->harga_pcs;
                             $subtotal_dus_dpp = $jml_dus * $harga_dus_dpp;
                             $subtotal_pack_dpp = $jmlpack * $harga_pack_dpp;
                             $subtotal_pcs_dpp = $jmlpcs * $harga_pcs_dpp;
