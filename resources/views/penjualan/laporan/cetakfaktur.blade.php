@@ -531,6 +531,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                        $grandtotal = 0;
+                    @endphp
                     @foreach ($detail as $b)
                         @php
                             $jmldus = floor($b->jumlah / $b->isipcsdus);
@@ -553,6 +556,10 @@
                             $subtotal_pack_dpp = $jmlpack * $harga_pack_dpp;
                             $subtotal_pcs_dpp = $jmlpcs * $harga_pcs_dpp;
                             $subtotal = $subtotal_dus_dpp + $subtotal_pcs_dpp + $subtotal_pcs_dpp;
+                            $grandtotal += $subtotal;
+                            $potongan_dpp = (100 / 111) * $faktur->potongan;
+                            $dpp = $subtotal - $potongan_dpp - $faktur->penyharga - $faktur->potistimewa;
+                            $ppn = (11 / 100) * $dpp;
                         @endphp
                         <tr>
                             <td align="center">{{ $loop->iteration }}</td>
@@ -569,12 +576,12 @@
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">Jumlah</td>
-                    <td align="right">{{ rupiah($faktur->subtotal) }}</td>
+                    <td align="right">{{ rupiah($grandtotal) }}</td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">Diskon</td>
-                    <td align="right">{{ rupiah($faktur->potongan) }}</td>
+                    <td align="right">{{ rupiah($potongan_dpp) }}</td>
                 </tr>
                 <?php if ($faktur->potistimewa != 0) { ?>
                 <tr>
@@ -593,13 +600,13 @@
                     <td colspan="4"></td>
                     <td colspan="3" align="center">DPP</td>
                     <td align="right">
-                        {{ rupiah($faktur->subtotal - $faktur->potongan - $faktur->penyharga - $faktur->potistimewa) }}
+                        {{ rupiah($dpp) }}
                     </td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">PPN</td>
-                    <td align="right">{{ rupiah($faktur->ppn) }}</td>
+                    <td align="right">{{ rupiah($ppn) }}</td>
                 </tr>
 
                 <tr>
