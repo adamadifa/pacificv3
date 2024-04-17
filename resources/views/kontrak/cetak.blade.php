@@ -173,7 +173,7 @@
             @else
                 {{ $cabang->nama_pt }}
             @endif
-            berkedudukan di {{ $cabang->nama_cabang }} selanjutnya disebut <b>pihak kesatu.</b>
+            berkedudukan di {{$cabang->kode_cabang !="PST" ?  $cabang->nama_cabang : "TASIKMALAYA"  }} selanjutnya disebut <b>pihak kesatu.</b>
         </p>
 
         <p>
@@ -267,7 +267,7 @@
                 @else
                     Perusahaan dengan Jabatan sebagai {{ $kontrak->nama_jabatan }}
                 @endif
-                yang berlokasi di {{ $cabang->nama_cabang }}
+                yang berlokasi di {{ $cabang->kode_cabang != "PST" ?  $cabang->nama_cabang : "TASIKMALAYA" }}
                 serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
             </li>
             <li>
