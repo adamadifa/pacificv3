@@ -301,7 +301,7 @@
                                                                 <i class="feather icon-settings success ml-1"></i>
                                                             </a>
 
-                                                            @if (empty($d->hrd))
+                                                            @if (empty($d->hrd) && Auth::user()->level=="spv presensi" || empty($d->hrd) && Auth::user()->level=="admin")
                                                                 <form method="POST" class="deleteform"
                                                                     action="/lembur/{{ Crypt::encrypt($d->kode_lembur) }}/delete">
                                                                     @csrf
