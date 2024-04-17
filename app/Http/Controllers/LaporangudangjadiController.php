@@ -228,11 +228,14 @@ class LaporangudangjadiController extends Controller
         $kode_cabang = $request->kode_cabang;
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
+
         if (!empty($kode_cabang)) {
             $cabang = "AND kode_cabang = '" . $kode_cabang . "' ";
         } else {
             $cabang = "";
         }
+
+
         $rekap = DB::table('master_barang')
             ->selectRaw('master_barang.kode_produk,nama_barang,permintaan,target,realisasi')
             ->leftJoin(

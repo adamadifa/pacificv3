@@ -203,6 +203,7 @@ class AjuantransferdanaController extends Controller
                 DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)
                     ->update([
                         'tgl_proses' => $tgl_proses,
+                        'bukti' => $request->bukti,
                         'proses_by' => Auth::user()->id
                     ]);
                 // Simpan Setoran Pusat

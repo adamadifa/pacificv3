@@ -40,17 +40,21 @@
         <x-inputtext field="tgl_proses" label="Tanggal Proses" value="{{ $ajuantransferdana->tgl_pengajuan }}" readonly
             icon="feather icon-calendar" />
     </div>
+    <div class="form-group">
+        <x-inputtext field="bukti" label="Link Bukti" icon="feather icon-file-text" />
+    </div>
     <div class="row">
         <div class="col-12">
             <button class="btn btn-primary w-100" type="submit"><i class="feather icon-send mr-1"></i>Proses</button>
-
         </div>
+    </div>
 </form>
 <script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmAjuantransferdana").submit(function() {
             var tgl_proses = $("#tgl_proses").val();
+            var bukti = $("#bukti").val();
             if (tgl_proses == "") {
                 swal({
                     title: 'Oops',
@@ -59,6 +63,16 @@
                     showConfirmButton: false
                 }).then(function() {
                     $("#tgl_proses").focus();
+                });
+                return false;
+            } else if (bukti == "") {
+                swal({
+                    title: 'Oops',
+                    text: 'Link Bukti  Harus Diisi!',
+                    icon: 'warning',
+                    showConfirmButton: false
+                }).then(function() {
+                    $("#bukti").focus();
                 });
                 return false;
             }

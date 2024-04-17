@@ -78,12 +78,12 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>No.Pengajuan</th>
-                                        <th style="width: 10%">Tanggal</th>
+                                        <th style="width: 8%">Tanggal</th>
                                         <th>Nama</th>
                                         <th>Bank</th>
                                         <th>No. Rekening</th>
                                         <th>Jumlah</th>
-                                        <th>Keterangan</th>
+                                        <th style="width:15%">Keterangan</th>
                                         <th>Cabang</th>
                                         <th>Validasi</th>
                                         <th>Tgl Proses</th>
@@ -99,7 +99,13 @@
                                             $total += $d->jumlah;
                                         @endphp
                                         <tr>
-                                            <td>{{ $d->no_pengajuan }}</td>
+                                            <td>
+                                                @if (!empty($d->bukti))
+                                                    <a href="{{ $d->bukti }}" target="_blank">{{ $d->no_pengajuan }}</a>
+                                                @else
+                                                    {{ $d->no_pengajuan }}
+                                                @endif
+                                            </td>
                                             <td>{{ date('d-m-Y', strtotime($d->tgl_pengajuan)) }}</td>
                                             <td>{{ $d->nama }}</td>
                                             <td>{{ $d->nama_bank }}</td>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Realiasi Kiriman {{ date("d-m-y") }}</title>
+    <title>Rekap Realiasi Kiriman {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,12 +32,12 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        REALISASI KIRIMAN PRODUK {{ $cbg !=null ? strtoupper($cbg->nama_cabang) : 'ALL CABANG' }}<br>
+        REALISASI KIRIMAN PRODUK {{ $cbg != null ? strtoupper($cbg->nama_cabang) : 'ALL CABANG' }}<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
     </b>
@@ -75,11 +76,24 @@
                 <td><?php echo $no; ?></td>
                 <td><?php echo $r->nama_barang; ?></td>
                 <td><?php echo $r->target; ?></td>
-                <td align="right"><?php if($r->permintaan !=0){echo rupiah($r->permintaan); } ?></td>
-                <td align="right"><?php if($r->realisasi !=0){echo rupiah($r->realisasi); } ?></td>
-                <td align="right"><?php if($r->target !=0 ){ $sisa = $r->target-$r->realisasi; if($sisa >=0){echo rupiah($sisa);} } ?></td>
-                <td align="right"><?php if($pmvsrealisasi !=0){echo round($pmvsrealisasi,2)."%"; } ?></td>
-                <td align="right"><?php if($targetvsrealisasi !=0){echo round($targetvsrealisasi,2)."%"; } ?></td>
+                <td align="right"><?php if ($r->permintaan != 0) {
+                    echo rupiah($r->permintaan);
+                } ?></td>
+                <td align="right"><?php if ($r->realisasi != 0) {
+                    echo rupiah($r->realisasi);
+                } ?></td>
+                <td align="right"><?php if ($r->target != 0) {
+                    $sisa = $r->target - $r->realisasi;
+                    if ($sisa >= 0) {
+                        echo rupiah($sisa);
+                    }
+                } ?></td>
+                <td align="right"><?php if ($pmvsrealisasi != 0) {
+                    echo round($pmvsrealisasi, 2) . '%';
+                } ?></td>
+                <td align="right"><?php if ($targetvsrealisasi != 0) {
+                    echo round($targetvsrealisasi, 2) . '%';
+                } ?></td>
             </tr>
             <?php
                 $no++;
@@ -87,4 +101,5 @@
             ?>
         </tbody>
 </body>
+
 </html>
