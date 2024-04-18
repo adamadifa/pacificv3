@@ -287,8 +287,10 @@
         </table>
         <p style="line-height: 1.5rem">
             Dengan ini menyatakan memberikan persetujuan sepenuhnya kepada pasangan saya untuk menggunakan fasilitas
-            pinjaman di perusahaan MAKMUR PERMATA GROUP sebesar Rp (Diisi Otomatis) dengan kewajiban angsuran Rp (Diisi
-            Otomatis) selama (Diisi Otomatis) kali dipotong dari gaji setiap bulan.
+            pinjaman di perusahaan MAKMUR PERMATA GROUP sebesar Rp {{ rupiah($pinjaman->jumlah_pinjaman) }} dengan
+            kewajiban angsuran Rp {{ rupiah($pinjaman->jumlah_angsuran) }} selama {{ $pinjaman_angsuran }} kali
+            dipotong dari
+            gaji setiap bulan.
         </p>
         <p style="line-height: 1.5rem">
             Demikian persetujuan ini diberikan untuk dipergunakan sebagaimana mestinya.
