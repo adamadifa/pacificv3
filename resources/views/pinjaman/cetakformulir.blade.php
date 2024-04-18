@@ -288,7 +288,7 @@
         <p style="line-height: 1.5rem">
             Dengan ini menyatakan memberikan persetujuan sepenuhnya kepada pasangan saya untuk menggunakan fasilitas
             pinjaman di perusahaan MAKMUR PERMATA GROUP sebesar Rp {{ rupiah($pinjaman->jumlah_pinjaman) }} dengan
-            kewajiban angsuran Rp {{ rupiah($pinjaman->jumlah_angsuran) }} selama {{ $pinjaman_angsuran }} kali
+            kewajiban angsuran Rp {{ rupiah($pinjaman->jumlah_angsuran) }} selama {{ $pinjaman->angsuran }} kali
             dipotong dari
             gaji setiap bulan.
         </p>
