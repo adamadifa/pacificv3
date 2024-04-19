@@ -94,6 +94,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>No. Rekening</th>
                 <th>Nama karyawan</th>
+                <th style="background-color: orange;">JUMLAH<br>INSENTIF</th>
                 <th style="background-color: orange;">JUMLAH<br>BERSIH</th>
             </tr>
         </thead>
@@ -412,23 +413,31 @@
 
                                     if ($d->nama_jabatan == 'SPG' || $d->nama_jabatan == 'SPB') {
                                         $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                        $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                        $jam_pulang_tanggal = !empty($jam_out_presensi)
+                                            ? $tgl_pulang . ' ' . $jam_pulang
+                                            : '';
                                     } else {
-                                        $jam_pulang = $datapresensi[4] != 'NA' ? date('H:i', strtotime($datapresensi[4])) : '';
-                                        $jam_pulang_tanggal = $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                        $jam_pulang =
+                                            $datapresensi[4] != 'NA' ? date('H:i', strtotime($datapresensi[4])) : '';
+                                        $jam_pulang_tanggal =
+                                            $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
                                     }
                                 } else {
                                     $jam_masuk = $jam_in_presensi;
                                     $jam_masuk_tanggal = $tgl_presensi . ' ' . $jam_masuk;
                                     $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                    $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                    $jam_pulang_tanggal = !empty($jam_out_presensi)
+                                        ? $tgl_pulang . ' ' . $jam_pulang
+                                        : '';
                                 }
                             } else {
                                 if (!empty($ceklibur) || !empty($cekliburpenggantiminggu)) {
                                     $jam_masuk = $jam_in_presensi;
                                     $jam_masuk_tanggal = $tgl_presensi . ' ' . $jam_masuk;
                                     $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                    $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                    $jam_pulang_tanggal = !empty($jam_out_presensi)
+                                        ? $tgl_pulang . ' ' . $jam_pulang
+                                        : '';
                                 } else {
                                     if ($d->nama_jabatan == 'SPG' || $d->nama_jabatan == 'SPB' || !empty($cekwfh)) {
                                         $jam_masuk = $jam_in_presensi;
@@ -440,10 +449,14 @@
 
                                     if ($d->nama_jabatan == 'SPG' || $d->nama_jabatan == 'SPB' || !empty($cekwfh)) {
                                         $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                        $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                        $jam_pulang_tanggal = !empty($jam_out_presensi)
+                                            ? $tgl_pulang . ' ' . $jam_pulang
+                                            : '';
                                     } else {
-                                        $jam_pulang = $datapresensi[4] != 'NA' ? date('H:i', strtotime($datapresensi[4])) : '';
-                                        $jam_pulang_tanggal = $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                        $jam_pulang =
+                                            $datapresensi[4] != 'NA' ? date('H:i', strtotime($datapresensi[4])) : '';
+                                        $jam_pulang_tanggal =
+                                            $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
                                     }
                                 }
                             }
@@ -461,14 +474,20 @@
 
                             //Jam Istirahat
                             $jam_istirahat = $datapresensi[14];
-                            $jam_istirahat_presensi = $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
-                            $jam_istirahat_presensi_tanggal = $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_istirahat_presensi : '';
+                            $jam_istirahat_presensi =
+                                $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
+                            $jam_istirahat_presensi_tanggal =
+                                $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_istirahat_presensi : '';
 
-                            $jam_awal_istirahat = $datapresensi[13] != 'NA' ? date('H:i', strtotime($datapresensi[13])) : '';
-                            $jam_awal_istirahat_tanggal = $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_awal_istirahat : '';
+                            $jam_awal_istirahat =
+                                $datapresensi[13] != 'NA' ? date('H:i', strtotime($datapresensi[13])) : '';
+                            $jam_awal_istirahat_tanggal =
+                                $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_awal_istirahat : '';
 
-                            $jam_akhir_istirahat = $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
-                            $jam_akhir_istirahat_tanggal = $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_akhir_istirahat : '';
+                            $jam_akhir_istirahat =
+                                $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
+                            $jam_akhir_istirahat_tanggal =
+                                $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_akhir_istirahat : '';
 
                             //Menghitung Jam Keterlambatan
                             if (!empty($jam_in)) {
@@ -535,7 +554,8 @@
 
                                 //Tambah 0 di Depan Jika < 10
                                 $jkeluarkantor = $jamkeluarkantor <= 9 ? '0' . $jamkeluarkantor : $jamkeluarkantor;
-                                $mkeluarkantor = $menitkeluarkantor <= 9 ? '0' . $menitkeluarkantor : $menitkeluarkantor;
+                                $mkeluarkantor =
+                                    $menitkeluarkantor <= 9 ? '0' . $menitkeluarkantor : $menitkeluarkantor;
 
                                 if (empty($jam_masuk_kk)) {
                                     if ($total_jam == 7) {
@@ -617,7 +637,10 @@
 
                             //Menghitung total Jam
                             //Menentukan Jam Absen Pulang
-                            if ($jam_out_tanggal > $jam_awal_istirahat_tanggal && $jam_out_tanggal <= $jam_akhir_istirahat_tanggal) {
+                            if (
+                                $jam_out_tanggal > $jam_awal_istirahat_tanggal &&
+                                $jam_out_tanggal <= $jam_akhir_istirahat_tanggal
+                            ) {
                                 $jout = $jam_awal_istirahat_tanggal; //Jika Pulang Lebih dari Jam Awal Istirhat dan Kurang dari Jam AKhir Istirahat
                             } else {
                                 $jout = $jam_out_tanggal; // Jam Absen Pulang Sesuai Dengan Jam Absen Pulang
@@ -976,7 +999,10 @@
                                 }
 
                                 $jmldirumahkan += 1;
-                                $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
+                                $totaljamdirumahkan =
+                                    $jamdirumahkan +
+                                    $tambahjamdirumahkan -
+                                    (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
                                 $totaldirumahkan += $totaljamdirumahkan;
                             @endphp
                         @endif
@@ -1002,8 +1028,23 @@
                     @endphp
                 @else
                     @php
-                        $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
-                        $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
+                        $totaljamkerja =
+                            $totaljam1bulan -
+                            $totalterlambat -
+                            $totalkeluar -
+                            $totaldirumahkan -
+                            $totaltidakhadir -
+                            $totalpulangcepat -
+                            $totalizinabsen -
+                            $totalizinsakit;
+                        $totalpotonganjam =
+                            $totalterlambat +
+                            $totalkeluar +
+                            $totaldirumahkan +
+                            $totaltidakhadir +
+                            $totalpulangcepat +
+                            $totalizinabsen +
+                            $totalizinsakit;
                     @endphp
                 @endif
 
@@ -1016,13 +1057,27 @@
                     $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_harilibur_shift_3;
 
                     //UPAH
-                    $upah = $d->gaji_pokok + $d->t_jabatan + $d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
+                    $upah =
+                        $d->gaji_pokok +
+                        $d->t_jabatan +
+                        $d->t_masakerja +
+                        $d->t_tanggungjawab +
+                        $d->t_makan +
+                        $d->t_istri +
+                        $d->t_skill;
 
                     //Upah Per Jam
                     $upah_perjam = $upah / 173;
 
                     //Insentif
-                    $jmlinsentif = $d->iu_masakerja + $d->iu_lembur + $d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
+                    $jmlinsentif =
+                        $d->iu_masakerja +
+                        $d->iu_lembur +
+                        $d->iu_penempatan +
+                        $d->iu_kpi +
+                        $d->im_ruanglingkup +
+                        $d->im_penempatan +
+                        $d->im_kinerja;
                 @endphp
 
                 @if ($d->nama_jabatan == 'SECURITY')
@@ -1043,7 +1098,11 @@
 
                 @php
                     $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2; // Total Upah Overtime
-                    $bruto = $upah_perjam * $totaljamkerja + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3; // Total Upah Bruto
+                    $bruto =
+                        $upah_perjam * $totaljamkerja +
+                        $total_upah_overtime +
+                        $totalpremiall_shift_2 +
+                        $totalpremiall_shift_3; // Total Upah Bruto
                     $bpjskesehatan = $d->iuran_kes; // BPJS Kesehatan
                     $bpjstenagakerja = $d->iuran_tk; // BPJS Tenaga Kerja
                 @endphp
@@ -1058,7 +1117,17 @@
                     @endphp
                 @endif
                 @php
-                    $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $d->jml_pengurang + $spip, 0); // Potongan Upah
+                    $potongan = ROUND(
+                        $bpjskesehatan +
+                            $bpjstenagakerja +
+                            $totaldenda +
+                            $d->cicilan_pjp +
+                            $d->jml_kasbon +
+                            $d->jml_nonpjp +
+                            $d->jml_pengurang +
+                            $spip,
+                        0,
+                    ); // Potongan Upah
                     $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
 
                     //Total Gaji Pokok
@@ -1124,7 +1193,9 @@
                 <tr>
                     <td>{{ $d->no_rekening }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
-
+                    <td align="right">
+                        {{ !empty($jmlinsenetif) ? rupiah($jmlinsenetif) : '' }}
+                    </td>
                     <td align="right">
                         {{ !empty($jmlbersih) ? rupiah($jmlbersih) : '' }}
                     </td>
@@ -1132,6 +1203,7 @@
             @endforeach
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th colspan="2">TOTAL</th>
+                <th style="text-align: right">{{ rupiah($total_insentif) }}</th>
                 <th style="text-align: right">{{ rupiah($total_all_bersih) }}</th>
             </tr>
         </tbody>
