@@ -433,7 +433,9 @@ class LaporanhrdController extends Controller
 
         if (request()->is('laporanhrd/gaji/cetak')) {
             if (!in_array($level, $level_show_all)) {
-                $query->whereNotIn('id_jabatan', $show_for_hrd);
+                if ($jenislaporan_gaji != "8") {
+                    $query->whereNotIn('id_jabatan', $show_for_hrd);
+                }
             } else {
                 if (!empty($request->manajemen)) {
                     if ($request->manajemen == 1) {
