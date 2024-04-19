@@ -96,7 +96,7 @@
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
                     <th>No</th>
                     <th>Nik</th>
-                    <th style="width: 4%">Nama karyawan</th>
+                    <th>Nama karyawan</th>
                     <th style="background-color: black;">SPIP</th>
                 </tr>
             </thead>
