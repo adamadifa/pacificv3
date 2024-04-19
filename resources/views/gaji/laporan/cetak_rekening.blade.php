@@ -1194,7 +1194,7 @@
                     <td>{{ $d->no_rekening }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
                     <td align="right">
-                        {{ !empty($jmlinsenetif) ? rupiah($jmlinsenetif) : '' }}
+                        {{ !empty($jmlinsentif) ? rupiah($jmlinsentif) : '' }}
                     </td>
                     <td align="right">
                         {{ !empty($jmlbersih) ? rupiah($jmlbersih) : '' }}
