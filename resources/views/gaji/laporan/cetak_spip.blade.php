@@ -91,7 +91,7 @@
     </b>
     <br>
     <div class="freeze-table">
-        <table class="datatable3" style="width: 300%">
+        <table class="datatable3">
             <thead bgcolor="#024a75" style="color:white; font-size:12;">
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
                     <th>No</th>
@@ -1262,14 +1262,6 @@
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{ asset('dist/js/freeze/js/freeze-table.js') }}"></script>
-<script>
-    $(function() {
-        $('.freeze-table').freezeTable({
-            'scrollable': true,
-            'columnNum': 4,
-            'shadow': true,
-        });
-    });
-</script>
+
 
 </html>
