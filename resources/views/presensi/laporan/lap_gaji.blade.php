@@ -130,6 +130,7 @@
                                                         <option value="5">THR</option>
                                                         <option value="7">Rekap THR</option>
                                                         <option value="6">BPJS</option>
+                                                        <option value="8">SPIP</option>
 
                                                     </select>
                                                 </div>

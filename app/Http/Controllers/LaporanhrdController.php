@@ -463,7 +463,9 @@ class LaporanhrdController extends Controller
 
         if (request()->is('laporanhrd/gaji/cetak')) {
             if (!in_array($level, $level_show_all)) {
-                $query->whereNotIn('id_jabatan', $show_for_hrd);
+                if ($jenislaporan_gaji != "8") {
+                    $query->whereNotIn('id_jabatan', $show_for_hrd);
+                }
             } else {
                 if (!empty($request->manajemen)) {
                     if ($request->manajemen == 1) {
@@ -519,6 +521,15 @@ class LaporanhrdController extends Controller
                     header("Content-Disposition: attachment; filename=Rekap Gaji Detail.xls");
                 }
                 return view('gaji.laporan.cetak_thr_rekap', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
+            } else if ($jenislaporan_gaji == 8) {
+                if (isset($_POST['export'])) {
+                    echo "EXPORT";
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Rekap Gaji Detail.xls");
+                }
+                return view('gaji.laporan.cetak_spip', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else if ($jenislaporan_gaji == 3) {
                 if (isset($_POST['export'])) {
                     echo "EXPORT";
