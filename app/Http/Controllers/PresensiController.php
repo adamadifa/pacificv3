@@ -826,5 +826,16 @@ class PresensiController extends Controller
                 }
             }
         }
+
+    }
+
+    public function delete($id_presensi){
+        $id_presensi = Crypt::decrypt($id_presensi);
+        try {
+            DB::table('presensi')->where('id',$id_presensi)->delete();
+            return Redirect::back()->with(['warning'=>'Data Presensi Berhasil Di Reset']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning'=>'Data Presensi Gagal Di Rest']);
+        }
     }
 }

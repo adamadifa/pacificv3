@@ -684,7 +684,7 @@
                                                                 kode_jadwal="{{ $d->kode_jadwal }}"><i
                                                                     class="feather icon-edit info"></i></a>
                                                             @if (!empty($d->id_presensi))
-                                                            <a href="#" class="hapus"><i
+                                                            <a href="/presensi/{{ $d->id_presensi }}/delete" class="hapus"><i
                                                                 class="feather icon-trash danger"></i></a>
                                                             @endif
 
