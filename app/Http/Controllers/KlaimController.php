@@ -40,7 +40,7 @@ class KlaimController extends Controller
             $query->where('kode_cabang', $request->kode_cabang);
         }
         $query->leftJoin('ledger_bank', 'klaim.kode_klaim', '=', 'ledger_bank.kode_klaim');
-        $query->orderBy('tgl_klaim');
+        $query->orderBy('tgl_klaim','desc');
         $klaim = $query->get();
         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->first();
         if ($this->cabang !== "PCF") {

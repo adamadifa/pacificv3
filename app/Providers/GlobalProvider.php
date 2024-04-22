@@ -971,7 +971,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'direktur', 'general manager', 'manager accounting', 'rom',
                 'spv accounting', 'manager pembelian', 'admin pembelian',
                 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3',
-                'emf', 'admin pajak', 'admin pajak 2', 'admin gudang logistik', 'admin pusat', 'spv accounting'
+                'emf', 'admin pajak', 'admin pajak 2', 'admin gudang logistik', 'admin pusat', 'spv accounting','general affair'
             ];
             $pembelian_view = [
                 'admin', 'manager pembelian', 'admin pembelian',
@@ -993,7 +993,7 @@ class GlobalProvider extends ServiceProvider
             $laporan_pembelian = [
                 'admin', 'direktur', 'general manager',
                 'manager accounting', 'rom', 'spv accounting', 'manager pembelian',
-                'admin pembelian', 'emf', 'admin pusat', 'admin pajak 2'
+                'admin pembelian', 'emf', 'admin pusat', 'admin pajak 2','general affair'
             ];
             $laporan_pembayaran_pembelian = [
                 'admin', 'direktur', 'general manager',
@@ -1007,7 +1007,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $laporan_rekappembelian = [
                 'admin', 'direktur', 'general manager',
-                'manager accounting', 'rom', 'spv accounting', 'manager pembelian', 'admin pembelian', 'emf', 'admin pusat'
+                'manager accounting', 'rom', 'spv accounting', 'manager pembelian', 'admin pembelian', 'emf', 'admin pusat','general affair'
             ];
             $laporan_kartuhutang = [
                 'admin', 'direktur', 'general manager',
