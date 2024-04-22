@@ -56,6 +56,7 @@ class LemburController extends Controller
             } else if ($level == "manager produksi") {
                 $query->where('kode_dept', 'PRD');
             } else if ($level == "emf") {
+                $query->where('head',1);
                 $query->whereIn('kode_dept', ['GAF', 'PRD', 'MTC', 'PDQ']);
                 $query->orderBy('gm');
             } else {
