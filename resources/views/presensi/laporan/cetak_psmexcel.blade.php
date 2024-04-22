@@ -111,7 +111,7 @@
                 @endphp
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $d->nik }}</td>
+                    <td>'{{ $d->nik }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
                     <td>{{ $d->id_kantor }}</td>
                     @php
