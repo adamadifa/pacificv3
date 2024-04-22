@@ -57,6 +57,7 @@ class LemburController extends Controller
                 $query->where('kode_dept', 'PRD');
             } else if ($level == "emf") {
                 $query->whereIn('kode_dept', ['GAF', 'PRD', 'MTC', 'PDQ']);
+                $query->orderBy('gm');
             } else {
                 $query->where('id_kantor', 'PST');
                 $query->where('kode_dept', Auth::user()->kode_dept_presensi);

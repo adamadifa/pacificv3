@@ -126,6 +126,8 @@
                                             SAKIT
                                         @elseif($cek->status == 'a')
                                             ALPA
+                                        @elseif($cek->status == 'c')
+                                            CUTI
                                         @endif
                                     </td>
                                 </tr>
