@@ -123,6 +123,7 @@
 <script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
+        $("#bankpenerima").selectize();
         function diterima() {
             $("#tglditerima").show();
             $("#tglditolak").hide();
