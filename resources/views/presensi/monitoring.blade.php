@@ -669,7 +669,7 @@
                                                         @endif
                                                     </td>
                                                     <td style="color:{{ $terlambat != 'Tepat waktu' ? 'red' : 'green' }}">
-                                                        {{ $terlambat }}
+                                                        {{ $jam_in != "NA" ? $terlambat : '' }}
                                                     </td>
                                                     <td>{{ !empty($denda) ? rupiah($denda) : '' }}</td>
                                                     <td>{{ $totaljamkeluar }}</td>
