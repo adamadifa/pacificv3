@@ -494,10 +494,10 @@ class LaporanhrdController extends Controller
         if (request()->is('laporanhrd/presensipsm/cetak')) {
             if (isset($_POST['export'])) {
                 echo "EXPORT";
-                // Fungsi header dengan mengirimkan raw data excel
-                // header("Content-type: application/vnd-ms-excel");
-                // // Mendefinisikan nama file ekspor "hasil-export.xls"
-                // header("Content-Disposition: attachment; filename=Laporan Presensi Format P/S/M.xls");
+                //Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Laporan Presensi Format P/S/M.xls");
                 return view('presensi.laporan.cetak_psmexcel', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur'));
             } else {
                 return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur'));
