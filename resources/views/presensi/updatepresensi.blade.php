@@ -73,6 +73,9 @@
                                 <option value="a"
                                     {{ $cek != null ? ($cek->status == 'a' ? 'selected' : '') : '' }}>
                                     Alfa</option>
+                                    <option value="c"
+                                    {{ $cek != null ? ($cek->status == 'c' ? 'selected' : '') : '' }}>
+                                    Cuti</option>
                             </select>
                         </div>
                     </div>
@@ -185,6 +188,8 @@
                                             SAKIT
                                         @elseif($cek->status == 'a')
                                             ALPA
+                                        @elseif($cek->status == 'c')
+                                            CUTI
                                         @endif
                                     </td>
                                 </tr>
