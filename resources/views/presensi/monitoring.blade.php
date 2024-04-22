@@ -683,8 +683,11 @@
                                                             <a href="#" class="edit" nik="{{ $d->nik }}"
                                                                 kode_jadwal="{{ $d->kode_jadwal }}"><i
                                                                     class="feather icon-edit info"></i></a>
+                                                            @if (!empty($d->id_presensi))
                                                             <a href="#" class="hapus"><i
-                                                                            class="feather icon-trash danger"></i></a>
+                                                                class="feather icon-trash danger"></i></a>
+                                                            @endif
+
                                                             <a href="#" class="checkmesin"
                                                                 pin="{{ $d->pin }}"
                                                                 tanggal="{{ !empty(Request('tanggal')) ? Request('tanggal') : date('Y-m-d') }}"
