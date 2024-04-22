@@ -51,10 +51,15 @@ class LemburController extends Controller
                 }
             } else if ($level == "manager ga") {
                 $query->where('kode_dept', 'GAF');
+                $query->orderBy('head');
+
             } else if ($level == "spv maintenance") {
                 $query->where('kode_dept', 'MTC');
+                $query->orderBy('head');
+
             } else if ($level == "manager produksi") {
                 $query->where('kode_dept', 'PRD');
+                $query->orderBy('head');
             } else if ($level == "emf") {
                 $query->where('head',1);
                 $query->whereIn('kode_dept', ['GAF', 'PRD', 'MTC', 'PDQ']);
