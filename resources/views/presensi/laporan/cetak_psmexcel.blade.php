@@ -64,7 +64,8 @@
         BULAN {{ strtoupper($namabulan[$bulan * 1]) }} {{ $tahun }}
     </b>
     <br>
-
+</body>
+<div class="freeze-table">
     <table class="datatable3" style="width: 200%">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
@@ -321,8 +322,8 @@
                                 $izinpulangdirut = $datapresensi[17] != 'NA' ? $datapresensi[17] : ''; //Izin Pulang Persetujuan Dirut
                                 $keperluankeluar = $datapresensi[19] != 'NA' ? $datapresensi[19] : ''; //Izin Pulang Persetujuan Dirut
                                 $izinabsendirut = $datapresensi[18] != 'NA' ? $datapresensi[18] : ''; // Izin Absen Persetujuan Dirut
-                                $izinterlambatdirut = $datapresensi[20] != 'NA' ? $datapresensi[20] : ''; // Izin Absen Persetujuan Dirut
-
+                                $izinterlambatdirut = $datapresensi[20] != 'NA' ? $datapresensi[20] : ''; // Izin Terlambat Persetujuan Dirut
+                                $kode_cuti = $datapresensi[21] != 'NA' ? $datapresensi[21] : '';
                                 // Jika Jadwal Presesni Lintas Hari
                                 if (!empty($lintashari)) {
                                     $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi))); // Tanggal Pulang adalah Tanggal Berikutnya
@@ -743,10 +744,10 @@
                                             $total_overtime_1 += $overtime_1;
                                             $total_overtime_2 += $overtime_2;
                                         @endphp
-                                        {{-- <span style="color:rgb(6, 69, 158)">OT 1 : {{ $overtime_1 }}</span>
+                                        <span style="color:rgb(6, 69, 158)">OT 1 : {{ $overtime_1 }}</span>
                                         <br>
                                         <span style="color:rgb(6, 69, 158)">OT 2 : {{ $overtime_2 }}</span>
-                                        <br> --}}
+                                        <br>
                                     @else
                                         @php
                                             $premilembur = 0;
@@ -782,18 +783,16 @@
                                         @endif
                                         @php
                                             $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
-                                            $overtime_libur_1 = !empty($ceklibur) ? $overtime_libur_1 * 2 : $overtime_libur_1;
                                             $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur - 4 : 0;
-                                            $overtime_libur_2 = !empty($ceklibur) ? $overtime_libur_2 * 2 : $overtime_libur_2;
                                             $total_overtime_libur_1 += $overtime_libur_1;
                                             $total_overtime_libur_2 += $overtime_libur_2;
                                         @endphp
-                                        {{-- <span style="color:rgb(255, 255, 255)">OTL 1 :
+                                        <span style="color:rgb(255, 255, 255)">OTL 1 :
                                             {{ $overtime_libur_1 }}</span>
                                         <br>
                                         <span style="color:rgb(255, 255, 255)">OTL 2 :
                                             {{ $overtime_libur_2 }}</span>
-                                        <br> --}}
+                                        <br>
                                     @else
                                         @php
                                             $premilembur_harilibur = 0;
@@ -896,9 +895,14 @@
                                     @endphp
                                     <!-- Jika Cuti-->
                                 @elseif($status == 'c')
-                                    C
+                                    @if ($kode_cuti == 'C03')
+                                        IK
+                                    @else
+                                        C
+                                    @endif
+
                                     {{-- <span style="color:rgb(154, 56, 4);">CUTI</span><br>
-                                <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
                                     @php
                                         $izinabsen = 0;
                                         $izinsakit = 0;
@@ -907,13 +911,13 @@
 
                                 <!-- Jika Memiliki Premi -->
                                 {{-- @if (!empty($premi))
-                                <span style="color: blue">Premi : {{ rupiah($premi) }}</span>
-                            @endif
-                            <!-- Jika Memiliki Premi Lembur -->
-                            @if (!empty($premilembur))
-                                <br>
-                                <span style="color: blue">Premi Lembur : {{ rupiah($premilembur) }}</span>
-                            @endif --}}
+                                    <span style="color: blue">Premi : {{ rupiah($premi) }}</span>
+                                @endif
+                                <!-- Jika Memiliki Premi Lembur -->
+                                @if (!empty($premilembur))
+                                    <br>
+                                    <span style="color: blue">Premi Lembur : {{ rupiah($premilembur) }}</span>
+                                @endif --}}
                             </td>
                         @else
                             @php
@@ -928,11 +932,11 @@
                             @endphp
 
                             <!--Ketentuan
-                            1. Jika Hari ini ada Libur dna Masa Kerja Lebih dari 3 tahun
-                            2. Jika Ada Libur Pengganti Minggu
-                            3. Jika Dirumahkan
-                            4. Jika WFH dan Masa Kerja Lebih dari 3 Tahun
-                        -->
+                                1. Jika Hari ini ada Libur dna Masa Kerja Lebih dari 3 tahun
+                                2. Jika Ada Libur Pengganti Minggu
+                                3. Jika Dirumahkan
+                                4. Jika WFH dan Masa Kerja Lebih dari 3 Tahun
+                            -->
                             @if (
                                 !empty($ceklibur) ||
                                     !empty($cekliburpenggantiminggu) ||
@@ -1071,9 +1075,7 @@
                                     @endif
                                     @php
                                         $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
-                                        $overtime_libur_1 = !empty($ceklibur) ? $overtime_libur_1 * 2 : $overtime_libur_1;
                                         $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur - 4 : 0;
-                                        $overtime_libur_2 = !empty($ceklibur) ? $overtime_libur_2 * 2 : $overtime_libur_2;
                                         $total_overtime_libur_1 += $overtime_libur_1;
                                         $total_overtime_libur_2 += $overtime_libur_2;
                                     @endphp
@@ -1169,4 +1171,16 @@
             @endforeach
         </tbody>
     </table>
-</body>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ asset('dist/js/freeze/js/freeze-table.js') }}"></script>
+{{-- <script>
+    $(function() {
+        $('.freeze-table').freezeTable({
+            'scrollable': true,
+            'columnNum': 4
+        });
+    });
+</script> --}}
+
+</html>
