@@ -56,7 +56,8 @@ class PenilaiankaryawanController extends Controller
                         '21.02.232',
                         '23.05.046',
                         '18.01.003',
-                        '16.11.266'
+                        '16.11.266',
+                        '24.02.117'
                     ]);
                 } else {
                     $qkaryawan->whereIn('id_kategori_jabatan', [3, 4]);
