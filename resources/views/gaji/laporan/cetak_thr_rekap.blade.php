@@ -1545,13 +1545,13 @@
                             $thr = ($bulankerja / 12) * $upah;
                         }
 
-                        if ($tahunkerja >= 10 && $tahunkerja < 15) {
+                        if ($tahunkerja >= 10 && $tahunkerja < 15 && $d->nama_jabatan != "DIREKTUR") {
                             $thr2 = 0.25 * $d->gaji_pokok;
                         } else {
                             $thr2 = 0;
                         }
 
-                        if ($tahunkerja >= 15) {
+                        if ($tahunkerja >= 15 && $d->nama_jabatan != "DIREKTUR") {
                             $thr3 = 0.5 * $d->gaji_pokok;
                         } else {
                             $thr3 = 0;
