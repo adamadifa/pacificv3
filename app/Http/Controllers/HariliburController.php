@@ -53,7 +53,7 @@ class HariliburController extends Controller
                 $query->where('kode_dept', Auth::user()->kode_dept_presensi);
             }
         }
-
+        $query->orderBy('hrd');
         $query->orderBy('tanggal_libur', 'desc');
         $harilibur = $query->paginate(15);
         $harilibur->appends($request->all());
