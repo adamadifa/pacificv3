@@ -446,6 +446,9 @@ class LaporanhrdController extends Controller
                 }
             }
         }
+        if($jenislaporan_gaji =="5" || $jenislaporan=="7"){
+            $query->where('nama_jabatan','!=','SECURITY');
+        }
         $query->where('status_aktif', 1);
         $query->where('tgl_masuk', '<=', $sampai);
         $query->orWhere('status_aktif', 0);
