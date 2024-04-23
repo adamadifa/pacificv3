@@ -447,7 +447,7 @@ class LaporanhrdController extends Controller
             }
         }
         if($jenislaporan_gaji =="5" || $jenislaporan=="7"){
-            $query->where('nama_jabatan','!=','SECURITY');
+            $query->where('status_karyawan','!=','O');
         }
         $query->where('status_aktif', 1);
         $query->where('tgl_masuk', '<=', $sampai);
@@ -559,7 +559,7 @@ class LaporanhrdController extends Controller
                     // Fungsi header dengan mengirimkan raw data excel
                     header("Content-type: application/vnd-ms-excel");
                     // Mendefinisikan nama file ekspor "hasil-export.xls"
-                    header("Content-Disposition: attachment; filename=Rekening Gaji.xls");
+                    header("Content-Disposition: attachment; filename=THR.xls");
                 }
                 return view('gaji.laporan.cetak_thr', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else if ($jenislaporan_gaji == 6) {
