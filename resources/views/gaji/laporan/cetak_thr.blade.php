@@ -1424,7 +1424,7 @@
                     <th style="text-align: right">{{ rupiah($total_thr) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_2) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_3) }}</th>
-                    <th style="text-align: right">{{ rupiah($total_all_thr) }}</th>
+                    <th style="text-align: right">{{ $total_all_thr }}</th>
                 </tr>
             </tbody>
         </table>
