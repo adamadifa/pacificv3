@@ -481,7 +481,9 @@ class LaporanhrdController extends Controller
                 }
             }
         }
-
+        if($jenislaporan_gaji =="5" || $jenislaporan=="7"){
+            $query->where('status_karyawan','!=','O');
+        }
         if (!empty($request->manajemen && $request->manajemen == 1)) {
             $query->orderBy('id_jabatan');
         }
