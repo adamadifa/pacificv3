@@ -484,6 +484,8 @@ class LaporanhrdController extends Controller
         if($jenislaporan_gaji =="5" || $jenislaporan=="7"){
             $query->where('status_karyawan','!=','O');
         }
+
+
         if (!empty($request->manajemen && $request->manajemen == 1)) {
             $query->orderBy('id_jabatan');
         }
@@ -492,7 +494,7 @@ class LaporanhrdController extends Controller
         $presensi = $query->get();
 
 
-
+        dd($jenislaporan);
 
         //dd($rangetanggal);
         //dd(request()->is('laporanhrd/presensipsm/cetak'));
