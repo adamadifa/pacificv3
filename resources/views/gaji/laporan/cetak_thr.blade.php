@@ -1360,7 +1360,7 @@
                             {{ rupiah($thr) }}
                         </td>
                         <td align="right">
-                            @if ($tahunkerja >= 10 && $tahunkerja < 15)
+                            @if ($tahunkerja >= 10  && $tahunkerja < 15 && $d->nama_jabatan != "DIREKTUR")
                                 @php
                                     $thr2 = 0.25 * $d->gaji_pokok;
 
@@ -1376,7 +1376,7 @@
                             {{ !empty($thr2) ? rupiah($thr2) : '' }}
                         </td>
                         <td align="right">
-                            @if ($tahunkerja >= 15)
+                            @if ($tahunkerja >= 15 && $d->nama_jabatan != "DIREKTUR")
                                 @php
                                     $thr3 = 0.5 * $d->gaji_pokok;
                                 @endphp
