@@ -446,7 +446,7 @@ class LaporanhrdController extends Controller
                 }
             }
         }
-        if($jenislaporan_gaji =="5" || $jenislaporan=="7"){
+        if($jenislaporan_gaji =="5" && $jenislaporan=="7"){
             $query->where('status_karyawan','!=','O');
         }
         $query->where('status_aktif', 1);
