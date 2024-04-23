@@ -182,6 +182,8 @@
             $hargasaldoawal     = $d->harga / $qtysaldoawal;
             }
             $jumlahsaldoawal      = $d->harga;
+
+
             $qtypembelian         = $d->qtypemb2 * 1000;
         if($qtypembelian == 0){
           $qtypembelian       = 0;
@@ -198,6 +200,7 @@
           $hargalainnya     = $hargapembelian;
         }
         $jumlahlainnya      = $qtylainnya * $hargalainnya;
+
 
         $qtypengganti         = $d->qtypengganti2 * 1000;
         if($qtypengganti == 0){

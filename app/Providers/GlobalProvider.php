@@ -899,7 +899,7 @@ class GlobalProvider extends ServiceProvider
             $inputbayarpinjaman = ['admin', 'manager hrd', 'spv presensi', 'spv recruitment', 'manager accounting', 'rom'];
             $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'spv presensi', 'spv recruitment', 'direktur', 'staff keuangan', 'staff keuangan 3'];
 
-            $piutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd', 'spv presensi'];
+            $piutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd'];
             $pembayaranpiutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd', 'spv presensi', 'spv recruitment'];
             $inputbayarpiutangkaryawan = ['admin', 'manager accounting', 'manager hrd', 'spv presensi', 'spv recruitment'];
 
