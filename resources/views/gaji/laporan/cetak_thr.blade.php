@@ -1394,7 +1394,7 @@
                         <td align="right">
                             @php
                                 $totalthr = $thr + $thr2 + $thr3;
-                                $total_all_thr += $totalthr;
+                                $total_all_thr += ROUND($totalthr);
                             @endphp
                             {{ !empty($totalthr) ? rupiah($totalthr) : '' }}
                         </td>
@@ -1424,7 +1424,7 @@
                     <th style="text-align: right">{{ rupiah($total_thr) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_2) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_3) }}</th>
-                    <th style="text-align: right">{{ $total_all_thr }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_thr) }}</th>
                 </tr>
             </tbody>
         </table>
