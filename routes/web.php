@@ -1791,6 +1791,7 @@ Route::middleware(['auth'])->group(function () {
     //Presensi
 
     Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
+    Route::get('/presensi/{id}/delete', [PresensiController::class, 'delete']);
     Route::post('/presensi/updatepresensi', [PresensiController::class, 'updatepresensi']);
     Route::post('/presensi/storeupdatepresensi', [PresensiController::class, 'storeupdatepresensi']);
     Route::post('/presensi/getjamkerja', [PresensiController::class, 'getjamkerja']);

@@ -82,6 +82,7 @@ class PresensiController extends Controller
             'jam_kerja.jam_pulang',
             'jam_in',
             'jam_out',
+            'presensi.id as id_presensi',
             'presensi.status as status_presensi',
             'presensi.kode_izin',
             'kode_izin_terlambat',
@@ -824,6 +825,17 @@ class PresensiController extends Controller
                     return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
                 }
             }
+        }
+
+    }
+
+    public function delete($id_presensi){
+        $id_presensi = Crypt::decrypt($id_presensi);
+        try {
+            DB::table('presensi')->where('id',$id_presensi)->delete();
+            return Redirect::back()->with(['success'=>'Data Presensi Berhasil Di Reset']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning'=>'Data Presensi Gagal Di Rest']);
         }
     }
 }

@@ -446,6 +446,9 @@ class LaporanhrdController extends Controller
                 }
             }
         }
+        if($jenislaporan_gaji =="5" || $jenislaporan_gaji=="7"){
+            $query->where('status_karyawan','!=','O');
+        }
         $query->where('status_aktif', 1);
         $query->where('tgl_masuk', '<=', $sampai);
         $query->orWhere('status_aktif', 0);
@@ -478,6 +481,10 @@ class LaporanhrdController extends Controller
                 }
             }
         }
+        if($jenislaporan_gaji =="5" || $jenislaporan_gaji=="7"){
+            $query->where('status_karyawan','!=','O');
+        }
+
 
         if (!empty($request->manajemen && $request->manajemen == 1)) {
             $query->orderBy('id_jabatan');
@@ -494,7 +501,7 @@ class LaporanhrdController extends Controller
         if (request()->is('laporanhrd/presensipsm/cetak')) {
             if (isset($_POST['export'])) {
                 echo "EXPORT";
-                // Fungsi header dengan mengirimkan raw data excel
+                //Fungsi header dengan mengirimkan raw data excel
                 header("Content-type: application/vnd-ms-excel");
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Format P/S/M.xls");
@@ -556,7 +563,7 @@ class LaporanhrdController extends Controller
                     // Fungsi header dengan mengirimkan raw data excel
                     header("Content-type: application/vnd-ms-excel");
                     // Mendefinisikan nama file ekspor "hasil-export.xls"
-                    header("Content-Disposition: attachment; filename=Rekening Gaji.xls");
+                    header("Content-Disposition: attachment; filename=THR.xls");
                 }
                 return view('gaji.laporan.cetak_thr', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else if ($jenislaporan_gaji == 6) {

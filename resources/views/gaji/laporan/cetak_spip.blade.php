@@ -94,10 +94,16 @@
         <table class="datatable3">
             <thead bgcolor="#024a75" style="color:white; font-size:12;">
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                    <th>No</th>
-                    <th>Nik</th>
-                    <th>Nama karyawan</th>
-                    <th style="background-color: black;">SPIP</th>
+                    <th rowspan="2">No</th>
+                    <th rowspan="2">Nik</th>
+                    <th rowspan="2">Nama karyawan</th>
+                    <th rowspan="2" style="background-color: black;">SPIP</th>
+                    <th colspan="3" style="background-color: black;">BPJS</th>
+                </tr>
+                <tr>
+                    <th style="background-color: black;">KESEHATAN</th>
+                    <th style="background-color: black;">PERUSAHAAN</th>
+                    <th style="background-color: black;">TENAGA KERJA</th>
                 </tr>
             </thead>
             <tbody>
@@ -1244,14 +1250,22 @@
                             {{ !empty($spip) ? rupiah($spip) : '' }}
 
                         </td>
-
+                        <td align="right">
+                            {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : '' }}
+                        </td>
+                        <td></td>
+                        <td align="right">
+                            {{ !empty($bpjstenagakerja) ? rupiah($bpjstenagakerja) : '' }}
+                        </td>
                     </tr>
                 @endforeach
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
                     <th colspan="3">TOTAL</th>
 
                     <th style="text-align: right">{{ rupiah($total_all_spip) }}</th>
-
+                    <th style="text-align: right">{{ rupiah($total_all_bpjskesehatan) }}</th>
+                    <th></th>
+                    <th style="text-align: right">{{ rupiah($total_all_bpjstk) }}</th>
                 </tr>
             </tbody>
         </table>

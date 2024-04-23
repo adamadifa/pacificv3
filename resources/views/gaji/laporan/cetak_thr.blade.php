@@ -171,6 +171,7 @@
                     $total_thr = 0;
                     $total_thr_2 = 0;
                     $total_thr_3 = 0;
+                    $total_all_thr = 0;
 
                     $total_all_jamkerja = 0; // Total All Jam Kerja
                     $total_all_upahperjam = 0; // Total All Upah / Jam
@@ -1360,7 +1361,7 @@
                             {{ rupiah($thr) }}
                         </td>
                         <td align="right">
-                            @if ($tahunkerja >= 10 && $tahunkerja < 15)
+                            @if ($tahunkerja >= 10  && $tahunkerja < 15 && $d->nama_jabatan != "DIREKTUR")
                                 @php
                                     $thr2 = 0.25 * $d->gaji_pokok;
 
@@ -1376,7 +1377,7 @@
                             {{ !empty($thr2) ? rupiah($thr2) : '' }}
                         </td>
                         <td align="right">
-                            @if ($tahunkerja >= 15)
+                            @if ($tahunkerja >= 15 && $d->nama_jabatan != "DIREKTUR")
                                 @php
                                     $thr3 = 0.5 * $d->gaji_pokok;
                                 @endphp
@@ -1393,6 +1394,7 @@
                         <td align="right">
                             @php
                                 $totalthr = $thr + $thr2 + $thr3;
+                                $total_all_thr += ROUND($totalthr);
                             @endphp
                             {{ !empty($totalthr) ? rupiah($totalthr) : '' }}
                         </td>
@@ -1422,6 +1424,7 @@
                     <th style="text-align: right">{{ rupiah($total_thr) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_2) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_3) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_thr) }}</th>
                 </tr>
             </tbody>
         </table>

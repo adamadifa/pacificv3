@@ -669,7 +669,7 @@
                                                         @endif
                                                     </td>
                                                     <td style="color:{{ $terlambat != 'Tepat waktu' ? 'red' : 'green' }}">
-                                                        {{ $terlambat }}
+                                                        {{ $jam_in != "NA" ? $terlambat : '' }}
                                                     </td>
                                                     <td>{{ !empty($denda) ? rupiah($denda) : '' }}</td>
                                                     <td>{{ $totaljamkeluar }}</td>
@@ -683,6 +683,11 @@
                                                             <a href="#" class="edit" nik="{{ $d->nik }}"
                                                                 kode_jadwal="{{ $d->kode_jadwal }}"><i
                                                                     class="feather icon-edit info"></i></a>
+                                                            @if (!empty($d->id_presensi))
+                                                            <a href="/presensi/{{ Crypt::encrypt($d->id_presensi) }}/delete" class="hapus ml-3"><i
+                                                                class="feather icon-trash danger"></i></a>
+                                                            @endif
+
                                                             <a href="#" class="checkmesin"
                                                                 pin="{{ $d->pin }}"
                                                                 tanggal="{{ !empty(Request('tanggal')) ? Request('tanggal') : date('Y-m-d') }}"
