@@ -94,12 +94,12 @@
    <table class="datatable3">
       <thead bgcolor="#024a75" style="color:white; font-size:12;">
          <tr bgcolor="#024a75" style="color:white; font-size:12;">
-            <th rowspan="2">No</th>
-            <th rowspan="2">Nik</th>
-            <th rowspan="2">Nama karyawan</th>
-            <th rowspan="2">No. Rekening</th>
-            <th rowspan="2">JUMLAH<br>INSENTIF</th>
-            <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
+            <th>No</th>
+            <th>Nik</th>
+            <th>Nama karyawan</th>
+            <th>No. Rekening</th>
+            <th>JUMLAH<br>INSENTIF</th>
+            <th>JUMLAH<br>BERSIH</th>
 
          </tr>
 
