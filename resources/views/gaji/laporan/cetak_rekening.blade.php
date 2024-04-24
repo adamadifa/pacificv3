@@ -96,7 +96,7 @@
          <tr bgcolor="#024a75" style="color:white; font-size:12;">
             <th rowspan="2">No</th>
             <th rowspan="2">Nik</th>
-            <th rowspan="2" style="width: 4%">Nama karyawan</th>
+            <th rowspan="2">Nama karyawan</th>
             <th rowspan="2">No. Rekening</th>
             <th rowspan="2">JUMLAH<br>INSENTIF</th>
             <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
