@@ -1,110 +1,111 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Kartu Gudang Bahan {{ date("d-m-y") }}</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Kartu Gudang Bahan {{ date('d-m-y') }}</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
-        body {
-            font-family: 'Poppins'
-        }
+    body {
+      font-family: 'Poppins'
+    }
 
-        .datatable3 {
-            border: 2px solid #D6DDE6;
-            border-collapse: collapse;
-            font-size: 11px;
-        }
+    .datatable3 {
+      border: 2px solid #D6DDE6;
+      border-collapse: collapse;
+      font-size: 11px;
+    }
 
-        .datatable3 td {
-            border: 1px solid #000000;
-            padding: 6px;
-        }
+    .datatable3 td {
+      border: 1px solid #000000;
+      padding: 6px;
+    }
 
-        .datatable3 th {
-            border: 2px solid #828282;
-            font-weight: bold;
-            text-align: left;
-            padding: 10px;
-            text-align: center;
-            font-size: 14px;
-        }
+    .datatable3 th {
+      border: 2px solid #828282;
+      font-weight: bold;
+      text-align: left;
+      padding: 10px;
+      text-align: center;
+      font-size: 14px;
+    }
 
-        tr:nth-child(even) {
-            background-color: #d6d6d6c2;
-        }
+    tr:nth-child(even) {
+      background-color: #d6d6d6c2;
+    }
+  </style>
 
-    </style>
-
-    </style>
+  </style>
 </head>
+
 <body>
-    <b style="font-size:14px;">
-        REKAPITULASI PERSEDIAAN
-        @if ($barang != null)
-        {{ strtoupper($barang->nama_barang) }}
-        @endif
-        <br>
-        PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
-        <br>
-    </b>
+  <b style="font-size:14px;">
+    REKAPITULASI PERSEDIAAN
+    @if ($barang != null)
+      {{ strtoupper($barang->nama_barang) }}
+    @endif
     <br>
-    <table class="datatable3" style="width:100%" border="1">
-        <thead>
-            <tr>
-                <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">TANGGAL</th>
-                <!-- <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">BTB</th> -->
-                <th rowspan="1" colspan="2" bgcolor="#024a75" style="color:white; font-size:14;">UNIT</th>
-                <th rowspan="1" bgcolor="#024a75" style="color:white; font-size:14;">SALDO</th>
-                <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">KETERANGAN</th>
-                <th rowspan="1" colspan="3" bgcolor="#024a75" style="color:white; font-size:14;">MASUK</th>
-                <th rowspan="1" colspan="6" bgcolor="#024a75" style="color:white; font-size:14;">KELUAR</th>
-                <th rowspan="1" bgcolor="#024a75" style="color:white; font-size:14;">SALDO AKHIR</th>
-            </tr>
-            <tr>
-                <th bgcolor="#024a75" style="color:white; font-size:14;">IN</th>
-                <th bgcolor="#024a75" style="color:white; font-size:14;">OUT</th>
-                <th bgcolor="red" style="color:white; font-size:14;">
-                    <?php
-                    if ($barang->satuan != 'KG') {
-                        if (!empty($saldoawal->qtyunitsa)) {
-                            echo desimal($saldoawal->qtyunitsa);
-                        }
-                    } else {
-                        if (!empty($saldoawal->qtyunitsa)) {
-                            echo desimal($saldoawal->qtyunitsa);
-                        }
-                    }
-                    ?>
-                </th>
-                <th bgcolor="green" style="color:white; font-size:14;">PEMBELIAN</th>
-                <th bgcolor="green" style="color:white; font-size:14;">LAINNYA</th>
-                <th bgcolor="green" style="color:white; font-size:14;">RETUR PENGGANTI</th>
-                <th bgcolor="green" style="color:white; font-size:14;">PRODUKSI</th>
-                <th bgcolor="green" style="color:white; font-size:14;">SEASONING</th>
-                <th bgcolor="green" style="color:white; font-size:14;">PDQC</th>
-                <th bgcolor="green" style="color:white; font-size:14;">SUSUT</th>
-                <th bgcolor="green" style="color:white; font-size:14;">CABANG</th>
-                <th bgcolor="green" style="color:white; font-size:14;">LAINNYA</th>
-                <th bgcolor="red" style="color:white; font-size:14;">
-                    <?php
-                    if ($barang->satuan != 'KG') {
-                        if (!empty($saldoawal->qtyunitsa)) {
-                            echo desimal($saldoawal->qtyunitsa);
-                        }
-                    } else {
-                        if (!empty($saldoawal->qtyberatsa)) {
-                            echo desimal($saldoawal->qtyberatsa);
-                        }
-                    }
-                    ?>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+    PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
+    <br>
+  </b>
+  <br>
+  <table class="datatable3" style="width:100%" border="1">
+    <thead>
+      <tr>
+        <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">TANGGAL</th>
+        <!-- <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">BTB</th> -->
+        <th rowspan="1" colspan="2" bgcolor="#024a75" style="color:white; font-size:14;">UNIT</th>
+        <th rowspan="1" bgcolor="#024a75" style="color:white; font-size:14;">SALDO</th>
+        <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">KETERANGAN</th>
+        <th rowspan="1" colspan="3" bgcolor="#024a75" style="color:white; font-size:14;">MASUK</th>
+        <th rowspan="1" colspan="6" bgcolor="#024a75" style="color:white; font-size:14;">KELUAR</th>
+        <th rowspan="1" bgcolor="#024a75" style="color:white; font-size:14;">SALDO AKHIR</th>
+      </tr>
+      <tr>
+        <th bgcolor="#024a75" style="color:white; font-size:14;">IN</th>
+        <th bgcolor="#024a75" style="color:white; font-size:14;">OUT</th>
+        <th bgcolor="red" style="color:white; font-size:14;">
+          <?php
+          if ($barang->satuan != 'KG') {
+              if (!empty($saldoawal->qtyunitsa)) {
+                  echo desimal($saldoawal->qtyunitsa);
+              }
+          } else {
+              if (!empty($saldoawal->qtyunitsa)) {
+                  echo desimal($saldoawal->qtyunitsa);
+              }
+          }
+          ?>
+        </th>
+        <th bgcolor="green" style="color:white; font-size:14;">PEMBELIAN</th>
+        <th bgcolor="green" style="color:white; font-size:14;">LAINNYA</th>
+        <th bgcolor="green" style="color:white; font-size:14;">RETUR PENGGANTI</th>
+        <th bgcolor="green" style="color:white; font-size:14;">PRODUKSI</th>
+        <th bgcolor="green" style="color:white; font-size:14;">SEASONING</th>
+        <th bgcolor="green" style="color:white; font-size:14;">PDQC</th>
+        <th bgcolor="green" style="color:white; font-size:14;">SUSUT</th>
+        <th bgcolor="green" style="color:white; font-size:14;">CABANG</th>
+        <th bgcolor="green" style="color:white; font-size:14;">LAINNYA</th>
+        <th bgcolor="red" style="color:white; font-size:14;">
+          <?php
+          if ($barang->satuan != 'KG') {
+              if (!empty($saldoawal->qtyunitsa)) {
+                  echo desimal($saldoawal->qtyunitsa);
+              }
+          } else {
+              if (!empty($saldoawal->qtyberatsa)) {
+                  echo desimal($saldoawal->qtyberatsa);
+              }
+          }
+          ?>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php
             if ($barang->satuan == 'KG' || $barang->satuan=="Liter") {
                 $saldoakhir  = $saldoawal->qtyberatsa;
                 $saldoakhirunit  = $saldoawal->qtyunitsa;
@@ -299,111 +300,112 @@
 
 
             ?>
-            <tr style="color:black; font-size:14;">
-                <td><?php echo $dari; ?></td>
-                <td align="right">
-                    <?php
-                    if (isset($masuk->qty_unit) and $masuk->qty_unit != "0") {
-                        echo desimal($masuk->qty_unit);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($keluar->qty_unit) and $keluar->qty_unit != "0") {
-                        echo desimal($keluar->qty_unit);
-                    }
-                    ?>
-                </td>
-                <td align="right"><?php echo desimal($saldoakhirunit); ?></td>
-                <td align="right"></td>
-                <td align="right">
-                    <?php
-                    if (isset($qtypemb) and $qtypemb != "0") {
-                        echo desimal($qtypemb);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtylainnya) and $qtylainnya != "0") {
-                        echo desimal($qtylainnya);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtyretur) and $qtyretur != "0") {
-                        echo desimal($qtyretur);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtyprod) and $qtyprod != "0") {
-                        echo desimal($qtyprod);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtyseas) and $qtyseas != "0") {
-                        echo desimal($qtyseas);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtypdqc) and $qtypdqc != "0") {
-                        echo desimal($qtypdqc);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtysus) and $qtysus != "0") {
-                        echo desimal($qtysus);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtycabang) and $qtycabang != '0') {
-                        echo desimal($qtycabang);
-                    }
-                    ?>
-                </td>
-                <td align="right">
-                    <?php
-                    if (isset($qtylain) and $qtylain != "0") {
-                        echo desimal($qtylain);
-                    }
-                    ?>
-                </td>
-                <td align="right"><?php echo desimal($saldoakhir); ?></td>
-            </tr>
-            <?php
+      <tr style="color:black; font-size:14;">
+        <td><?php echo $dari; ?></td>
+        <td align="right">
+          <?php
+          if (isset($masuk->qty_unit) and $masuk->qty_unit != '0') {
+              echo desimal($masuk->qty_unit);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($keluar->qty_unit) and $keluar->qty_unit != '0') {
+              echo desimal($keluar->qty_unit);
+          }
+          ?>
+        </td>
+        <td align="right"><?php echo desimal($saldoakhirunit); ?></td>
+        <td align="right"></td>
+        <td align="right">
+          <?php
+          if (isset($qtypemb) and $qtypemb != '0') {
+              echo desimal($qtypemb);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtylainnya) and $qtylainnya != '0') {
+              echo desimal($qtylainnya);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtyretur) and $qtyretur != '0') {
+              echo desimal($qtyretur);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtyprod) and $qtyprod != '0') {
+              echo desimal($qtyprod);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtyseas) and $qtyseas != '0') {
+              echo desimal($qtyseas);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtypdqc) and $qtypdqc != '0') {
+              echo desimal($qtypdqc);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtysus) and $qtysus != '0') {
+              echo desimal($qtysus);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtycabang) and $qtycabang != '0') {
+              echo desimal($qtycabang);
+          }
+          ?>
+        </td>
+        <td align="right">
+          <?php
+          if (isset($qtylain) and $qtylain != '0') {
+              echo desimal($qtylain);
+          }
+          ?>
+        </td>
+        <td align="right"><?php echo desimal($saldoakhir); ?></td>
+      </tr>
+      <?php
                 $dari = date("Y-m-d", strtotime("+1 day", strtotime($dari))); //looping tambah 1 date
             }
             ?>
-        </tbody>
-        <tfoot>
-            <tr bgcolor="#31869b">
-                <th colspan="5" style="color:white; font-size:14;">TOTAL</th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtypemb); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtylainnya); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtyretur); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtypro); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtyseas); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtypdqc); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtysus); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtycabang); ?></th>
-                <th style="color:white; font-size:14;"><?php echo desimal($totqtylain); ?></th>
-                <th style="color:white; font-size:14;"></th>
-            </tr>
-        </tfoot>
+    </tbody>
+    <tfoot>
+      <tr bgcolor="#31869b">
+        <th colspan="5" style="color:white; font-size:14;">TOTAL</th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtypemb); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtylainnya); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtyretur); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtypro); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtyseas); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtypdqc); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtysus); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtycabang); ?></th>
+        <th style="color:white; font-size:14;"><?php echo desimal($totqtylain); ?></th>
+        <th style="color:white; font-size:14;"></th>
+      </tr>
+    </tfoot>
 
-    </table>
+  </table>
 
 </body>
+
 </html>
