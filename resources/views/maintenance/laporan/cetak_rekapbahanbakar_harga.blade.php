@@ -109,7 +109,7 @@
                 SUM( IF( pemasukan_bb.status = 2 , qty ,0 )) AS qtylainya,
                 SUM( IF( pemasukan_bb.status = 2 , pemasukan_bb.harga ,0 )) AS hargalainnya,
                 SUM(penyesuaian) as penyesuaian,
-	SUM(db.harga) AS harga ')
+	            SUM(db.harga) AS harga')
                 ->join('pemasukan_bb','detail_pemasukan_bb.nobukti_pemasukan','=','pemasukan_bb.nobukti_pemasukan')
                 ->leftJoin(
                 DB::raw("(
@@ -124,7 +124,7 @@
                 )
                 ->where('tgl_pemasukan',$dari)
                 ->where('detail_pemasukan_bb.kode_barang',$kode_barang)
-                ->groupByRaw('tgl_pemasukan,penyesuaian,harga')
+                ->groupByRaw('tgl_pemasukan')
                 ->first();
 
                 $keluar = DB::table('detail_pengeluaran_bb')
