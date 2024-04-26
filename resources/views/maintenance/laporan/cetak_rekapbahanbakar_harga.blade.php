@@ -103,13 +103,13 @@
             @endphp
             <?php
             while (strtotime($dari) <= strtotime($sampai)) {
-                $masuk = DB::table('detail_pemasukan_bbd')
+                $masuk = DB::table('detail_pemasukan_bb')
                 ->selectRaw('
                 SUM( IF( pemasukan_bb.status = 1 , qty ,0 )) AS qtypemb,
                 SUM( IF( pemasukan_bb.status = 2 , qty ,0 )) AS qtylainya,
                 SUM( IF( pemasukan_bb.status = 2 , pemasukan_bb.harga ,0 )) AS hargalainnya,
-                penyesuaian,
-                db.harga AS harga')
+                SUM(penyesuaian) as penyesuaian,
+	SUM(db.harga) AS harga ')
                 ->join('pemasukan_bb','detail_pemasukan_bb.nobukti_pemasukan','=','pemasukan_bb.nobukti_pemasukan')
                 ->leftJoin(
                 DB::raw("(
