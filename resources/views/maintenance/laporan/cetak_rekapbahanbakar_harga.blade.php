@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Persediaan Gudang Cabang {{ date("d-m-y") }}</title>
+    <title>Laporan Persediaan Gudang Cabang {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,9 +36,9 @@
         tr:nth-child(even) {
             background-color: #d6d6d6c2;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         MAKMUR PERMATA
@@ -85,24 +86,24 @@
         </thead>
         <tbody>
             @php
-            $saldoawalqty = $saldoawal != null ? $saldoawal->qty : 0;
-            $saldoawalharga = $saldoawal != null ? $saldoawal->harga : 0;
-            $totalqtysaldoawal = 0;
-            $totaljmlhsaldoawal = 0;
-            $totalqtypemakaian = 0;
-            $totalqtykeluarlainnya = 0;
-            $totaljmlpembelian = 0;
-            $totalqtypembelian = 0;
-            $totaljmllainnya = 0;
-            $totalqtylainnya = 0;
-            $totaljmlhpemakaian = 0;
-            $totaljmlhkeluarlainnya = 0;
-            $totalqtysaldoakhir = 0;
-            $totaljmlhsaldoakhir = 0;
+                $saldoawalqty = $saldoawal != null ? $saldoawal->qty : 0;
+                $saldoawalharga = $saldoawal != null ? $saldoawal->harga : 0;
+                $totalqtysaldoawal = 0;
+                $totaljmlhsaldoawal = 0;
+                $totalqtypemakaian = 0;
+                $totalqtykeluarlainnya = 0;
+                $totaljmlpembelian = 0;
+                $totalqtypembelian = 0;
+                $totaljmllainnya = 0;
+                $totalqtylainnya = 0;
+                $totaljmlhpemakaian = 0;
+                $totaljmlhkeluarlainnya = 0;
+                $totalqtysaldoakhir = 0;
+                $totaljmlhsaldoakhir = 0;
             @endphp
             <?php
             while (strtotime($dari) <= strtotime($sampai)) {
-                $masuk = DB::table('detail_pemasukan_bb')
+                $masuk = DB::table('detail_pemasukan_bbd')
                 ->selectRaw('
                 SUM( IF( pemasukan_bb.status = 1 , qty ,0 )) AS qtypemb,
                 SUM( IF( pemasukan_bb.status = 2 , qty ,0 )) AS qtylainya,
@@ -187,107 +188,107 @@
                 <td align="right"><?php echo desimal($jmlhsaldoawal); ?></td>
                 <td align="right">
                     <?php
-                    if (isset($qtypembelian) and $qtypembelian != "0") {
-                      echo desimal($qtypembelian);
+                    if (isset($qtypembelian) and $qtypembelian != '0') {
+                        echo desimal($qtypembelian);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                    if (isset($hargamasuk) and $hargamasuk != "0") {
-                      echo desimal($hargamasuk);
+                    if (isset($hargamasuk) and $hargamasuk != '0') {
+                        echo desimal($hargamasuk);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                    if (isset($qtypembelian) and $qtypembelian != "0") {
-                      echo desimal($jmlpembelian);
+                    if (isset($qtypembelian) and $qtypembelian != '0') {
+                        echo desimal($jmlpembelian);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                    if (isset($qtylainnya) and $qtylainnya != "0") {
-                      echo desimal($qtylainnya);
+                    if (isset($qtylainnya) and $qtylainnya != '0') {
+                        echo desimal($qtylainnya);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                    if (isset($qtylainnya) and $qtylainnya != "0") {
-                      echo desimal($hargalainnya);
+                    if (isset($qtylainnya) and $qtylainnya != '0') {
+                        echo desimal($hargalainnya);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                    if (isset($qtylainnya) and $qtylainnya != "0") {
-                      echo desimal($jmllainnya);
+                    if (isset($qtylainnya) and $qtylainnya != '0') {
+                        echo desimal($jmllainnya);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($qtypemakaian) and $qtypemakaian != "0") {
-                      echo desimal($qtypemakaian);
+                    if (isset($qtypemakaian) and $qtypemakaian != '0') {
+                        echo desimal($qtypemakaian);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($qtypemakaian) and $qtypemakaian != "0") {
-                      echo desimal($hargakeluar);
+                    if (isset($qtypemakaian) and $qtypemakaian != '0') {
+                        echo desimal($hargakeluar);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($qtypemakaian) and $qtypemakaian != "0") {
-                      echo desimal($jmlhpemakaian);
+                    if (isset($qtypemakaian) and $qtypemakaian != '0') {
+                        echo desimal($jmlhpemakaian);
                     }
                     ?>
                 </td>
 
                 <td align="right">
                     <?php
-                     if (isset($qtykeluarlainnya) and $qtykeluarlainnya != "0") {
-                      echo desimal($qtykeluarlainnya);
+                    if (isset($qtykeluarlainnya) and $qtykeluarlainnya != '0') {
+                        echo desimal($qtykeluarlainnya);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($qtykeluarlainnya) and $qtykeluarlainnya != "0") {
-                      echo desimal($hargakeluar);
+                    if (isset($qtykeluarlainnya) and $qtykeluarlainnya != '0') {
+                        echo desimal($hargakeluar);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($qtykeluarlainnya) and $qtykeluarlainnya != "0") {
-                      echo desimal($jmlhkeluarlainnya);
+                    if (isset($qtykeluarlainnya) and $qtykeluarlainnya != '0') {
+                        echo desimal($jmlhkeluarlainnya);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($qtysaldoakhir) and $qtysaldoakhir != "0") {
-                      echo desimal($qtysaldoakhir);
+                    if (isset($qtysaldoakhir) and $qtysaldoakhir != '0') {
+                        echo desimal($qtysaldoakhir);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($qtysaldoakhir) and $qtysaldoakhir != "0") {
-                      echo desimal($hargakeluar);
+                    if (isset($qtysaldoakhir) and $qtysaldoakhir != '0') {
+                        echo desimal($hargakeluar);
                     }
                     ?>
                 </td>
                 <td align="right">
                     <?php
-                     if (isset($jmlhsaldoakhir) and $jmlhsaldoakhir != "0") {
-                      echo desimal($jmlhsaldoakhir);
+                    if (isset($jmlhsaldoakhir) and $jmlhsaldoakhir != '0') {
+                        echo desimal($jmlhsaldoakhir);
                     }
                     ?>
                 </td>
@@ -323,4 +324,5 @@
         </tfoot>
     </table>
 </body>
+
 </html>
