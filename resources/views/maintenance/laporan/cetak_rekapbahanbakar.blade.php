@@ -62,7 +62,7 @@
                 <th bgcolor="#024a75" style="color:white; font-size:14;">LAINNYA</th>
             </tr>
             <tr>
-                <th bgcolor="red" style="color:white; font-size:14;" colspan="6">SALDO AWAL</th>
+                <th bgcolor="red" style="color:white; font-size:14;" colspan="5">SALDO AWAL</th>
                 <th bgcolor="" style="color:black; font-size:14;"><?php echo desimal($saldoawal != null ? $saldoawal->qty : 0); ?></th>
             </tr>
         </thead>
