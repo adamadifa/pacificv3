@@ -52,7 +52,7 @@
             <tr>
                 <th bgcolor="#024a75" style="color:white; font-size:14;" rowspan="2">TANGGAL</th>
                 <th bgcolor="#024a75" style="color:white; font-size:14;" colspan="2">PEMASUKAN</th>
-                <th bgcolor="#024a75" style="color:white; font-size:14;" rowspan="2">SUPPLIER</th>
+                {{-- <th bgcolor="#024a75" style="color:white; font-size:14;" rowspan="2">SUPPLIER</th> --}}
                 <th bgcolor="#024a75" style="color:white; font-size:14;" rowspan="2">PEMAKAIAN</th>
                 <th bgcolor="#024a75" style="color:white; font-size:14;" rowspan="2">PEMAKAIAN LAINYA</th>
                 <th bgcolor="#024a75" style="color:white; font-size:14;" rowspan="2">SALDO</th>
@@ -176,7 +176,7 @@
                     }
                     ?>
                 </td>
-                <td align="left"><?php echo $masuk != null ? $masuk->nama_supplier : ''; ?></td>
+                {{-- <td align="left"><?php echo $masuk != null ? $masuk->nama_supplier : ''; ?></td> --}}
                 <td align="center">
                     <?php
                     if (isset($qtypemakaian) and $qtypemakaian != '0') {
