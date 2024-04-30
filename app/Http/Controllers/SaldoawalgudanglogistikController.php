@@ -112,8 +112,12 @@ class SaldoawalgudanglogistikController extends Controller
             $tahunlalu = $tahun;
         }
 
-        $ceksaldo = DB::table('saldoawal_gl')->where('bulan', $bulanlalu)->where('tahun', $tahunlalu)->count();
-        $ceknow = DB::table('saldoawal_gl')->where('bulan', $bulan)->where('tahun', $tahun)->count();
+        $ceksaldo = DB::table('saldoawal_gl')
+            ->where('kode_kategori', $kategori)
+            ->where('bulan', $bulanlalu)->where('tahun', $tahunlalu)->count();
+        $ceknow = DB::table('saldoawal_gl')
+            ->where('kode_kategori', $kategori)
+            ->where('bulan', $bulan)->where('tahun', $tahun)->count();
         $cekall = DB::table('saldoawal_gl')->count();
         if (empty($ceksaldo) && !empty($cekall) || !empty($ceknow)) {
             echo "1";
