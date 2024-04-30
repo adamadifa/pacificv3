@@ -135,7 +135,10 @@ class SaldoawalgudanglogistikController extends Controller
                 ->join('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori')
                 ->leftJoin(
                     DB::raw("(
-                        SELECT saldoawal_gl_detail.kode_barang,SUM(saldoawal_gl_detail.harga) AS hargasaldoawal,SUM( qty ) AS qtysaldoawal,SUM(saldoawal_gl_detail.harga*qty) AS
+                        SELECT saldoawal_gl_detail.kode_barang,
+                        SUM(saldoawal_gl_detail.harga) AS hargasaldoawal,
+                        SUM( qty ) AS qtysaldoawal,
+                        SUM(saldoawal_gl_detail.harga*qty) AS
                         totalsa FROM saldoawal_gl_detail
                         INNER JOIN saldoawal_gl ON saldoawal_gl.kode_saldoawal_gl=saldoawal_gl_detail.kode_saldoawal_gl
                         WHERE bulan = '$bulanlalu' AND tahun = '$tahunlalu'
@@ -159,7 +162,11 @@ class SaldoawalgudanglogistikController extends Controller
                 )
                 ->leftJoin(
                     DB::raw("(
-                        SELECT detail_pemasukan.kode_barang,SUM( qty ) AS qtypemasukan,SUM( harga ) AS hargapemasukan,SUM(detail_pemasukan.harga * qty) AS totalpemasukan FROM
+                        SELECT detail_pemasukan.kode_barang,
+                        SUM( qty ) AS qtypemasukan,
+                        SUM( harga ) AS hargapemasukan,
+                        SUM(detail_pemasukan.harga * qty) AS totalpemasukan
+                        FROM
                         detail_pemasukan
                         INNER JOIN pemasukan ON detail_pemasukan.nobukti_pemasukan = pemasukan.nobukti_pemasukan
                         WHERE MONTH(tgl_pemasukan) = '$bulanlalu' AND YEAR(tgl_pemasukan) = '$tahunlalu'

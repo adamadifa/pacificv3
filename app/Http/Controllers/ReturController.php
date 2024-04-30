@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cabang;
 use App\Models\Harga;
 use App\Models\Retur;
+use App\Models\Validasireturcheck;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -405,14 +406,19 @@ class ReturController extends Controller
     }
     public function show(Request $request)
     {
+
+        $retur = DB::table('retur')->where('no_retur_penj', $request->no_retur_penj)
+            ->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->first();
         $detail = DB::table('detailretur')
             ->select('detailretur.*', 'kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
             ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
             ->where('no_retur_penj', $request->no_retur_penj)
             ->get();
-
+        $validasi_item = DB::table('retur_validasi_item')->get();
         if (Auth::user()->level != "salesman") {
-            return view('retur.show', compact('detail'));
+            return view('retur.show', compact('detail', 'retur', 'validasi_item'));
         } else {
             return view('retur.showforsales', compact('detail'));
         }
@@ -662,5 +668,30 @@ class ReturController extends Controller
             }
         }
         return view('retur.inputbarangtemp', compact('barang'));
+    }
+
+
+    public function storevalidasi(Request $request)
+    {
+        $kode_item = $request->kode_item;
+        if (empty($kode_item)) {
+            return Redirect::back()->with(['warning' => 'Checklist Minimal 1 ']);
+        } else {
+            DB::beginTransaction();
+            try {
+                for ($i = 0; $i < count($kode_item); $i++) {
+                    $detail[] = [
+                        'no_retur_penj' => $request->no_retur_penj,
+                        'kode_item' => $kode_item[$i]
+                    ];
+                }
+
+                Validasireturcheck::insert($detail);
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                return Redirect::back()->with(['warning' => $e->getMessage()]);
+            }
+        }
     }
 }

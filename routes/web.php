@@ -1428,6 +1428,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cekreturtemp', [ReturController::class, 'cekreturtemp']);
     Route::post('/retur/updatedetailtemp', [ReturController::class, 'updatedetailtemp']);
     Route::post('/retur/show', [ReturController::class, 'show']);
+    Route::post('/retur/storevalidasi', [ReturController::class, 'storevalidasi']);
 
     Route::delete('/retur/{no_retur_penj}/delete', [ReturController::class, 'delete']);
     Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
