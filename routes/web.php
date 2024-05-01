@@ -1387,6 +1387,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/updatebarangtemp', [PenjualanController::class, 'updatebarangtemp']);
 
     Route::post('/penjualan/setfakturbatal', [PenjualanController::class, 'setfakturbatal']);
+    Route::post('/penjualan/setfakturbatalsales', [PenjualanController::class, 'setfakturbatalsales']);
     Route::post('/penjualan/updateprint', [PenjualanController::class, 'updateprint']);
     Route::post('/penjualan/ubahfakturpo', [PenjualanController::class, 'ubahfakturpo']);
     Route::post('/penjualan/{no_fak_penj}/updatepo', [PenjualanController::class, 'updatepo']);

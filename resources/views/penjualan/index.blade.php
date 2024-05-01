@@ -115,6 +115,10 @@
                                     @php
                                         $color = '#f7d97763';
                                     @endphp
+                                @elseif ($d->status_batal == '1')
+                                    @php
+                                        $color = '#ed9993';
+                                    @endphp
                                 @elseif(substr($d->no_fak_penj, 3, 2) == 'PR')
                                     @php
                                         $color = '#0084d1';
@@ -125,7 +129,7 @@
                                     @endphp
                                 @endif
                                 <tr style="background-color:{{ $color }}">
-                                    <td>{{ $d->no_fak_penj }}</td>
+                                    <td>{{ $d->no_fak_penj }} {{ $d->status_batal }}</td>
                                     @if ($level != 'salesman')
                                         <td>{{ date('d-m-Y', strtotime($d->tgltransaksi)) }}</td>
                                     @else

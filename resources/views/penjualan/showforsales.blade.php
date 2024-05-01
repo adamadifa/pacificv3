@@ -69,30 +69,15 @@
                             </div>
                         </div>
                     </div>
-                    @if (date('Y-m-d', strtotime($data->date_created)) != date('Y-m-d'))
-                        <div class="row mb-1">
-                            <div class="col-12">
-                                {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
-                            <i class="feather icon-printer mr-1"></i>
-                            Cetak Faktur
-                        </a> --}}
-                                <a href="#"
-                                    onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
-                                    class="btn btn-info btn-block">
-                                    <i class="feather icon-printer mr-1"></i>
-                                    Cetak Faktur
-                                </a>
-
-                            </div>
+                    @if ($data->status_batal == '1')
+                        <div class="alert alert-warning">
+                            <h4 class="alert-heading">Faktur Batal</h4>
+                            <p>Faktur Ini Sudah Di Batalkan, dan Akan Segera di Proses Oleh OM</p>
                         </div>
                     @else
-                        @if (($data->kategori_salesman == 'TO' && substr($data->no_fak_penj, 3, 2) == 'PR') || $data->kategori_salesman != 'TO')
+                        @if (date('Y-m-d', strtotime($data->date_created)) != date('Y-m-d'))
                             <div class="row mb-1">
-                                <div class="col d-flex justify-content-arround">
-                                    <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2"
-                                        class="btn  btn-success mr-1">
-                                        <i class="feather icon-edit"></i>
-                                    </a>
+                                <div class="col-12">
                                     {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
                             <i class="feather icon-printer mr-1"></i>
                             Cetak Faktur
@@ -103,7 +88,33 @@
                                         <i class="feather icon-printer mr-1"></i>
                                         Cetak Faktur
                                     </a>
-                                    <form method="POST" class="deleteform"
+
+                                </div>
+                            </div>
+                        @else
+                            @if (($data->kategori_salesman == 'TO' && substr($data->no_fak_penj, 3, 2) == 'PR') || $data->kategori_salesman != 'TO')
+                                <div class="row mb-1">
+                                    <div class="col">
+                                        <div class="btn-group w-100">
+                                            <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2"
+                                                class="btn  btn-success">
+                                                <i class="feather icon-edit"></i>
+                                            </a>
+                                            {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                            <i class="feather icon-printer mr-1"></i>
+                            Cetak Faktur
+                        </a> --}}
+                                            <a href="#"
+                                                onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
+                                                class="btn btn-info btn-block">
+                                                <i class="feather icon-printer"></i>
+                                                Cetak Faktur
+                                            </a>
+
+                                            <a href="#" class="btn btn-warning ubahfakturbatal"
+                                                no_fak_penj = "{{ $data->no_fak_penj }}"><i
+                                                    class="feather icon-x-circle"></i></a>
+                                            {{-- <form method="POST" class="deleteform"
                                         action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
                                         @csrf
                                         @method('DELETE')
@@ -111,11 +122,12 @@
                                             class="btn btn-danger  delete-confirm ml-1">
                                             <i class="feather icon-trash"></i>
                                         </a>
-                                    </form>
+                                    </form> --}}
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                         @endif
-
                     @endif
 
                     <div class="row">
@@ -430,7 +442,11 @@
                                                     <td colspan="7">Total</td>
                                                     <td class="text-right">
                                                         @php
-                                                            $totalnonppn = $data->subtotal - $data->potongan - $data->potistimewa - $data->penyharga;
+                                                            $totalnonppn =
+                                                                $data->subtotal -
+                                                                $data->potongan -
+                                                                $data->potistimewa -
+                                                                $data->penyharga;
                                                         @endphp
                                                         {{ rupiah($totalnonppn) }}
                                                     </td>
@@ -455,7 +471,8 @@
                                                     <td colspan="7">Sisa Bayar</td>
                                                     <td class="text-right">
                                                         @php
-                                                            $sisabayar = $data->total - $data->totalretur - $data->jmlbayar;
+                                                            $sisabayar =
+                                                                $data->total - $data->totalretur - $data->jmlbayar;
                                                         @endphp
                                                         {{ rupiah($sisabayar) }}
                                                     </td>
@@ -1103,6 +1120,45 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade text-left" id="mdlfakturbatal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel18" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel18">Ubah ke Faktur Batal</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/penjualan/setfakturbatalsales" method="POST" id="formBatal">
+                        @csrf
+                        <input type="hidden" id="no_fak_batal" name="no_fak_batal">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <small class="danger">Dengan mengubah ke Faktur Batal, Maka Data Penjualan pada Faktur ini
+                                    akan direset dan di UBah ke Faktur Batal !</small>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <textarea name="keterangan" placeholder="Keterangan" id="keterangan" cols="30" rows="10"
+                                    class="form-control"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block"><i class="feather icon-refresh-ccw mr-1"></i>
+                                    Ubah Ke Faktur Batal</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 
@@ -1148,6 +1204,22 @@
     </script>
     <script>
         $(function() {
+
+            $("#formBatal").submit(function(e) {
+                var keterangan = $("#keterangan").val();
+                if (keterangan == "") {
+                    swal({
+                        title: 'Oops',
+                        text: 'Keterangan Batal Harus Diisi !',
+                        icon: 'warning',
+                        showConfirmButton: false
+                    }).then(function() {
+                        $("#keterangan").focus();
+                    });
+
+                    return false;
+                }
+            });
             $("#tgl_transfer").change(function() {
                 $("#tglcair_transfer").val($(this).val());
             });
@@ -1639,6 +1711,17 @@
                     });
                     return false;
                 }
+            });
+
+            $(".ubahfakturbatal").click(function(e) {
+                var no_fak_penj = $(this).attr("no_fak_penj");
+                $("#no_fak_batal").val(no_fak_penj);
+                e.preventDefault();
+                $('#mdlfakturbatal').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+
             });
         });
     </script>
