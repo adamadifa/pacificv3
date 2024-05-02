@@ -1,3 +1,6 @@
+@php
+    $no = 1;
+@endphp
 @foreach ($detail as $d)
     @php
         $qtysaldoawal = $d->qtysaldoawal;
