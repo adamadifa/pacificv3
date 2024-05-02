@@ -352,7 +352,7 @@ class PenjualanController extends Controller
             // dd($lastmonth);
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
-                ->whereRaw('MID(no_fak_penj)="' . $pelanggan->kode_sales . '"')
+                ->whereRaw('MID(no_fak_penj,5,1)="' . $pelanggan->kode_sales . '"')
                 ->where('tgltransaksi', $lasttgl)
                 ->orderBy('date_created', 'desc')
                 ->first();
