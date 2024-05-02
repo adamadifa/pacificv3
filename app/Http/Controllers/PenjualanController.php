@@ -1451,6 +1451,7 @@ class PenjualanController extends Controller
                     ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
                     ->where('tgltransaksi', '>=', $start_date)
                     ->where('kode_sales', $kode_sales)
+                    ->whereRaw('MID(no_fak_penj="' . $salesman->kode_sales . '"')
                     ->where('karyawan.kode_cabang', $kode_cabang)
                     ->whereRaw('YEAR(tgltransaksi)="' . $thn . '"')
                     ->whereRaw('LEFT(no_fak_penj,3)="' . $kode_pt . '"')
