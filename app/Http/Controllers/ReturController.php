@@ -483,12 +483,28 @@ class ReturController extends Controller
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
+        $validasi_item = DB::table('retur_validasi_item')->orderBy('kode_item')->get();
+        foreach ($validasi_item as $d) {
+            $field_item[] = "item_" . $d->kode_item;
+            $select_item[] = "SUM(IF(kode_item='$d->kode_item',1,0)) as item_" . $d->kode_item;
+        }
+        $s_item = implode(",", $select_item);
+        $f_item = implode(",", $field_item);
         $query = Retur::query();
-        $query->selectRaw('no_retur_penj,no_ref,retur.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,pasar,hari,
-        karyawan.kode_cabang,tglretur,subtotal_gb,subtotal_pf,retur.total,jenistransaksi,retur.date_created,retur.date_updated');
+        $query->selectRaw("retur.no_retur_penj,no_ref,retur.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,pasar,hari,
+        karyawan.kode_cabang,tglretur,subtotal_gb,subtotal_pf,retur.total,jenistransaksi,retur.date_created,retur.date_updated,$f_item");
         $query->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_retur_penj, $s_item FROM retur_validasi_detail
+            GROUP BY no_retur_penj
+        ) validasi"),
+            function ($join) {
+                $join->on('retur.no_retur_penj', '=', 'validasi.no_retur_penj');
+            }
+        );
         $query->whereBetween('tglretur', [$dari, $sampai]);
         if ($request->kode_cabang != "") {
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
@@ -510,7 +526,7 @@ class ReturController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Retur Periode $dari-$sampai-$time.xls");
         }
-        return view('retur.laporan.cetak_retur', compact('retur', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+        return view('retur.laporan.cetak_retur', compact('retur', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'validasi_item'));
     }
 
     public function inputbarangtemp(Request $request)

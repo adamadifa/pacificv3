@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,34 +32,34 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN RETUR<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
         @if ($pelanggan != null)
-        PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
+            PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
         @else
-        SEMUA PELANGGAN
+            SEMUA PELANGGAN
         @endif
     </b>
     <table class="datatable3" style="width:130%">
@@ -80,6 +81,7 @@
                 <td rowspan="2">TUNAI/KREDIT</td>
                 <td rowspan="2">Tanggal Input</td>
                 <td rowspan="2">Tanggal Update</td>
+                <td colspan="{{ count($validasi_item) }}" align="center">Validasi</td>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td>DUS</td>
@@ -89,171 +91,194 @@
                 <td>PCS</td>
                 <td>Harga</td>
                 <td>Subtotal</td>
+                @foreach ($validasi_item as $item)
+                    <td>{{ $item->item }}</td>
+                @endforeach
             </tr>
         </thead>
         <tbody>
             @php
-            $no = 1;
-            $totaldus = 0;
-            $totalpack = 0;
-            $totalpcs = 0;
-            $totaldus2 = 0;
-            $totalpack2 = 0;
-            $totalpcs2 = 0;
-            $returpf = 0;
-            $returgb = 0;
-            $netto = 0;
+                $no = 1;
+                $totaldus = 0;
+                $totalpack = 0;
+                $totalpcs = 0;
+                $totaldus2 = 0;
+                $totalpack2 = 0;
+                $totalpcs2 = 0;
+                $returpf = 0;
+                $returgb = 0;
+                $netto = 0;
             @endphp
 
             @foreach ($retur as $r)
-            @php
+                @php
 
-            $jmlbarang = DB::table('detailretur')->where('no_retur_penj',$r->no_retur_penj)->count();
-            $barang1 = DB::table('detailretur')
-            ->selectRaw('no_fak_penj,detailretur.kode_barang,nama_barang,jumlah,isipcsdus,
-            isipack,isipcs,detailretur.harga_dus,detailretur.harga_pack,detailretur.harga_pcs,subtotal ')
-            ->join('barang','detailretur.kode_barang','=','barang.kode_barang')
-            ->where('no_retur_penj',$r->no_retur_penj)
-            ->orderBy('detailretur.kode_barang')
-            ->first();
+                    $jmlbarang = DB::table('detailretur')
+                        ->where('no_retur_penj', $r->no_retur_penj)
+                        ->count();
+                    $barang1 = DB::table('detailretur')
+                        ->selectRaw(
+                            'no_fak_penj,detailretur.kode_barang,nama_barang,jumlah,isipcsdus,
+            isipack,isipcs,detailretur.harga_dus,detailretur.harga_pack,detailretur.harga_pcs,subtotal ',
+                        )
+                        ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
+                        ->where('no_retur_penj', $r->no_retur_penj)
+                        ->orderBy('detailretur.kode_barang')
+                        ->first();
+
+                    if ($barang1 != null) {
+                        $jmldus = floor($barang1->jumlah / $barang1->isipcsdus);
+
+                        if ($barang1->jumlah != 0) {
+                            $sisadus = $barang1->jumlah % $barang1->isipcsdus;
+                        } else {
+                            $sisadus = 0;
+                        }
+                        if ($barang1->isipack == 0) {
+                            $jmlpack = 0;
+                            $sisapack = $sisadus;
+                        } else {
+                            $jmlpack = floor($sisadus / $barang1->isipcs);
+                            $sisapack = $sisadus % $barang1->isipcs;
+                        }
+                        $jmlpcs = $sisapack;
+                        $nama_barang = $barang1->nama_barang;
+                        $subtotal_1 = $barang1->subtotal;
+                    } else {
+                        $jmldus = 0;
+                        $jmlpack = 0;
+                        $jmlpcs = 0;
+                        $nama_barang = '';
+                        $subtotal_1 = 0;
+                    }
+
+                    $totaldus = $totaldus + $jmldus;
+                    $totalpack = $totalpack + $jmlpack;
+                    $totalpcs = $totalpcs + $jmlpcs;
+                    $returpf = $returpf + $r->subtotal_pf;
+                    $returgb = $returgb + $r->subtotal_gb;
+                    $netto = $netto + $r->total;
+                @endphp
+                <tr>
+                    <td rowspan="{{ $jmlbarang }}">{{ $loop->iteration }}</td>
+                    <td rowspan="{{ $jmlbarang }}">{{ DateToIndo2($r->tglretur) }}</td>
+                    <td rowspan="{{ $jmlbarang }}">{{ $r->no_ref }}</td>
+                    <td rowspan="{{ $jmlbarang }}">{{ $r->no_fak_penj }}</td>
+                    <td rowspan="{{ $jmlbarang }}">{{ $r->kode_pelanggan }}</td>
+                    <td rowspan="{{ $jmlbarang }}">{{ $r->nama_pelanggan }}</td>
+                    <td rowspan="{{ $jmlbarang }}">{{ $r->pasar }}</td>
+                    <td rowspan="{{ $jmlbarang }}">{{ $r->hari }}</td>
 
 
-            if($barang1!=null){
-            $jmldus = floor($barang1->jumlah / $barang1->isipcsdus);
+                    <td>
+                        {{ $nama_barang }}
+                    </td>
+                    <td align="center">
+                        @if ($jmldus != 0)
+                            {{ $jmldus }}
+                        @endif
+                    </td>
+                    <td align="right">
+                        @if ($jmldus != 0)
+                            {{ rupiah($barang1->harga_dus) }}
+                        @endif
+                    </td>
+                    <td align="center">
+                        @if ($jmlpack != 0)
+                            {{ $jmlpack }}
+                        @endif
+                    </td>
+                    <td align="right">
+                        @if ($jmlpack != 0)
+                            {{ rupiah($barang1->harga_pack) }}
+                        @endif
 
-            if ($barang1->jumlah != 0) {
-            $sisadus = $barang1->jumlah % $barang1->isipcsdus;
-            } else {
-            $sisadus = 0;
-            }
-            if ($barang1->isipack == 0) {
-            $jmlpack = 0;
-            $sisapack = $sisadus;
-            } else {
-            $jmlpack = floor($sisadus / $barang1->isipcs);
-            $sisapack = $sisadus % $barang1->isipcs;
-            }
-            $jmlpcs = $sisapack;
-            $nama_barang = $barang1->nama_barang;
-            $subtotal_1 = $barang1->subtotal;
-            }else{
-            $jmldus = 0;
-            $jmlpack = 0;
-            $jmlpcs = 0;
-            $nama_barang = "";
-            $subtotal_1 = 0;
-            }
+                    </td>
+                    <td align="center">
+                        @if ($jmlpcs != 0)
+                            {{ $jmlpcs }}
+                        @endif
+                    </td>
+                    <td align="right">
+                        @if ($jmlpcs != 0)
+                            {{ rupiah($barang1->harga_pcs) }}
+                        @endif
+                    </td>
+                    <td align="right">
+                        {{ rupiah($subtotal_1) }}
+                    </td>
+                    <td align="right" rowspan="{{ $jmlbarang }}">{{ rupiah($r->subtotal_pf) }}</td>
+                    <td align="right" rowspan="{{ $jmlbarang }}">{{ rupiah($r->subtotal_gb) }}</td>
+                    <td align="right" rowspan="{{ $jmlbarang }}">{{ rupiah($r->total) }}</td>
+                    <td align="right" rowspan="{{ $jmlbarang }}">{{ strtoupper($r->jenistransaksi) }}</td>
+                    <td align="right" rowspan="{{ $jmlbarang }}">{{ $r->date_created }}</td>
+                    <td align="right" rowspan="{{ $jmlbarang }}">{{ $r->date_updated }}</td>
+                    @foreach ($validasi_item as $item)
+                        <td align="center" rowspan="{{ $jmlbarang }}">{!! $r->{"item_$item->kode_item"} == '1' ? '&#10004;' : '' !!}</td>
+                    @endforeach
+                </tr>
+                @if ($jmlbarang > 1)
+                    @php
+                        $barang2 = DB::table('detailretur')
+                            ->selectRaw(
+                                'no_fak_penj,detailretur.kode_barang,nama_barang,jumlah,isipcsdus,
+            isipack,isipcs,detailretur.harga_dus,detailretur.harga_pack,detailretur.harga_pcs,subtotal ',
+                            )
+                            ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
+                            ->where('no_retur_penj', $r->no_retur_penj)
+                            ->skip(1)
+                            ->take($jmlbarang)
+                            ->orderBy('detailretur.kode_barang')
+                            ->get();
+                    @endphp
+                @else
+                    @php
+                        $barang2 = null;
+                    @endphp
+                @endif
 
-            $totaldus = $totaldus + $jmldus;
-            $totalpack = $totalpack + $jmlpack;
-            $totalpcs = $totalpcs + $jmlpcs;
-            $returpf = $returpf + $r->subtotal_pf;
-            $returgb = $returgb + $r->subtotal_gb;
-            $netto = $netto + $r->total;
-            @endphp
-            <tr>
-                <td rowspan="{{ $jmlbarang}}">{{ $loop->iteration}}</td>
-                <td rowspan="{{ $jmlbarang }}">{{ DateToIndo2($r->tglretur) }}</td>
-                <td rowspan="{{ $jmlbarang }}">{{ $r->no_ref }}</td>
-                <td rowspan="{{ $jmlbarang }}">{{ $r->no_fak_penj }}</td>
-                <td rowspan="{{ $jmlbarang }}">{{ $r->kode_pelanggan }}</td>
-                <td rowspan="{{ $jmlbarang }}">{{ $r->nama_pelanggan }}</td>
-                <td rowspan="{{ $jmlbarang }}">{{ $r->pasar }}</td>
-                <td rowspan="{{ $jmlbarang }}">{{ $r->hari }}</td>
+                @if ($barang2 != null)
+                    @foreach ($barang2 as $b2)
+                        @php
+                            $jmldus = floor($b2->jumlah / $b2->isipcsdus);
+                            $sisadus = $b2->jumlah % $b2->isipcsdus;
+                            if ($b2->isipack == 0) {
+                                $jmlpack = 0;
+                                $sisapack = $sisadus;
+                            } else {
+                                $jmlpack = floor($sisadus / $b2->isipcs);
+                                $sisapack = $sisadus % $b2->isipcs;
+                            }
 
-
-                <td>
-                    {{ $nama_barang }}
-                </td>
-                <td align="center">
-                    @if ($jmldus != 0 )
-                    {{ $jmldus }}
-                    @endif
-                </td>
-                <td align="right">
-                    @if ($jmldus != 0 )
-                    {{ rupiah($barang1->harga_dus) }}
-                    @endif
-                </td>
-                <td align="center">
-                    @if ($jmlpack != 0 )
-                    {{ $jmlpack }}
-                    @endif
-                </td>
-                <td align="right">
-                    @if ($jmlpack != 0 )
-                    {{ rupiah($barang1->harga_pack) }}
-                    @endif
-
-                </td>
-                <td align="center">
-                    @if ($jmlpcs !=0 )
-                    {{ $jmlpcs }}
-                    @endif
-                </td>
-                <td align="right">
-                    @if ($jmlpcs !=0 )
-                    {{ rupiah($barang1->harga_pcs) }}
-                    @endif
-                </td>
-                <td align="right">
-                    {{ rupiah($subtotal_1) }}
-                </td>
-                <td align="right" rowspan="{{ $jmlbarang}}">{{ rupiah($r->subtotal_pf)}}</td>
-                <td align="right" rowspan="{{ $jmlbarang}}">{{ rupiah($r->subtotal_gb)}}</td>
-                <td align="right" rowspan="{{ $jmlbarang}}">{{ rupiah($r->total)}}</td>
-                <td align="right" rowspan="{{ $jmlbarang}}">{{ strtoupper($r->jenistransaksi)}}</td>
-                <td align="right" rowspan="{{ $jmlbarang}}">{{ $r->date_created}}</td>
-                <td align="right" rowspan="{{ $jmlbarang}}">{{ $r->date_updated}}</td>
-            </tr>
-            @if($jmlbarang > 1)
-            @php
-            $barang2 = DB::table('detailretur')
-            ->selectRaw('no_fak_penj,detailretur.kode_barang,nama_barang,jumlah,isipcsdus,
-            isipack,isipcs,detailretur.harga_dus,detailretur.harga_pack,detailretur.harga_pcs,subtotal ')
-            ->join('barang','detailretur.kode_barang','=','barang.kode_barang')
-            ->where('no_retur_penj',$r->no_retur_penj)
-            ->skip(1)->take($jmlbarang)
-            ->orderBy('detailretur.kode_barang')
-            ->get();
-            @endphp
-            @else
-            @php
-            $barang2 = null;
-            @endphp
-            @endif
-
-            @if ($barang2 != null)
-            @foreach ($barang2 as $b2)
-            @php
-            $jmldus = floor($b2->jumlah / $b2->isipcsdus);
-            $sisadus = $b2->jumlah % $b2->isipcsdus;
-            if ($b2->isipack == 0) {
-            $jmlpack = 0;
-            $sisapack = $sisadus;
-            } else {
-
-            $jmlpack = floor($sisadus / $b2->isipcs);
-            $sisapack = $sisadus % $b2->isipcs;
-            }
-
-            $jmlpcs = $sisapack;
-            $totaldus2 = $totaldus2 + $jmldus;
-            $totalpack2 = $totalpack2 + $jmlpack;
-            $totalpcs2 = $totalpcs2 + $jmlpcs;
-            @endphp
-            <tr>
-                <td><?php echo $b2->nama_barang; ?></td>
-                <td align='center'><?php if ($jmldus != 0) {echo $jmldus;} ?></td>
-                <td align='right'><?php if ($jmldus != 0) {echo number_format($b2->harga_dus, '0', '', '.');} ?></td>
-                <td align='center'><?php if ($jmlpack != 0) { echo $jmlpack;} ?></td>
-                <td align='right'><?php if ($jmlpack != 0) {echo number_format($b2->harga_pack, '0', '', '.');} ?></td>
-                <td align='center'><?php if ($jmlpcs != 0) {echo $jmlpcs;} ?></td>
-                <td align='right'><?php if ($jmlpcs != 0) {echo number_format($b2->harga_pcs, '0', '', '.');} ?></td>
-                <td align='right'><?php echo number_format($b2->subtotal, '0', '', '.'); ?></td>
-            </tr>
-            @endforeach
-            @endif
+                            $jmlpcs = $sisapack;
+                            $totaldus2 = $totaldus2 + $jmldus;
+                            $totalpack2 = $totalpack2 + $jmlpack;
+                            $totalpcs2 = $totalpcs2 + $jmlpcs;
+                        @endphp
+                        <tr>
+                            <td><?php echo $b2->nama_barang; ?></td>
+                            <td align='center'><?php if ($jmldus != 0) {
+                                echo $jmldus;
+                            } ?></td>
+                            <td align='right'><?php if ($jmldus != 0) {
+                                echo number_format($b2->harga_dus, '0', '', '.');
+                            } ?></td>
+                            <td align='center'><?php if ($jmlpack != 0) {
+                                echo $jmlpack;
+                            } ?></td>
+                            <td align='right'><?php if ($jmlpack != 0) {
+                                echo number_format($b2->harga_pack, '0', '', '.');
+                            } ?></td>
+                            <td align='center'><?php if ($jmlpcs != 0) {
+                                echo $jmlpcs;
+                            } ?></td>
+                            <td align='right'><?php if ($jmlpcs != 0) {
+                                echo number_format($b2->harga_pcs, '0', '', '.');
+                            } ?></td>
+                            <td align='right'><?php echo number_format($b2->subtotal, '0', '', '.'); ?></td>
+                        </tr>
+                    @endforeach
+                @endif
             @endforeach
             <tr bgcolor="#024a75" style="color:white; font-weight:bold">
                 <td colspan="9">TOTAL</td>
@@ -274,4 +299,5 @@
         </tbody>
     </table>
 </body>
+
 </html>
