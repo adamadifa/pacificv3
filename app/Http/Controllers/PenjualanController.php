@@ -8830,7 +8830,21 @@ class PenjualanController extends Controller
         }
         //UpdateDataPenjualan
 
+    }
 
+
+    public function setfakturbatalsales(Request $request)
+    {
+        $no_fak_batal = $request->no_fak_batal;
+        try {
+            DB::table('penjualan')->where('no_fak_penj', $no_fak_batal)->update([
+                'status_batal' => 1,
+                'keterangan' => $request->keterangan
+            ]);
+            return Redirect::back()->with(['success' => 'Faktur Berhasil Di Batalkan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Faktur Gagal Di Batalkan']);
+        }
     }
 
 
