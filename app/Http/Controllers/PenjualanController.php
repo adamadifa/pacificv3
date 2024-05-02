@@ -343,7 +343,9 @@ class PenjualanController extends Controller
             // $kode_faktur = substr($salesman->no_fak_awal, 3, 1);
             // $nomor_awal = substr($salesman->no_fak_awal, 4);
             // $jmlchar = strlen($nomor_awal);
-            $lastinput = DB::table('penjualan')->where('id_karyawan', $pelanggan->id_sales)->orderBy('tgltransaksi', 'desc')->first();
+            $lastinput = DB::table('penjualan')->where('id_karyawan', $pelanggan->id_sales)
+                ->whereRaw('MID(no_fak_penj,5,1)="' . $pelanggan->kode_sales . '"')
+                ->orderBy('tgltransaksi', 'desc')->first();
             $lasttgl = $lastinput != null ? $lastinput->tgltransaksi : date("Y-m-d");
 
             $tahunini = date('Y');
