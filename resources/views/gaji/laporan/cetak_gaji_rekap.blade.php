@@ -806,9 +806,9 @@
                                 $jam_masuk_kk =
                                     $datapresensi[10] != 'NA' ? date('H:i', strtotime($datapresensi[10])) : ''; //Jam masuk Keluar Kantor
 
-                                // $total_jam = $datapresensi[11] != 'NA' ? $datapresensi[11] : 0; // Total Jam Kerja Dalam 1 Hari
                                 $total_jam =
                                     $namahari != 'Sabtu' ? ($datapresensi[11] != 'NA' ? $datapresensi[11] : 0) : 5; // Total Jam Kerja Dalam 1 Hari
+
                                 //Pengajuan Izin
                                 $sid = $datapresensi[12] != 'NA' ? $datapresensi[12] : ''; //SID
                                 $kode_izin_terlambat = $datapresensi[7] != 'NA' ? $datapresensi[7] : ''; // Izin Terlambat
@@ -1164,6 +1164,8 @@
                                         $premilembur = 0;
                                     @endphp
                                 @endif
+
+
                                 <!-- Menghitung Lembur Hari Libur -->
                                 @if (!empty($ceklemburharilibur))
                                     @php
@@ -1173,7 +1175,6 @@
                                         $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
                                         $istirahatlbr = $ceklemburharilibur[0]['istirahat'] == 1 ? 1 : 0;
                                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
-                                        // $jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
                                         if (!empty($ceklibur)) {
                                             $jmljam_lembur_liburnasional = $jmljam_lembur * 2;
                                             $jmljam_lembur_reguler = 0;
@@ -1181,6 +1182,7 @@
                                             $jmljam_lembur_liburnasional = 0;
                                             $jmljam_lembur_reguler = $jmljam_lembur;
                                         }
+                                        //$jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
                                         $kategori_lembur = $ceklemburharilibur[0]['kategori'];
                                     @endphp
                                     @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull))
@@ -1213,6 +1215,10 @@
                                         $premilembur_harilibur = 0;
                                     @endphp
                                 @endif
+
+                                {{-- @php
+                                echo $premilembur_harilibur;
+                            @endphp --}}
                             @elseif($status == 's')
                                 @if ($namahari != 'Minggu')
                                     @if (!empty($sid))
@@ -1336,6 +1342,7 @@
                                     //Cek Jika Besok Libur
                                     $search_items_next = [
                                         'nik' => $d->nik,
+
                                         'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi))),
                                     ];
 
@@ -1368,7 +1375,6 @@
                             $totalizinsakit += $izinsakit;
                         @endphp
                         <!-- Total Jam Kerja 1 Bulan -->
-
 
                     @endfor
                     @if ($d->nama_jabatan == 'DIREKTUR')
@@ -1454,7 +1460,9 @@
                         @php
                             $upah_ot_1 = $upah_perjam * 1.5 * $total_overtime_1;
                             $upah_ot_2 = $upah_perjam * 2 * $total_overtime_2;
-                            $upah_otl_1 = floor($upah_perjam * 2 * $total_overtime_libur_1);
+                            $upah_otl_1 = floor(
+                                $upah_perjam * 2 * ($total_overtime_libur_1 + $total_overtime_libur_nasional),
+                            );
                             $upah_otl_libur_nasional = 0;
                             $upah_otl_2 = $upah_perjam * 2 * $total_overtime_libur_2;
                         @endphp
