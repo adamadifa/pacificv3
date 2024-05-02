@@ -4,7 +4,6 @@
         $qtypemasukan = $d->qtypemasukan;
         $qtypengeluaran = $d->qtypengeluaran;
         $hasilqty = $qtysaldoawal + $qtypemasukan - $qtypengeluaran;
-
         $qtyrata = $d->qtysaldoawal + $d->qtypemasukan;
         if (!empty($qtyrata)) {
             $qtyrata = $d->qtysaldoawal + $d->qtypemasukan;
@@ -38,7 +37,6 @@
                 {{ desimal($hasilharga) }}
             </td>
             <td class="text-right">{{ desimal($hasilqty * $hasilharga) }}</td>
-
         </tr>
         @php
             $no++;
