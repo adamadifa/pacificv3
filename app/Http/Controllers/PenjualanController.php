@@ -343,9 +343,7 @@ class PenjualanController extends Controller
             // $kode_faktur = substr($salesman->no_fak_awal, 3, 1);
             // $nomor_awal = substr($salesman->no_fak_awal, 4);
             // $jmlchar = strlen($nomor_awal);
-            $lastinput = DB::table('penjualan')->where('id_karyawan', $pelanggan->id_sales)
-                ->whereRaw('MID(no_fak_penj,6,1)="' . $pelanggan->kode_sales . '"')
-                ->orderBy('tgltransaksi', 'desc')->first();
+            $lastinput = DB::table('penjualan')->where('id_karyawan', $pelanggan->id_sales)->orderBy('tgltransaksi', 'desc')->first();
             $lasttgl = $lastinput != null ? $lastinput->tgltransaksi : date("Y-m-d");
 
             $tahunini = date('Y');
@@ -354,14 +352,12 @@ class PenjualanController extends Controller
             // dd($lastmonth);
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
-                ->whereRaw('MID(no_fak_penj,6,1)="' . $pelanggan->kode_sales . '"')
                 ->where('tgltransaksi', $lasttgl)
                 ->orderBy('date_created', 'desc')
                 ->first();
             $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
 
 
-            //dd($lastnofak);
 
             $kode_cabang = $salesman->kode_cabang;
             $kode_faktur = substr($lastnofak, 3, 1);
@@ -8834,21 +8830,7 @@ class PenjualanController extends Controller
         }
         //UpdateDataPenjualan
 
-    }
 
-
-    public function setfakturbatalsales(Request $request)
-    {
-        $no_fak_batal = $request->no_fak_batal;
-        try {
-            DB::table('penjualan')->where('no_fak_penj', $no_fak_batal)->update([
-                'status_batal' => 1,
-                'keterangan' => $request->keterangan
-            ]);
-            return Redirect::back()->with(['success' => 'Faktur Berhasil Di Batalkan']);
-        } catch (\Exception $e) {
-            return Redirect::back()->with(['warning' => 'Faktur Gagal Di Batalkan']);
-        }
     }
 
 
@@ -9375,7 +9357,6 @@ class PenjualanController extends Controller
         //$id_karyawan = "SBDG09";
         $salesman = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
         $lastinput = DB::table('penjualan')->where('id_karyawan', $id_karyawan)
-            ->whereRaw('MID(no_fak_penj,6,1)="' . $salesman->kode_sales . '"')
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
             ->orderBy('tgltransaksi', 'desc')->first();
 
@@ -9386,7 +9367,6 @@ class PenjualanController extends Controller
         $cekpenjualan = DB::table('penjualan')
             ->where('id_karyawan', $id_karyawan)
             ->where('tgltransaksi', $lasttgl)
-            ->whereRaw('MID(no_fak_penj,6,1)="' . $salesman->kode_sales . '"')
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
             ->orderBy('date_created', 'desc')
             ->first();
@@ -9560,11 +9540,10 @@ class PenjualanController extends Controller
             $lastransaksi = DB::table('penjualan')
                 ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
                 ->where('tgltransaksi', '>=', $start_date)
-
+                ->where('kode_sales', $kode_sales)
                 ->where('karyawan.kode_cabang', $kode_cabang)
                 ->whereRaw('YEAR(tgltransaksi)="' . $thn . '"')
                 ->whereRaw('LEFT(no_fak_penj,3)="' . $kode_pt . '"')
-                ->whereRaw('MID(no_fak_penj,6,1)="' . $salesman->kode_sales . '"')
                 ->orderBy('no_fak_penj', 'desc')
                 ->first();
             $last_no_fak_penj = $lastransaksi != NULL ? $lastransaksi->no_fak_penj : "";
