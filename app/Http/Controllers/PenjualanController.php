@@ -344,7 +344,7 @@ class PenjualanController extends Controller
             // $nomor_awal = substr($salesman->no_fak_awal, 4);
             // $jmlchar = strlen($nomor_awal);
             $lastinput = DB::table('penjualan')->where('id_karyawan', $pelanggan->id_sales)
-                ->whereRaw('MID(no_fak_penj,5,1)="' . $pelanggan->kode_sales . '"')
+                ->whereRaw('MID(no_fak_penj,6,1)="' . $pelanggan->kode_sales . '"')
                 ->orderBy('tgltransaksi', 'desc')->first();
             $lasttgl = $lastinput != null ? $lastinput->tgltransaksi : date("Y-m-d");
 
@@ -354,7 +354,7 @@ class PenjualanController extends Controller
             // dd($lastmonth);
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
-                ->whereRaw('MID(no_fak_penj,5,1)="' . $pelanggan->kode_sales . '"')
+                ->whereRaw('MID(no_fak_penj,6,1)="' . $pelanggan->kode_sales . '"')
                 ->where('tgltransaksi', $lasttgl)
                 ->orderBy('date_created', 'desc')
                 ->first();
