@@ -49,9 +49,11 @@ class LemburController extends Controller
                 if (!empty($request->id_kantor_search)) {
                     $query->where('id_kantor', $request->id_kantor_search);
                 }
-            } else if ($level == "direktur") {
-                $query->where('hrd', '1');
-                $query->orderBy('hrd', 'desc');
+
+                if ($level == "direktur") {
+                    $query->where('hrd', '1');
+                    $query->orderBy('hrd', 'desc');
+                }
             } else if ($level == "manager ga") {
                 $query->where('kode_dept', 'GAF');
                 $query->orderBy('head');
