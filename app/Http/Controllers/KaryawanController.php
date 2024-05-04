@@ -157,7 +157,7 @@ class KaryawanController extends Controller
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
             $query->where('master_karyawan.kode_dept', 'MKT');
-            $query->where('nama_jabatan', 'KEPALA PENJUALAN');
+            // $query->where('nama_jabatan', 'KEPALA PENJUALAN');
             $query->where('id_perusahaan', 'PCF');
         }
 
