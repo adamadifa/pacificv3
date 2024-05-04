@@ -249,6 +249,7 @@ class Pengajuanizin extends Model
 
             $query->orWhere('nama_jabatan', 'GENERAL MANAGER');
             $query->whereNull('direktur');
+            $query->orderBy('direktur');
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
