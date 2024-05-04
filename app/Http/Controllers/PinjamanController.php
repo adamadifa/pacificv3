@@ -132,7 +132,7 @@ class PinjamanController extends Controller
             $wilayah_user = unserialize($wilayah);
             $query->whereIn('master_karyawan.id_kantor', $wilayah_user);
             $query->where('master_karyawan.kode_dept', 'MKT');
-            $query->where('nama_jabatan', 'KEPALA PENJUALAN');
+            // $query->where('nama_jabatan', 'KEPALA PENJUALAN');
             $query->where('id_perusahaan', 'PCF');
         }
 
