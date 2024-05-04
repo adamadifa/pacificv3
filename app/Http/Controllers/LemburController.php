@@ -272,6 +272,7 @@ class LemburController extends Controller
             $qkaryawan = Karyawan::query();
             $qkaryawan->select('nik');
             $qkaryawan->where('id_kantor', $id_kantor);
+            $qkaryawan->where('status_aktif', 1);
             if (!empty($kode_dept)) {
                 $qkaryawan->where('kode_dept', $kode_dept);
             }

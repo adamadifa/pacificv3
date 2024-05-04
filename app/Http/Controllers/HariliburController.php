@@ -193,7 +193,7 @@ class HariliburController extends Controller
 
     public function getkaryawan($kode_libur, $id_kantor, $kode_dept)
     {
-        $level_access = array("manager hrd", "admin","spv presensi");
+        $level_access = array("manager hrd", "admin", "spv presensi");
         $level = Auth::user()->level;
         if ($id_kantor == "PCF" || $id_kantor == "PST") {
             if (in_array($level, $level_access)) {
@@ -368,6 +368,7 @@ class HariliburController extends Controller
             $qkaryawan = Karyawan::query();
             $qkaryawan->select('nik');
             $qkaryawan->where('id_kantor', $id_kantor);
+            $qkaryawan->where('status_aktif', 1);
             if (!empty($kode_dept) && $kode_dept != "ALL") {
                 $qkaryawan->where('kode_dept', $kode_dept);
             }
