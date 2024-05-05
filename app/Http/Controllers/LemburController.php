@@ -52,7 +52,8 @@ class LemburController extends Controller
 
                 if ($level == "direktur") {
                     $query->where('hrd', '1');
-                    $query->orderBy('hrd', 'desc');
+                    //$query->orderBy('hrd', 'desc');
+                    $query->orderBy('dirut', 'asc');
                 }
             } else if ($level == "manager ga") {
                 $query->where('kode_dept', 'GAF');
