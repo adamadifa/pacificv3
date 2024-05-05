@@ -22,7 +22,7 @@
                    @if (Auth::user()->level == 'direktur')
                       <li class="dropdown dropdown-notification nav-item">
                          <a class="nav-link nav-link-label" href="/lembur">
-                            <i class="ficon" data-feather="file-text"></i>
+                            <i class="ficon" data-feather="watch"></i>
                             <span class="badge badge-pill badge-danger badge-up mr-2">{{ $jmlajuanlembur }}</span>
                          </a>
                       </li>
