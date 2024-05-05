@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Lembur;
 use App\Models\Pengajuanizin;
 use App\Models\Penilaiankaryawan;
 use App\Models\User;
@@ -89,6 +90,12 @@ class GlobalProvider extends ServiceProvider
                 } else {
                     $jmlpenilaiankar = 0;
                 }
+
+
+                $jmlajuanlembur = Lembur::where('hrd', 1)
+                    ->whereNull('dirut')
+                    ->count();
+
                 $memo = DB::table('memo')
                     ->selectRaw("memo.id,tanggal,no_memo,judul_memo,kode_dept,kategori,link,totaldownload,name,memo.id_user,cekread.id_user as status_read")
                     ->leftJoin(
@@ -508,6 +515,7 @@ class GlobalProvider extends ServiceProvider
                 $ticket_pending_admin =  null;
                 $ticket_pending_done =  null;
                 $jmlpenilaiankar = null;
+                $jmlajuanlembur = null;
                 $users = null;
                 $pi = null;
                 $kode_dept_presensi = null;
@@ -1378,6 +1386,7 @@ class GlobalProvider extends ServiceProvider
                 'ticket_pending_done' => $ticket_pending_done,
 
                 'jmlpenilaiankar' => $jmlpenilaiankar,
+                'jmlajuanlembur' => $jmlajuanlembur,
                 //Dashboard
                 'dashboardadmin' => $dashboardadmin,
                 'dashboardkepalapenjualan' => $dashboardkepalapenjualan,
