@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -85,20 +85,19 @@
             background: #eee;
             visibility: visible;
         }
-
     </style>
 </head>
 
 <body>
     <b style="font-size:14px;">
         @if ($cabang != null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN INSENTIF KEPALA ADMIN<br>
@@ -106,29 +105,29 @@
     </b>
     <br>
     <?php
-
-    $tgl1 = "2021-08-31";
+    
+    $tgl1 = '2021-08-31';
     $bln = $bulan;
-
-    $tanggal = $tahun . "-" . $bln . "-" . "31";
-    if ($bln == 9 and $tahun = "2021") {
-    $persentaseljt = 55;
-    } else if ($bln == 10 and $tahun == "2021") {
-    $persentaseljt = 60;
-    } else if ($bln == 11 and $tahun == "2021") {
-    $persentaseljt = 65;
-    } else if ($bln >= 12 and $tahun == "2021") {
-    $persentaseljt = 70;
-    } else if ($bln == 1 and $tahun == "2022") {
-    $persentaseljt = 75;
-    } else if ($bln >= 2 and $tahun == "2022") {
-    $persentaseljt = 80;
-    }else if ($bln >= 1 and $tahun == "2023") {
-    $persentaseljt = 80;
-    } else if ($bln <= 8 and $tahun == "2021") {
-    $persentaseljt = 50;
+    
+    $tanggal = $tahun . '-' . $bln . '-' . '31';
+    if ($bln == 9 and ($tahun = '2021')) {
+        $persentaseljt = 55;
+    } elseif ($bln == 10 and $tahun == '2021') {
+        $persentaseljt = 60;
+    } elseif ($bln == 11 and $tahun == '2021') {
+        $persentaseljt = 65;
+    } elseif ($bln >= 12 and $tahun == '2021') {
+        $persentaseljt = 70;
+    } elseif ($bln == 1 and $tahun == '2022') {
+        $persentaseljt = 75;
+    } elseif ($bln >= 2 and $tahun == '2022') {
+        $persentaseljt = 80;
+    } elseif ($bln >= 1 and $tahun == '2023') {
+        $persentaseljt = 80;
+    } elseif ($bln <= 8 and $tahun == '2021') {
+        $persentaseljt = 50;
     }
-
+    
     ?>
     <table class="datatable3">
         <thead>
@@ -157,102 +156,102 @@
           foreach ($insentif as $d) {
           ?>
             <tr>
-                <td><?= $no; ?></td>
-                <td><?= $d->nama_cabang; ?></td>
-                <td align="right"><?= number_format($d->cashin, '0', '', '.'); ?></td>
+                <td><?= $no ?></td>
+                <td><?= $d->nama_cabang ?></td>
+                <td align="right"><?= number_format($d->cashin, '0', '', '.') ?></td>
                 <td>0.005%</td>
                 <td align="right">
                     <?php
-                $rewardkategori1 = $d->cashin * (0.005 / 100);
-                echo  number_format($rewardkategori1, '0', '', '.');
-                ?>
+                    $rewardkategori1 = $d->cashin * (0.005 / 100);
+                    echo number_format($rewardkategori1, '0', '', '.');
+                    ?>
                 </td>
-                <td align="right"><?= number_format($d->sisapiutang, '0', '', '.'); ?></td>
+                <td align="right"><?= number_format($d->sisapiutang, '0', '', '.') ?></td>
                 <td>
                     <?php
-                $ratiokategori2 = $d->cashin != 0 ? (($d->sisapiutang / $d->cashin) * 100) * ($persentaseljt / 100) : 0;
-                echo number_format($ratiokategori2, '2', ',', '.') . "%";
-
-                ?>
+                    $ratiokategori2 = $d->cashin != 0 ? ($d->sisapiutang / $d->cashin) * 100 * ($persentaseljt / 100) : 0;
+                    echo number_format($ratiokategori2, '2', ',', '.') . '%';
+                    
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                if ($bln >= 12 and $tahun >= 2021) {
-                  if ($ratiokategori2 >= 0 and $ratiokategori2 <= 2) {
-                    $rewardkategori2 = 350000;
-                  } else  if ($ratiokategori2 > 2 and $ratiokategori2 <= 4) {
-                    $rewardkategori2 = 315000;
-                  } else  if ($ratiokategori2 > 4 and $ratiokategori2 <= 6) {
-                    $rewardkategori2 = 280000;
-                  } else  if ($ratiokategori2 > 6 and $ratiokategori2 <= 8) {
-                    $rewardkategori2 = 245000;
-                  } else  if ($ratiokategori2 > 8 and $ratiokategori2 <= 10) {
-                    $rewardkategori2 = 210000;
-                  } else  if ($ratiokategori2 > 10 and $ratiokategori2 <= 12) {
-                    $rewardkategori2 = 175000;
-                  } else  if ($ratiokategori2 > 12 and $ratiokategori2 <= 14) {
-                    $rewardkategori2 = 140000;
-                  } else  if ($ratiokategori2 > 14 and $ratiokategori2 <= 16) {
-                    $rewardkategori2 = 105000;
-                  } else  if ($ratiokategori2 > 16 and $ratiokategori2 <= 18) {
-                    $rewardkategori2 = 70000;
-                  } else  if ($ratiokategori2 > 18 and $ratiokategori2 <= 20) {
-                    $rewardkategori2 = 35000;
-                  } else {
-                    $rewardkategori2 = 0;
-                  }
-                } else {
-                  if ($ratiokategori2 >= 0 and $ratiokategori2 <= 2) {
-                    $rewardkategori2 = 350000;
-                  } else  if ($ratiokategori2 > 2 and $ratiokategori2 <= 4) {
-                    $rewardkategori2 = 315000;
-                  } else  if ($ratiokategori2 > 4 and $ratiokategori2 <= 6) {
-                    $rewardkategori2 = 280000;
-                  } else  if ($ratiokategori2 > 6 and $ratiokategori2 <= 8) {
-                    $rewardkategori2 = 245000;
-                  } else  if ($ratiokategori2 > 8 and $ratiokategori2 <= 10) {
-                    $rewardkategori2 = 210000;
-                  } else  if ($ratiokategori2 > 10 and $ratiokategori2 <= 12) {
-                    $rewardkategori2 = 175000;
-                  } else  if ($ratiokategori2 > 12 and $ratiokategori2 <= 14) {
-                    $rewardkategori2 = 140000;
-                  } else  if ($ratiokategori2 > 14 and $ratiokategori2 <= 16) {
-                    $rewardkategori2 = 105000;
-                  } else  if ($ratiokategori2 > 16 and $ratiokategori2 <= 18) {
-                    $rewardkategori2 = 70000;
-                  } else  if ($ratiokategori2 > 18 and $ratiokategori2 <= 20) {
-                    $rewardkategori2 = 35000;
-                  } else {
-                    $rewardkategori2 = 0;
-                  }
-                }
-                echo  number_format($rewardkategori2, '0', '', '.');
-                ?>
+                    if ($bln >= 12 and $tahun >= 2021) {
+                        if ($ratiokategori2 >= 0 and $ratiokategori2 <= 2) {
+                            $rewardkategori2 = 350000;
+                        } elseif ($ratiokategori2 > 2 and $ratiokategori2 <= 4) {
+                            $rewardkategori2 = 315000;
+                        } elseif ($ratiokategori2 > 4 and $ratiokategori2 <= 6) {
+                            $rewardkategori2 = 280000;
+                        } elseif ($ratiokategori2 > 6 and $ratiokategori2 <= 8) {
+                            $rewardkategori2 = 245000;
+                        } elseif ($ratiokategori2 > 8 and $ratiokategori2 <= 10) {
+                            $rewardkategori2 = 210000;
+                        } elseif ($ratiokategori2 > 10 and $ratiokategori2 <= 12) {
+                            $rewardkategori2 = 175000;
+                        } elseif ($ratiokategori2 > 12 and $ratiokategori2 <= 14) {
+                            $rewardkategori2 = 140000;
+                        } elseif ($ratiokategori2 > 14 and $ratiokategori2 <= 16) {
+                            $rewardkategori2 = 105000;
+                        } elseif ($ratiokategori2 > 16 and $ratiokategori2 <= 18) {
+                            $rewardkategori2 = 70000;
+                        } elseif ($ratiokategori2 > 18 and $ratiokategori2 <= 20) {
+                            $rewardkategori2 = 35000;
+                        } else {
+                            $rewardkategori2 = 0;
+                        }
+                    } else {
+                        if ($ratiokategori2 >= 0 and $ratiokategori2 <= 2) {
+                            $rewardkategori2 = 350000;
+                        } elseif ($ratiokategori2 > 2 and $ratiokategori2 <= 4) {
+                            $rewardkategori2 = 315000;
+                        } elseif ($ratiokategori2 > 4 and $ratiokategori2 <= 6) {
+                            $rewardkategori2 = 280000;
+                        } elseif ($ratiokategori2 > 6 and $ratiokategori2 <= 8) {
+                            $rewardkategori2 = 245000;
+                        } elseif ($ratiokategori2 > 8 and $ratiokategori2 <= 10) {
+                            $rewardkategori2 = 210000;
+                        } elseif ($ratiokategori2 > 10 and $ratiokategori2 <= 12) {
+                            $rewardkategori2 = 175000;
+                        } elseif ($ratiokategori2 > 12 and $ratiokategori2 <= 14) {
+                            $rewardkategori2 = 140000;
+                        } elseif ($ratiokategori2 > 14 and $ratiokategori2 <= 16) {
+                            $rewardkategori2 = 105000;
+                        } elseif ($ratiokategori2 > 16 and $ratiokategori2 <= 18) {
+                            $rewardkategori2 = 70000;
+                        } elseif ($ratiokategori2 > 18 and $ratiokategori2 <= 20) {
+                            $rewardkategori2 = 35000;
+                        } else {
+                            $rewardkategori2 = 0;
+                        }
+                    }
+                    echo number_format($rewardkategori2, '0', '', '.');
+                    ?>
                 </td>
                 <td align="center"><?php echo $d->lamalpc; ?></td>
                 <td align="right">
                     <?php
-                if ($d->lamalpc === "0" || $d->lamalpc == 1) {
-                  $rewardkategori3 = 350000;
-                } else if ($d->lamalpc == 2) {
-                  $rewardkategori3 = 280000;
-                } else if ($d->lamalpc == 3) {
-                  $rewardkategori3 = 210000;
-                } else if ($d->lamalpc == 4) {
-                  $rewardkategori3 = 140000;
-                } else if ($d->lamalpc == 5) {
-                  $rewardkategori3 = 70000;
-                } else {
-                  $rewardkategori3 = 0;
-                }
-                echo  number_format($rewardkategori3, '0', '', '.');
-                ?>
+                    if ($d->lamalpc === '0' || $d->lamalpc == 1) {
+                        $rewardkategori3 = 350000;
+                    } elseif ($d->lamalpc == 2) {
+                        $rewardkategori3 = 280000;
+                    } elseif ($d->lamalpc == 3) {
+                        $rewardkategori3 = 210000;
+                    } elseif ($d->lamalpc == 4) {
+                        $rewardkategori3 = 140000;
+                    } elseif ($d->lamalpc == 5) {
+                        $rewardkategori3 = 70000;
+                    } else {
+                        $rewardkategori3 = 0;
+                    }
+                    echo number_format($rewardkategori3, '0', '', '.');
+                    ?>
                 </td>
                 <td>
                     <?php
-                $total = $rewardkategori1 + $rewardkategori2 + $rewardkategori3;
-                echo  number_format($total, '0', '', '.');
-                ?>
+                    $total = $rewardkategori1 + $rewardkategori2 + $rewardkategori3;
+                    echo number_format($total, '0', '', '.');
+                    ?>
                 </td>
             </tr>
             <?php $no++;
@@ -387,4 +386,5 @@
         </tr>
     </table>
 </body>
+
 </html>

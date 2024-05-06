@@ -137,6 +137,9 @@
                                                 no_retur_penj="{{ $d->no_retur_penj }}"><i
                                                     class=" feather icon-file-text info"></i>
                                             </a>
+                                            <a class="ml-1 validasiretur" href="#"
+                                                no_retur_penj="{{ $d->no_retur_penj }}"><i
+                                                    class=" feather icon-check-square"></i></a>
                                         </div>
 
                                     </td>
@@ -244,6 +247,32 @@
                 });
             }
             $('.detailretur').click(function(e) {
+                var no_retur_penj = $(this).attr("no_retur_penj");
+                e.preventDefault();
+                loaddetailretur(no_retur_penj);
+                $('#mdldetailretur').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+            });
+
+
+            function loadvalidasiretur(no_retur_penj) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/retur/show',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_retur_penj: no_retur_penj
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        $("#no_retur_penj").text(no_retur_penj);
+                        $("#loaddetailretur").html(respond);
+                    }
+                });
+            }
+            $('.validasiretur').click(function(e) {
                 var no_retur_penj = $(this).attr("no_retur_penj");
                 e.preventDefault();
                 loaddetailretur(no_retur_penj);
