@@ -275,7 +275,7 @@
             $('.validasiretur').click(function(e) {
                 var no_retur_penj = $(this).attr("no_retur_penj");
                 e.preventDefault();
-                loaddetailretur(no_retur_penj);
+                loadvalidasiretur(no_retur_penj);
                 $('#mdldetailretur').modal({
                     backdrop: 'static',
                     keyboard: false
