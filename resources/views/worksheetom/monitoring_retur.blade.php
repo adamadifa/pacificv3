@@ -269,6 +269,7 @@
                     success: function(respond) {
                         $("#no_retur_penj").text(no_retur_penj);
                         $("#loaddetailretur").html(respond);
+                        $("#refresh").hide();
                     }
                 });
             }
