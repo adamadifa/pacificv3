@@ -5699,7 +5699,8 @@ class PenjualanController extends Controller
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
         $query = Detailpenjualan::query();
-        $query->selectRaw("tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,pasar,alamat_pelanggan,penjualan.id_karyawan,nama_karyawan,
+        $query->selectRaw("tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,pasar,alamat_pelanggan,
+        penjualan.id_karyawan,nama_karyawan,
         SUM( IF ( kode_produk = 'BB', jumlah/isipcsdus, 0 ) ) AS BB,
         SUM( IF ( kode_produk = 'AB', jumlah/isipcsdus, 0 ) ) AS AB,
         SUM( IF ( kode_produk = 'AR', jumlah/isipcsdus, 0 ) ) AS AR,
@@ -5717,7 +5718,8 @@ class PenjualanController extends Controller
         SUM( IF ( kode_produk = 'SC', jumlah/isipcsdus, 0 ) ) AS SC,
         SUM( IF ( kode_produk = 'SP500', jumlah/isipcsdus, 0 ) ) AS SP500,
         SUM( IF ( kode_produk = 'SP8', jumlah/isipcsdus, 0 ) ) AS SP8,
-        SUM( IF ( kode_produk = 'BR20', jumlah/isipcsdus, 0 ) ) AS BR20
+        SUM( IF ( kode_produk = 'BR20', jumlah/isipcsdus, 0 ) ) AS BR20,
+        SUM( IF ( kode_produk = 'P1000', jumlah/isipcsdus, 0 ) ) AS P1000
 
         ");
         $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');

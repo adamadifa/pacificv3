@@ -37,29 +37,29 @@
 
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN DATA PENGAMBILAN PELANGGAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
         @if ($pelanggan != null)
-        PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
+            PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
         @else
-        SEMUA PELANGGAN
+            SEMUA PELANGGAN
         @endif
     </b>
     <table class="datatable3">
@@ -92,6 +92,7 @@
                 <th>SP8</th>
                 <th>SP500</th>
                 <th>BR20</th>
+                <th>P1000</th>
             </tr>
         </thead>
         <tbody>
@@ -114,6 +115,7 @@
             $total_sp8 = 0;
             $total_sp500 = 0;
             $total_br20 = 0;
+            $total_p1000 = 0;
             foreach ($dpp as $d) {
                 $total_bb = $total_bb + $d->BB;
                 $total_ab = $total_ab + $d->AB;
@@ -133,6 +135,7 @@
                 $total_sp8 = $total_sp8 + $d->SP8;
                 $total_sp500 = $total_sp500 + $d->SP500;
                 $total_br20 = $total_br20 + $d->BR20;
+                $total_p1000 = $total_p1000 + $d->P1000;
             ?>
             <tr style="font-size:12;">
                 <td>
@@ -152,93 +155,98 @@
                 </td>
                 <td align="right">
                     <?php if ($d->BB != 0) {
-                                            echo desimal($d->BB);
-                                        } ?>
+                        echo desimal($d->BB);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->AB != 0) {
-                                            echo desimal($d->AB);
-                                        } ?>
+                        echo desimal($d->AB);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->AR != 0) {
-                                            echo desimal($d->AR);
-                                        } ?>
+                        echo desimal($d->AR);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->ASE != 0) {
-                                            echo desimal($d->ASE);
-                                        } ?>
+                        echo desimal($d->ASE);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->DP != 0) {
-                                            echo desimal($d->DP);
-                                        } ?>
+                        echo desimal($d->DP);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->DK != 0) {
-                                            echo desimal($d->DK);
-                                        } ?>
+                        echo desimal($d->DK);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->DS != 0) {
-                                            echo desimal($d->DS);
-                                        } ?>
+                        echo desimal($d->DS);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->DB != 0) {
-                                            echo desimal($d->DB);
-                                        } ?>
+                        echo desimal($d->DB);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->CG != 0) {
-                                            echo desimal($d->CG);
-                                        } ?>
+                        echo desimal($d->CG);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->CGG != 0) {
-                                            echo desimal($d->CGG);
-                                        } ?>
+                        echo desimal($d->CGG);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->SP != 0) {
-                                            echo desimal($d->SP);
-                                        } ?>
+                        echo desimal($d->SP);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->SP != 0) {
-                                            echo desimal($d->BBP);
-                                        } ?>
+                        echo desimal($d->BBP);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->SP != 0) {
-                                            echo desimal($d->SPP);
-                                        } ?>
+                        echo desimal($d->SPP);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->SP != 0) {
-                                            echo desimal($d->CG5);
-                                        } ?>
+                        echo desimal($d->CG5);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->SC != 0) {
-                                            echo desimal($d->SC);
-                                        } ?>
+                        echo desimal($d->SC);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->SP8 != 0) {
-                                            echo desimal($d->SP8);
-                                        } ?>
+                        echo desimal($d->SP8);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->SP500 != 0) {
-                                            echo desimal($d->SP500);
-                                        } ?>
+                        echo desimal($d->SP500);
+                    } ?>
                 </td>
                 <td align="right">
                     <?php if ($d->BR20 != 0) {
-                                            echo desimal($d->BR20);
-                                        } ?>
+                        echo desimal($d->BR20);
+                    } ?>
+                </td>
+                <td align="right">
+                    <?php if ($d->P1000 != 0) {
+                        echo desimal($d->P1000);
+                    } ?>
                 </td>
             </tr>
             <?php } ?>
@@ -335,6 +343,11 @@
                 <td>
                     <?php if ($total_br20 != 0) {
                         echo desimal($total_br20);
+                    } ?>
+                </td>
+                <td>
+                    <?php if ($total_p1000 != 0) {
+                        echo desimal($total_p1000);
                     } ?>
                 </td>
             </tr>
