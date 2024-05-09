@@ -60,8 +60,8 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ date('d-m-Y', strtotime($d->tanggal_visit)) }}</td>
                     <td>{{ $d->nama_pelanggan }}</td>
-                    <td>{{ $d->pasar }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
+                    <td>{{ $d->pasar }}</td>
                     <td>{{ date('d-m-Y', strtotime($d->tgltransaksi)) }}</td>
                     <td>{{ $d->no_fak_penj }}</td>
                     <td style="text-align: right">{{ rupiah($d->total) }}</td>
