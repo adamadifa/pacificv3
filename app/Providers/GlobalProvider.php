@@ -809,7 +809,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $laporan_ledger = [
                 'admin', 'direktur',
-                'general manager', 'manager accounting', 'rom', 'spv accounting', 'admin kas kecil', 'audit', 'manager audit',
+                'general manager', 'manager accounting', 'rom', 'spv accounting', 'admin kas kecil',
                 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'kepala penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan', 'audit', 'manager audit', 'admin pajak 2',
                 'admin pusat', 'staff keuangan 3', 'kepala admin'
             ];
