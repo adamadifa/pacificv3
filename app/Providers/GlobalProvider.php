@@ -792,7 +792,7 @@ class GlobalProvider extends ServiceProvider
             ];
             //--------------------------------Keuangan---------------------------------------------
             $keuangan = [
-                'admin', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'audit', 'manager audit', 'kepala admin', 'admin pusat', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'general manager',
+                'admin', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'kepala admin', 'admin pusat', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'general manager',
                 'manager marketing', 'rsm', 'kepala penjualan', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin kas kecil', 'audit', 'manager audit', 'kasir', 'audit', 'manager audit', 'admin garut', 'manager pembelian', 'admin pembelian',
                 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'kepala gudang', 'audit', 'manager audit', 'admin gudang pusat', 'spv gudang pusat', 'admin garut', 'admin pajak 2', 'manager produksi', 'spv produksi', 'emf', 'manager ga',
