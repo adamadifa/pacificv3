@@ -134,6 +134,8 @@ class LaporankeuanganController extends Controller
                         '026'
                     ];
                     $bank = DB::table('master_bank')->whereIn('kode_bank', $list)->orderBy('kode_bank')->get();
+                } else if (Auth::user()->level == "manager audit") {
+                    $bank = DB::table('master_bank')->whereIn('kode_cabang', '!=', 'PST')->orderBy('kode_bank')->get();
                 } else {
                     $bank = DB::table('master_bank')->where('kode_cabang', $this->cabang)->orderBy('kode_bank')->get();
                 }
