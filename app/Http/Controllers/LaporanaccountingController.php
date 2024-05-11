@@ -1016,7 +1016,10 @@ class LaporanaccountingController extends Controller
         $query->whereBetween('tanggal', [$dari, $sampai]);
         if (Auth::user()->level == "general affair") {
             $query->where('kode_dept', 'GAF');
+        } else if (Auth::user()->level == "manager ga") {
+            $query->where('kode_dept', 'GAF');
         }
+
         $query->orderBy('tanggal');
         $query->orderBy('kode_jurnal');
         $query->orderBy('keterangan');
