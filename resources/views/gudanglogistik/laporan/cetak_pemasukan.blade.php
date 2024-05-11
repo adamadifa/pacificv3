@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Pemasukan Barang Gudang Logistik {{ date("d-m-y") }}</title>
+    <title>Rekap Pemasukan Barang Gudang Logistik {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,22 +36,22 @@
         tr:nth-child(even) {
             background-color: #d6d6d6c2;
         }
-
     </style>
 
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAP BARANG MASUK<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($kategori != null)
-        KATEGORI {{ $kategori->kategori }}
+            KATEGORI {{ $kategori->kategori }}
         @endif
         <br>
         @if ($barang != null)
-        {{ $barang->nama_barang }}
+            {{ $barang->nama_barang }}
         @endif
     </b>
     <br>
@@ -92,10 +93,18 @@
                 <td><?php echo $d->satuan; ?></td>
                 <td><?php echo $d->keterangan; ?></td>
                 <td><?php echo $d->kode_akun; ?> <?php echo $d->nama_akun; ?></td>
-                <td align="right"><?php echo desimal($d->harga); ?></td>
-                <td align="center"><?php echo desimal($d->qty); ?></td>
-                <td align="right"><?php echo desimal($d->penyesuaian); ?></td>
-                <td align="right"><?php echo desimal($d->qty * $d->harga + $d->penyesuaian); ?></td>
+                @if ($d->kategori == 'SUKU CADANG')
+                    <td align="right"><?php echo desimal($d->harga); ?></td>
+                    <td align="center"><?php echo desimal($d->qty); ?></td>
+                    <td align="right"><?php echo desimal($d->penyesuaian); ?></td>
+                    <td align="right"><?php echo desimal($d->qty * $d->harga + $d->penyesuaian); ?></td>
+                @else
+                    <td align="right"></td>
+                    <td align="center"></td>
+                    <td align="right"></td>
+                    <td align="right"></td>
+                @endif
+
             </tr>
             <?php
     }
@@ -104,10 +113,15 @@
                 <td colspan="9" bgcolor="#024a75">TOTAL</td>
                 <td align="center" bgcolor="#024a75"><?php echo desimal($qty); ?></td>
                 <td bgcolor="#024a75"></td>
-                <td align="right" bgcolor="#024a75"><?php echo desimal($harga); ?></td>
+                @if (Auth::user()->level != 'admin gudang logistik')
+                    <td align="right" bgcolor="#024a75"></td>
+                @else
+                    <td align="right" bgcolor="#024a75"><?php echo desimal($harga); ?></td>
+                @endif
             </tr>
         </tbody>
     </table>
 
 </body>
+
 </html>
