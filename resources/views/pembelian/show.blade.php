@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>Supplier</td>
-        <td>{{ $pembelian->kode_supplier  }} - {{ $pembelian->nama_supplier }}</td>
+        <td>{{ $pembelian->kode_supplier }} - {{ $pembelian->nama_supplier }}</td>
     </tr>
     <tr>
         <td>Departemen</td>
@@ -19,7 +19,7 @@
         <td>PPN</td>
         <td class="success">
             @if (!empty($pembelian->ppn))
-            <i class="fa fa-check"></i> {{ $pembelian->no_fak_pajak }}
+                <i class="fa fa-check"></i> {{ $pembelian->no_fak_pajak }}
             @endif
         </td>
     </tr>
@@ -34,36 +34,43 @@
             <th>Nama Barang</th>
             <th>Keterangan</th>
             <th>Qty</th>
-            <th>Harga</th>
-            <th>Subtotal</th>
-            <th>Penyesuaian</th>
-            <th>Total</th>
+            @if (Auth::user()->level != 'admin gudang logistik')
+                <th>Harga</th>
+                <th>Subtotal</th>
+                <th>Penyesuaian</th>
+                <th>Total</th>
+            @endif
+
         </tr>
     </thead>
     <tbody>
         @php
-        $totalpembelian = 0;
+            $totalpembelian = 0;
         @endphp
         @foreach ($detailpembelian as $d)
-        @php
-        $total = ($d->qty * $d->harga) + $d->penyesuaian;
-        $totalpembelian += $total;
-        @endphp
-        <tr>
-            <td>{{ $d->kode_barang }}</td>
-            <td>{{ $d->nama_barang }}</td>
-            <td>{{ $d->keterangan }}</td>
-            <td class="text-center">{{ desimal($d->qty) }}</td>
-            <td class="text-right">{{ desimal($d->harga) }}</td>
-            <td class="text-right">{{ desimal($d->harga * $d->qty) }}</td>
-            <td class="text-right">{{ desimal($d->penyesuaian) }}</td>
-            <td class="text-right">{{ desimal($total) }}</td>
-        </tr>
+            @php
+                $total = $d->qty * $d->harga + $d->penyesuaian;
+                $totalpembelian += $total;
+            @endphp
+            <tr>
+                <td>{{ $d->kode_barang }}</td>
+                <td>{{ $d->nama_barang }}</td>
+                <td>{{ $d->keterangan }}</td>
+                <td class="text-center">{{ desimal($d->qty) }}</td>
+                @if (Auth::user()->level != 'admin gudang logistik')
+                    <td class="text-right">{{ desimal($d->harga) }}</td>
+                    <td class="text-right">{{ desimal($d->harga * $d->qty) }}</td>
+                    <td class="text-right">{{ desimal($d->penyesuaian) }}</td>
+                    <td class="text-right">{{ desimal($total) }}</td>
+                @endif
+            </tr>
         @endforeach
-        <tr class="thead-dark">
-            <th colspan="7">TOTAL</th>
-            <th class="text-righ">{{ desimal($totalpembelian) }}</th>
-        </tr>
+        @if (Auth::user()->level != 'admin gudang logistik')
+            <tr class="thead-dark">
+                <th colspan="7">TOTAL</th>
+                <th class="text-righ">{{ desimal($totalpembelian) }}</th>
+            </tr>
+        @endif
     </tbody>
 </table>
 
@@ -80,19 +87,19 @@
         </tr>
     </thead>
     @php
-    $totalpenjualan =0;
+        $totalpenjualan = 0;
     @endphp
     @foreach ($detailpenjualan as $d)
-    @php
-    $total = $d->qty * $d->harga;
-    $totalpenjualan += $total;
-    @endphp
-    <tr>
-        <td>{{ $d->ket_penjualan }}</td>
-        <td class="text-center">{{ desimal($d->qty) }}</td>
-        <td class="text-right">{{ desimal($d->harga) }}</td>
-        <td class="text-right">{{ desimal($total) }}</td>
-    </tr>
+        @php
+            $total = $d->qty * $d->harga;
+            $totalpenjualan += $total;
+        @endphp
+        <tr>
+            <td>{{ $d->ket_penjualan }}</td>
+            <td class="text-center">{{ desimal($d->qty) }}</td>
+            <td class="text-right">{{ desimal($d->harga) }}</td>
+            <td class="text-right">{{ desimal($total) }}</td>
+        </tr>
     @endforeach
     <tr class="thead-danger">
         <th colspan="3">TOTAL POTONGAN</th>
@@ -118,28 +125,28 @@
     </thead>
     <tbody>
         @foreach ($kontrabon as $d)
-        @if ($d->kategori=="TN")
-        @php
-        $kategori = "TUNAI";
-        @endphp
-        @else
-        @php
-        $kategori = $d->kategori;
-        @endphp
-        @endif
-        <tr>
-            <td>{{ $d->no_kontrabon }}</td>
-            <td>{{ DateToIndo2($d->tgl_kontrabon) }}</td>
-            <td>{{ desimal($d->jmlbayar) }}</td>
-            <td>{{ $kategori }}</td>
-            <td>
-                @if (empty($d->tglbayar))
-                <span class="badge bg-danger">Belum Bayar</span>
-                @else
-                <span class="badge bg-success">{{ DateToIndo2($d->tglbayar) }}</span>
-                @endif
-            </td>
-        </tr>
+            @if ($d->kategori == 'TN')
+                @php
+                    $kategori = 'TUNAI';
+                @endphp
+            @else
+                @php
+                    $kategori = $d->kategori;
+                @endphp
+            @endif
+            <tr>
+                <td>{{ $d->no_kontrabon }}</td>
+                <td>{{ DateToIndo2($d->tgl_kontrabon) }}</td>
+                <td>{{ desimal($d->jmlbayar) }}</td>
+                <td>{{ $kategori }}</td>
+                <td>
+                    @if (empty($d->tglbayar))
+                        <span class="badge bg-danger">Belum Bayar</span>
+                    @else
+                        <span class="badge bg-success">{{ DateToIndo2($d->tglbayar) }}</span>
+                    @endif
+                </td>
+            </tr>
         @endforeach
     </tbody>
 </table>
