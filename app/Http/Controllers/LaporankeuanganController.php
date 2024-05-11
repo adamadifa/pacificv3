@@ -34,10 +34,11 @@ class LaporankeuanganController extends Controller
     {
         $cbg = new Cabang();
         if (Auth::user()->level == "audit") {
-            $cabang = DB::table('cabang')->where('kode_cabang', '!=', 'PST');
+            $cabang = DB::table('cabang')->where('kode_cabang', '!=', 'PST')->get();
         } else {
             $cabang = $cbg->getCabanggudang($this->cabang);
         }
+
         return view('kaskecil.laporan.frm.lap_kaskecil', compact('cabang'));
     }
 
