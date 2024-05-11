@@ -34,7 +34,7 @@
                                             <div class="col-lg-12 col-sm-12">
                                                 <div class="form-group  ">
                                                     <select name="kode_bank" id="kode_bank" class="form-control select2">
-                                                        @if ($getcbg != 'PCF')
+                                                        @if ($getcbg != 'PCF' && Auth::user()->level == 'audit' && Auth::user()->level == 'manager audit')
                                                             <option value="-">Pilih Bank</option>
                                                         @else
                                                             <option value="">Semua Ledger</option>
