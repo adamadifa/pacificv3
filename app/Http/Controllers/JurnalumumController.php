@@ -32,6 +32,8 @@ class JurnalumumController extends Controller
             $query->where('kode_dept', 'HRD');
         } else if (Auth::user()->level == "general affair") {
             $query->where('kode_dept', 'GAF');
+        } else if (Auth::user()->level == "manager ga") {
+            $query->where('kode_dept', 'GAF');
         }
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         $jurnalumum = $query->get();
