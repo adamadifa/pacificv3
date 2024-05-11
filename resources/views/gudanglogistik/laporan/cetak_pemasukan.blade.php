@@ -114,9 +114,9 @@
                 <td align="center" bgcolor="#024a75"><?php echo desimal($qty); ?></td>
                 <td bgcolor="#024a75"></td>
                 @if (Auth::user()->level != 'admin gudang logistik')
-                    <td align="right" bgcolor="#024a75"></td>
-                @else
                     <td align="right" bgcolor="#024a75"><?php echo desimal($harga); ?></td>
+                @else
+                    <td align="right" bgcolor="#024a75"></td>
                 @endif
             </tr>
         </tbody>
