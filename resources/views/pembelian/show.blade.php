@@ -73,80 +73,81 @@
         @endif
     </tbody>
 </table>
-
-<table class="table table-hover-animation">
-    <thead class="thead-danger">
-        <tr>
-            <th colspan="4">POTONGAN</th>
-        </tr>
-        <tr>
-            <th>Keterangan</th>
-            <th>Qty</th>
-            <th>Harga</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    @php
-        $totalpenjualan = 0;
-    @endphp
-    @foreach ($detailpenjualan as $d)
-        @php
-            $total = $d->qty * $d->harga;
-            $totalpenjualan += $total;
-        @endphp
-        <tr>
-            <td>{{ $d->ket_penjualan }}</td>
-            <td class="text-center">{{ desimal($d->qty) }}</td>
-            <td class="text-right">{{ desimal($d->harga) }}</td>
-            <td class="text-right">{{ desimal($total) }}</td>
-        </tr>
-    @endforeach
-    <tr class="thead-danger">
-        <th colspan="3">TOTAL POTONGAN</th>
-        <th class="text-right">{{ desimal($totalpenjualan) }}</th>
-    </tr>
-    <tr class="thead-info">
-        <th colspan="3">GRAND TOTAL</th>
-        <th class="text-right">{{ desimal($totalpembelian - $totalpenjualan) }}</th>
-    </tr>
-</table>
-<table class="table table-hover-animation">
-    <thead class="thead-success">
-        <tr>
-            <th colspan="6">HISTORI KONTRA BON</th>
-        </tr>
-        <tr>
-            <th>No Kontra BON</th>
-            <th>Tanggal</th>
-            <th>Jumlah</th>
-            <th>Jenis Pengajuan</th>
-            <th>Tgl Cair</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($kontrabon as $d)
-            @if ($d->kategori == 'TN')
-                @php
-                    $kategori = 'TUNAI';
-                @endphp
-            @else
-                @php
-                    $kategori = $d->kategori;
-                @endphp
-            @endif
+@if (Auth::user()->level != 'admin gudang logistik')
+    <table class="table table-hover-animation">
+        <thead class="thead-danger">
             <tr>
-                <td>{{ $d->no_kontrabon }}</td>
-                <td>{{ DateToIndo2($d->tgl_kontrabon) }}</td>
-                <td>{{ desimal($d->jmlbayar) }}</td>
-                <td>{{ $kategori }}</td>
-                <td>
-                    @if (empty($d->tglbayar))
-                        <span class="badge bg-danger">Belum Bayar</span>
-                    @else
-                        <span class="badge bg-success">{{ DateToIndo2($d->tglbayar) }}</span>
-                    @endif
-                </td>
+                <th colspan="4">POTONGAN</th>
+            </tr>
+            <tr>
+                <th>Keterangan</th>
+                <th>Qty</th>
+                <th>Harga</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        @php
+            $totalpenjualan = 0;
+        @endphp
+        @foreach ($detailpenjualan as $d)
+            @php
+                $total = $d->qty * $d->harga;
+                $totalpenjualan += $total;
+            @endphp
+            <tr>
+                <td>{{ $d->ket_penjualan }}</td>
+                <td class="text-center">{{ desimal($d->qty) }}</td>
+                <td class="text-right">{{ desimal($d->harga) }}</td>
+                <td class="text-right">{{ desimal($total) }}</td>
             </tr>
         @endforeach
-    </tbody>
-</table>
+        <tr class="thead-danger">
+            <th colspan="3">TOTAL POTONGAN</th>
+            <th class="text-right">{{ desimal($totalpenjualan) }}</th>
+        </tr>
+        <tr class="thead-info">
+            <th colspan="3">GRAND TOTAL</th>
+            <th class="text-right">{{ desimal($totalpembelian - $totalpenjualan) }}</th>
+        </tr>
+    </table>
+    <table class="table table-hover-animation">
+        <thead class="thead-success">
+            <tr>
+                <th colspan="6">HISTORI KONTRA BON</th>
+            </tr>
+            <tr>
+                <th>No Kontra BON</th>
+                <th>Tanggal</th>
+                <th>Jumlah</th>
+                <th>Jenis Pengajuan</th>
+                <th>Tgl Cair</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($kontrabon as $d)
+                @if ($d->kategori == 'TN')
+                    @php
+                        $kategori = 'TUNAI';
+                    @endphp
+                @else
+                    @php
+                        $kategori = $d->kategori;
+                    @endphp
+                @endif
+                <tr>
+                    <td>{{ $d->no_kontrabon }}</td>
+                    <td>{{ DateToIndo2($d->tgl_kontrabon) }}</td>
+                    <td>{{ desimal($d->jmlbayar) }}</td>
+                    <td>{{ $kategori }}</td>
+                    <td>
+                        @if (empty($d->tglbayar))
+                            <span class="badge bg-danger">Belum Bayar</span>
+                        @else
+                            <span class="badge bg-success">{{ DateToIndo2($d->tglbayar) }}</span>
+                        @endif
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+@endif
