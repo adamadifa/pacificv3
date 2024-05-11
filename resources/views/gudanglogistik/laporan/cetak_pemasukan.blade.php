@@ -100,7 +100,7 @@
                     <td align="right"><?php echo desimal($d->qty * $d->harga + $d->penyesuaian); ?></td>
                 @else
                     <td align="right"></td>
-                    <td align="center"></td>
+                    <td align="center"><?php echo desimal($d->qty); ?></td>
                     <td align="right"></td>
                     <td align="right"></td>
                 @endif
