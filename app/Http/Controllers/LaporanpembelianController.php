@@ -79,7 +79,7 @@ class LaporanpembelianController extends Controller
             $query->where('pembelian.kode_dept', $kode_dept);
         }
 
-        if (Auth::user()->level == "manager ga") {
+        if (Auth::user()->level == "general affair") {
             $query->whereIn('detail_pembelian.kode_akun', $akun_ga);
         }
         $query->orderBy('tgl_pembelian');
