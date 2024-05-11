@@ -92,7 +92,7 @@ class LaporangudanglogistikController extends Controller
         $sampai = $request->sampai;
         lockreport($dari);
         $query = Detailpengeluarangudanglogistik::query();
-        $query->selectRaw("tgl_pengeluaran,detail_pengeluaran.*,nama_dept,nama_barang,satuan,nama_cabang");
+        $query->selectRaw("tgl_pengeluaran,detail_pengeluaran.*,nama_dept,nama_barang,satuan,nama_cabang,kategori");
         $query->join('pengeluaran', 'detail_pengeluaran.nobukti_pengeluaran', '=', 'pengeluaran.nobukti_pengeluaran');
         $query->leftJoin('cabang', 'detail_pengeluaran.kode_cabang', '=', 'cabang.kode_cabang');
         $query->leftJoin('departemen', 'pengeluaran.kode_dept', '=', 'departemen.kode_dept');

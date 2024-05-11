@@ -10,6 +10,7 @@ use App\Models\Jurnalkoreksi;
 use App\Models\Pembelian;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LaporanpembelianController extends Controller
@@ -29,6 +30,26 @@ class LaporanpembelianController extends Controller
         $dari = $request->dari;
         $sampai = $request->sampai;
         lockreport($dari);
+        $akun_ga = [
+            '1-2100',
+            '1-2200',
+            '1-2210',
+            '1-2220',
+            '1-2300',
+            '1-2310',
+            '1-2320',
+            '1-2400',
+            '1-2410',
+            '1-2420',
+            '1-2500',
+            '1-2510',
+            '1-2520',
+            '1-2600',
+            '1-2610',
+            '1-2620',
+            '1-2700',
+            '1-2710'
+        ];
         $supplier = DB::table('supplier')->where('kode_supplier', $kode_supplier)->first();
         $departemen = DB::table('departemen')->where('kode_dept', $kode_dept)->first();
         $query = Detailpembelian::query();
@@ -58,6 +79,9 @@ class LaporanpembelianController extends Controller
             $query->where('pembelian.kode_dept', $kode_dept);
         }
 
+        if (Auth::user()->level == "manager ga") {
+            $query->where('detail_pembelian.kode_akun', $akun_ga);
+        }
         $query->orderBy('tgl_pembelian');
         $query->orderBy('detail_pembelian.nobukti_pembelian');
         $query->orderBy('detail_pembelian.status');

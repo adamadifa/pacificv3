@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Pengeluaran Barang Gudang Logistik {{ date("d-m-y") }}</title>
+    <title>Rekap Pengeluaran Barang Gudang Logistik {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,30 +36,30 @@
         tr:nth-child(even) {
             background-color: #d6d6d6c2;
         }
-
     </style>
 
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAP BARANG KELUAR<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($departemen != null)
-        DEPARTEMEN {{ $departemen->nama_dept }}
+            DEPARTEMEN {{ $departemen->nama_dept }}
         @endif
         <br>
         @if ($cabang != null)
-        CABANG {{ $cabang->nama_cabang }}
+            CABANG {{ $cabang->nama_cabang }}
         @endif
         <br>
         @if ($kategori != null)
-        KATEGORI {{ $kategori->kategori }}
+            KATEGORI {{ $kategori->kategori }}
         @endif
         <br>
         @if ($barang != null)
-        {{ $barang->nama_barang }}
+            {{ $barang->nama_barang }}
         @endif
     </b>
     <br>
@@ -111,4 +112,5 @@
     </table>
 
 </body>
+
 </html>
