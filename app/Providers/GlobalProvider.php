@@ -1311,14 +1311,14 @@ class GlobalProvider extends ServiceProvider
                 'admin maintenance', 'spv maintenance',
                 'spv pdqc', 'spv gudang pusat'
             ];
-            $hari_libur_menu = ['admin', 'manager hrd', 'spv presensi'];
+            $hari_libur_menu = ['admin', 'manager hrd', 'spv presensi', 'manager produksi'];
             $pembayaran_jmk = ['admin', 'manager hrd', 'spv recruitment'];
             $pelanggaran_menu = ['admin', 'manager hrd', 'spv recruitment'];
             $gaji_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv presensi', 'spv recruitment'];
             $insentif_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv presensi', 'spv recruitment'];
             $bpjs_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv presensi', 'spv recruitment'];
-            $monitoring_presensi = ['admin', 'manager hrd', 'spv presensi', 'manager audit'];
-            $presensi_karyawan_menu = ['admin', 'manager hrd', 'spv presensi'];
+            $monitoring_presensi = ['admin', 'manager hrd', 'spv presensi', 'manager audit', 'manager produksi'];
+            $presensi_karyawan_menu = ['admin', 'manager hrd', 'spv presensi', 'manager produksi'];
             $slip_gaji = ['admin', 'manager hrd', 'spv presensi'];
             $lembur_menu = ['admin', 'manager hrd', 'spv presensi', 'spv maintenance', 'manager produksi', 'manager ga', 'emf', 'direktur', 'kepala gudang'];
             //General Affair
@@ -1355,7 +1355,7 @@ class GlobalProvider extends ServiceProvider
 
             $lap_hrd = [
                 'admin', 'manager hrd', 'spv presensi',
-                'kepala gudang', 'manager accounting', 'rom', 'emf', 'spv maintenance'
+                'kepala gudang', 'manager accounting', 'rom', 'emf', 'spv maintenance', 'manager produksi'
             ];
             $lap_gaji = ['admin', 'manager hrd', 'spv presensi', 'spv recruitment', 'manager accounting', 'rom', 'direktur'];
 
