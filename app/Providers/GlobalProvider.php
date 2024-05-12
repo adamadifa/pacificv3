@@ -1320,7 +1320,7 @@ class GlobalProvider extends ServiceProvider
             $monitoring_presensi = ['admin', 'manager hrd', 'spv presensi', 'manager audit'];
             $presensi_karyawan_menu = ['admin', 'manager hrd', 'spv presensi'];
             $slip_gaji = ['admin', 'manager hrd', 'spv presensi'];
-            $lembur_menu = ['admin', 'manager hrd', 'spv presensi', 'spv maintenance', 'manager produksi', 'manager ga', 'emf', 'direktur'];
+            $lembur_menu = ['admin', 'manager hrd', 'spv presensi', 'spv maintenance', 'manager produksi', 'manager ga', 'emf', 'direktur', 'kepala gudang'];
             //General Affair
             $ga_menu = ['admin', 'manager ga', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'rom', 'emf'];
             $dashboard_ga = ['admin', 'manager ga', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'rom', 'emf'];
