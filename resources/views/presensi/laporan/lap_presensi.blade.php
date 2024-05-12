@@ -212,6 +212,8 @@
                }
             });
          }
+
+         loadgroup();
          $("#id_kantor").change(function(e) {
             loaddepartemen();
             loadgroup();
