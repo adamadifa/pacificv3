@@ -586,6 +586,7 @@
             <th>SAMBAL CABE 200</th>
             <th>SAUS PREMIUM 500</th>
             <th>BUMBU TABUR</th>
+            <th>PREMIUM POUCH 1000</th>
          </tr>
       </thead>
       <tbody>
