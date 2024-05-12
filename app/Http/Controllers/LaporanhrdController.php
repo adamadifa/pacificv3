@@ -129,7 +129,7 @@ class LaporanhrdController extends Controller
         $id_kantor = $request->id_kantor;
         $kode_dept = Auth::user()->kode_dept_presensi;
         if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
-            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin" || Auth::user()->level == "spv presensi") {
                 $group = DB::table('master_karyawan')
                     ->select('master_karyawan.grup', 'nama_group')
                     ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
@@ -446,8 +446,8 @@ class LaporanhrdController extends Controller
                 }
             }
         }
-        if($jenislaporan_gaji =="5" || $jenislaporan_gaji=="7"){
-            $query->where('status_karyawan','!=','O');
+        if ($jenislaporan_gaji == "5" || $jenislaporan_gaji == "7") {
+            $query->where('status_karyawan', '!=', 'O');
         }
         $query->where('status_aktif', 1);
         $query->where('tgl_masuk', '<=', $sampai);
@@ -481,8 +481,8 @@ class LaporanhrdController extends Controller
                 }
             }
         }
-        if($jenislaporan_gaji =="5" || $jenislaporan_gaji=="7"){
-            $query->where('status_karyawan','!=','O');
+        if ($jenislaporan_gaji == "5" || $jenislaporan_gaji == "7") {
+            $query->where('status_karyawan', '!=', 'O');
         }
 
 
