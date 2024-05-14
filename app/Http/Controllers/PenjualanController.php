@@ -9601,4 +9601,60 @@ class PenjualanController extends Controller
             return 0;
         }
     }
+
+    public function rekaptandatangan()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('penjualan.laporan.frm.lap_rekaptandatangan', compact('cabang'));
+    }
+
+    public function cetakrekaptandatangan(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        lockreport($dari);
+        $query = Penjualan::query();
+        $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan,penjualan.total, totalretur,totalbayar');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_fak_penj, SUM(total) as totalretur
+            FROM retur
+            GROUP BY no_fak_penj
+        ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_fak_penj, SUM(bayar) as totalbayar
+            FROM historibayar
+            WHERE tglbayar BETWEEN '$dari' AND '$sampai'
+            GROUP BY no_fak_penj
+        ) hb"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+            }
+        );
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        if (!empty($request->id_karyawan)) {
+            $query->where('penjualan.id_karyawan', $id_karyawan);
+        }
+        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $query->where('jenistransaksi', 'tunai');
+        $query->where('jenisbayar', 'transfer');
+        if (!empty($kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+        }
+        $tunaitransfer = $query->get();
+
+
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_tunaitransfer', compact('tunaitransfer', 'cabang', 'dari', 'sampai', 'salesman'));
+    }
 }
