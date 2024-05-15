@@ -56,6 +56,7 @@ class LemburController extends Controller
                     $query->orderBy('dirut', 'asc');
                 } else if ($level == "spv presensi") {
                     $query->orderBy('head', 'desc');
+                    $query->orderBy('dirut', 'asc');
                     $query->orderBy('hrd');
                 }
             } else if ($level == "manager ga") {
