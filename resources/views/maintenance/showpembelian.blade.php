@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>Supplier</td>
-        <td>{{ $pembelian->kode_supplier  }} - {{ $pembelian->nama_supplier }}</td>
+        <td>{{ $pembelian->kode_supplier }} - {{ $pembelian->nama_supplier }}</td>
     </tr>
     <tr>
         <td>Departemen</td>
@@ -19,7 +19,7 @@
         <td>PPN</td>
         <td class="success">
             @if (!empty($pembelian->ppn))
-            <i class="fa fa-check"></i> {{ $pembelian->no_fak_pajak }}
+                <i class="fa fa-check"></i> {{ $pembelian->no_fak_pajak }}
             @endif
         </td>
     </tr>
@@ -34,39 +34,39 @@
             <th>Nama Barang</th>
             <th>Keterangan</th>
             <th>Qty</th>
-            <th>Harga</th>
+            {{-- <th>Harga</th>
             <th>Subtotal</th>
             <th>Penyesuaian</th>
-            <th>Total</th>
+            <th>Total</th> --}}
         </tr>
     </thead>
     <tbody>
         @php
-        $totalpembelian = 0;
+            $totalpembelian = 0;
         @endphp
         @foreach ($detailpembelian as $d)
-        @php
-        $total = ($d->qty * $d->harga) + $d->penyesuaian;
-        $totalpembelian += $total;
-        @endphp
-        <tr>
-            <td>{{ $d->kode_barang }}</td>
-            <td>{{ $d->nama_barang }}</td>
-            <td>{{ $d->keterangan }}</td>
-            <td class="text-center">{{ desimal($d->qty) }}</td>
-            <td class="text-right">{{ desimal($d->harga) }}</td>
-            <td class="text-right">{{ desimal($d->harga * $d->qty) }}</td>
-            <td class="text-right">{{ desimal($d->penyesuaian) }}</td>
-            <td class="text-right">{{ desimal($total) }}</td>
-        </tr>
+            @php
+                $total = $d->qty * $d->harga + $d->penyesuaian;
+                $totalpembelian += $total;
+            @endphp
+            <tr>
+                <td>{{ $d->kode_barang }}</td>
+                <td>{{ $d->nama_barang }}</td>
+                <td>{{ $d->keterangan }}</td>
+                <td class="text-center">{{ desimal($d->qty) }}</td>
+                {{-- <td class="text-right">{{ desimal($d->harga) }}</td>
+                <td class="text-right">{{ desimal($d->harga * $d->qty) }}</td>
+                <td class="text-right">{{ desimal($d->penyesuaian) }}</td>
+                <td class="text-right">{{ desimal($total) }}</td> --}}
+            </tr>
         @endforeach
-        <tr class="thead-dark">
-            <th colspan="7">TOTAL</th>
+        {{-- <tr class="thead-dark">
+            <th colspan="">TOTAL</th>
             <th class="text-righ">{{ desimal($totalpembelian) }}</th>
-        </tr>
+        </tr> --}}
     </tbody>
 </table>
-<form action="/maintenance/{{ Crypt::encrypt($pembelian->nobukti_pembelian)  }}/storepembelian" method="post">
+<form action="/maintenance/{{ Crypt::encrypt($pembelian->nobukti_pembelian) }}/storepembelian" method="post">
     @csrf
     <div class="row">
         <div class="col-12">
