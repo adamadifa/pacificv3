@@ -9601,4 +9601,48 @@ class PenjualanController extends Controller
             return 0;
         }
     }
+
+    public function rekaptandatangan()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('penjualan.laporan.frm.lap_rekaptandatangan', compact('cabang'));
+    }
+
+    public function cetakrekaptandatangan(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        lockreport($dari);
+        $query = Penjualan::query();
+        $query->selectRaw('penjualan.kode_pelanggan,nama_pelanggan,SUM(IF(cektandatangan IS NOT NULL,1,0))as cek');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT penjualan.kode_pelanggan,SUM(IF(signature IS NOT NULL,1,0)) as cektandatangan
+                FROM penjualan
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                WHERE  signature IS NOT NULL
+                GROUP BY penjualan.kode_pelanggan
+            ) signature"),
+            function ($join) {
+                $join->on('penjualan.kode_pelanggan', '=', 'signature.kode_pelanggan');
+            }
+        );
+
+        if (!empty($request->id_karyawan)) {
+            $query->where('penjualan.id_karyawan', $id_karyawan);
+        }
+        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $query->where('karyawan.kode_cabang', $kode_cabang);
+        $query->groupBy('penjualan.kode_pelanggan');
+        $rekaptandatangan = $query->get();
+        // dd($rekaptandatangan);
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_rekaptandatangan', compact('rekaptandatangan', 'cabang', 'dari', 'sampai', 'salesman'));
+    }
 }

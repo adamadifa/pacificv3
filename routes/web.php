@@ -1373,10 +1373,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporanpenjualan/persentasesfa', [PenjualanController::class, 'persentasesfa']);
     Route::get('/laporanpenjualan/persentaselokasi', [PenjualanController::class, 'persentaselokasi']);
     Route::get('/laporanpenjualan/tunaitransfer', [PenjualanController::class, 'tunaitransfer']);
+    Route::get('/laporanpenjualan/rekaptandatangan', [PenjualanController::class, 'rekaptandatangan']);
+
     Route::post('/laporanpenjualan/analisatransaksi/cetak', [PenjualanController::class, 'cetakanalisatransaksi']);
     Route::post('/laporanpenjualan/persentasesfa/cetak', [PenjualanController::class, 'cetakpersentasesfa']);
     Route::post('/laporanpenjualan/persentaselokasi/cetak', [PenjualanController::class, 'cetakpersentaselokasi']);
     Route::post('/laporanpenjualan/tunaitransfer/cetak', [PenjualanController::class, 'cetaktunaitransfer']);
+    Route::post('/laporanpenjualan/rekaptandatangan/cetak', [PenjualanController::class, 'cetakrekaptandatangan']);
     Route::post('/penjualan/ceknofaktur', [PenjualanController::class, 'ceknofaktur']);
     Route::post('/penjualan/editbarangtemp', [PenjualanController::class, 'editbarangtemp']);
     Route::post('/penjualan/inputbarangtemp', [PenjualanController::class, 'inputbarangtemp']);
