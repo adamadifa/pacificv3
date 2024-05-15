@@ -1200,9 +1200,9 @@ class GlobalProvider extends ServiceProvider
                 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc', 'admin pajak 2'
             ];
             $laporan_rekappersediaan = [
-                'admin', 'kepala gudang',
-                'admin gudang bahan', 'spv pdqc', 'direktur', 'manager accounting', 'rom',
-                'spv accounting', 'audit', 'manager audit', 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc', 'admin pajak 2'
+                'admin',
+                'direktur', 'manager accounting',
+                'spv accounting',  'admin pusat'
             ];
 
             //Laporan Gudang Jadi
