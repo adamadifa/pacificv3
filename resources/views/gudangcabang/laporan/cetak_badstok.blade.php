@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Bad Stok Gudang Cabang {{ date("d-m-y") }}</title>
+    <title>Laporan Bad Stok Gudang Cabang {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         PACIFIC CABANG {{ $cabang->nama_cabang }}
@@ -85,88 +86,92 @@
         </thead>
         <tbody>
             @php
-            $saldoakhir = $saldoawal;
-            $totalreject_pasar = 0;
-            $totalreject_gudang = 0;
-            $totalreject_mobil = 0;
-            $total_penybad_in = 0;
-            $total_penybad_out = 0;
-            $totalkirimpusat = 0;
-            $totalrepack = 0;
+                $saldoakhir = $saldoawal;
+                $totalreject_pasar = 0;
+                $totalreject_gudang = 0;
+                $totalreject_mobil = 0;
+                $total_penybad_in = 0;
+                $total_penybad_out = 0;
+                $totalkirimpusat = 0;
+                $totalrepack = 0;
 
             @endphp
             @foreach ($mutasi as $d)
-            @php
-            if($d->jenis_mutasi=="REPACK" OR $d->jenis_mutasi=="REJECT GUDANG" OR $d->jenis_mutasi=="REJECT PASAR" OR $d->jenis_mutasi=="REJECT MOBIL")
-            {
-            $no_repackreject = $d->no_mutasi_gudang_cabang;
-            $no_dpb = $d->no_dpb;
-            }else{
-            $no_repackreject = "";
-            $no_dpb = $d->no_mutasi_gudang_cabang;
-            }
+                @php
+                    if (
+                        $d->jenis_mutasi == 'REPACK' or
+                        $d->jenis_mutasi == 'REJECT GUDANG' or
+                        $d->jenis_mutasi == 'REJECT PASAR' or
+                        $d->jenis_mutasi == 'REJECT MOBIL'
+                    ) {
+                        $no_repackreject = $d->no_mutasi_gudang_cabang;
+                        $no_dpb = $d->no_dpb;
+                    } else {
+                        $no_repackreject = '';
+                        $no_dpb = $d->no_mutasi_gudang_cabang;
+                    }
 
-            if($d->jenis_mutasi=="KIRIM PUSAT"){
-            $ket = "PENYERAHAN BS KE PUSAT";
-            }else if($d->jenis_mutasi=="PENYESUAIAN BAD"){
-            $ket = $d->keterangan;
-            }else{
-            $ket = $d->jenis_mutasi;
-            }
+                    if ($d->jenis_mutasi == 'KIRIM PUSAT') {
+                        $ket = 'PENYERAHAN BS KE PUSAT';
+                    } elseif ($d->jenis_mutasi == 'PENYESUAIAN BAD') {
+                        $ket = $d->keterangan;
+                    } else {
+                        $ket = $d->jenis_mutasi;
+                    }
 
-            if ($d->jenis_mutasi == "PENYESUAIAN BAD") {
-            if ($d->inout_bad == "OUT") {
-            $jml_penybad_out = $d->penyesuaian_bad;
-            $jml_penybad_in = 0;
-            } else {
-            $jml_penybad_out = 0;
-            $jml_penybad_in = $d->penyesuaian_bad;
-            }
-            }else{
-            $jml_penybad_out = 0;
-            $jml_penybad_in = 0;
-            }
-            $reject_pasar = $d->reject_pasar / $d->isipcsdus;
-            $reject_mobil = $d->reject_mobil / $d->isipcsdus;
-            $reject_gudang = $d->reject_gudang / $d->isipcsdus;
-            $jml_penybad_in = $jml_penybad_in / $d->isipcsdus;
-            $jml_penybad_out = $jml_penybad_out / $d->isipcsdus;
-            $kirim_pusat = $d->kirim_pusat / $d->isipcsdus;
-            $repack = $d->repack / $d->isipcsdus;
+                    if ($d->jenis_mutasi == 'PENYESUAIAN BAD') {
+                        if ($d->inout_bad == 'OUT') {
+                            $jml_penybad_out = $d->penyesuaian_bad;
+                            $jml_penybad_in = 0;
+                        } else {
+                            $jml_penybad_out = 0;
+                            $jml_penybad_in = $d->penyesuaian_bad;
+                        }
+                    } else {
+                        $jml_penybad_out = 0;
+                        $jml_penybad_in = 0;
+                    }
+                    $reject_pasar = $d->reject_pasar / $d->isipcsdus;
+                    $reject_mobil = $d->reject_mobil / $d->isipcsdus;
+                    $reject_gudang = $d->reject_gudang / $d->isipcsdus;
+                    $jml_penybad_in = $jml_penybad_in / $d->isipcsdus;
+                    $jml_penybad_out = $jml_penybad_out / $d->isipcsdus;
+                    $kirim_pusat = $d->kirim_pusat / $d->isipcsdus;
+                    $repack = $d->repack / $d->isipcsdus;
 
-            $penerimaan = $reject_pasar + $reject_mobil + $reject_gudang + $jml_penybad_in;
-            $pengeluaran = $jml_penybad_out + $kirim_pusat + $repack;
-            $saldoakhir = $saldoakhir + $penerimaan - $pengeluaran;
+                    $penerimaan = $reject_pasar + $reject_mobil + $reject_gudang + $jml_penybad_in;
+                    $pengeluaran = $jml_penybad_out + $kirim_pusat + $repack;
+                    $saldoakhir = $saldoakhir + $penerimaan - $pengeluaran;
 
-            $totalreject_pasar += $reject_pasar;
-            $totalreject_gudang += $reject_gudang;
-            $totalreject_mobil += $reject_mobil;
-            $total_penybad_in += $jml_penybad_in;
-            $total_penybad_out += $jml_penybad_out;
-            $totalkirimpusat += $kirim_pusat;
-            $totalrepack += $repack;
-            if ($d->inout_bad == 'IN') {
-            $color_sa = "#28a745";
-            } else {
-            $color_sa = "#c7473a";
-            }
-            @endphp
-            <tr>
-                <td>{{ DateToIndo2($d->tgl_mutasi_gudang_cabang) }}</td>
-                <td>{{ $no_repackreject }}</td>
-                <td>{{ $no_dpb }}</td>
-                <td>{{ $ket }}</td>
-                <td align="right">{{ !empty($reject_pasar) ? desimal($reject_pasar) :'' }}</td>
-                <td align="right">{{ !empty($reject_mobil) ? desimal($reject_mobil) :'' }}</td>
-                <td align="right">{{ !empty($reject_gudang) ? desimal($reject_gudang) :'' }}</td>
-                <td align="right">{{ !empty($jml_penybad_in) ? desimal($jml_penybad_in) :'' }}</td>
-                <td align="right">{{ !empty($kirim_pusat) ? desimal($kirim_pusat) :'' }}</td>
-                <td align="right">{{ !empty($repack) ? desimal($repack) :'' }}</td>
-                <td align="right">{{ !empty($jml_penybad_out) ? desimal($jml_penybad_out) :'' }}</td>
-                <td align="right" style="background-color:{{ $color_sa }}">{{ desimal($saldoakhir) }}</td>
-                <td>{{ date("d-m-y H:i:s",strtotime($d->date_created)) }}</td>
-                <td>{{ !empty($d->date_updated) ? date("d-m-y H:i:s",strtotime($d->date_updated)) : '' }}</td>
-            </tr>
+                    $totalreject_pasar += $reject_pasar;
+                    $totalreject_gudang += $reject_gudang;
+                    $totalreject_mobil += $reject_mobil;
+                    $total_penybad_in += $jml_penybad_in;
+                    $total_penybad_out += $jml_penybad_out;
+                    $totalkirimpusat += $kirim_pusat;
+                    $totalrepack += $repack;
+                    if ($d->inout_bad == 'IN') {
+                        $color_sa = '#28a745';
+                    } else {
+                        $color_sa = '#c7473a';
+                    }
+                @endphp
+                <tr>
+                    <td>{{ DateToIndo2($d->tgl_mutasi_gudang_cabang) }}</td>
+                    <td>{{ $no_repackreject }}</td>
+                    <td>{{ $no_dpb }}</td>
+                    <td>{{ $ket }}</td>
+                    <td align="right">{{ !empty($reject_pasar) ? desimal($reject_pasar) : '' }}</td>
+                    <td align="right">{{ !empty($reject_mobil) ? desimal($reject_mobil) : '' }}</td>
+                    <td align="right">{{ !empty($reject_gudang) ? desimal($reject_gudang) : '' }}</td>
+                    <td align="right">{{ !empty($jml_penybad_in) ? desimal($jml_penybad_in) : '' }}</td>
+                    <td align="right">{{ !empty($kirim_pusat) ? desimal($kirim_pusat) : '' }}</td>
+                    <td align="right">{{ !empty($repack) ? desimal($repack) : '' }}</td>
+                    <td align="right">{{ !empty($jml_penybad_out) ? desimal($jml_penybad_out) : '' }}</td>
+                    <td align="right" style="background-color:{{ $color_sa }}">{{ desimal($saldoakhir) }}</td>
+                    <td>{{ date('d-m-y H:i:s', strtotime($d->date_created)) }}</td>
+                    <td>{{ !empty($d->date_updated) ? date('d-m-y H:i:s', strtotime($d->date_updated)) : '' }}</td>
+                </tr>
             @endforeach
         </tbody>
         <tfoot>
@@ -187,4 +192,5 @@
     </table>
 
 </body>
+
 </html>
