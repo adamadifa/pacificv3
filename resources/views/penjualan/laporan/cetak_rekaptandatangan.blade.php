@@ -95,11 +95,11 @@
       <tfoot>
          <tr>
             <th colspan="3">SUDAH ADA TANDA TANGAN</th>
-            <th>{{ $ada . '/' . $total }} ({{ ROUND(($ada / $total) * 100) }}%)</th>
+            <th>{{ $ada . '/' . $total }} ({{ !empty($total) ? ROUND(($ada / $total) * 100) : 0 }}%)</th>
          </tr>
          <tr>
             <th colspan="3">BELUM ADA TANDA TANGAN</th>
-            <th>{{ $tidakada . '/' . $total }} ({{ ROUND(($tidakada / $total) * 100) }}%)</th>
+            <th>{{ $tidakada . '/' . $total }} ({{ !empty($total) ? ROUND(($tidakada / $total) * 100) : 0 }}%)</th>
          </tr>
       </tfoot>
    </table>
