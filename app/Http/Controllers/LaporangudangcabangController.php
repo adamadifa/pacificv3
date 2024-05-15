@@ -306,9 +306,9 @@ class LaporangudangcabangController extends Controller
             ->first();
 
         $mtsa = DB::table('detail_mutasi_gudang_cabang')
-            ->selectRaw("SUM(IF( `inout_good` = 'IN', jumlah, 0)) AS jml_in,
-            SUM(IF( `inout_good` = 'OUT', jumlah, 0)) AS jml_out,
-            SUM(IF( `inout_good` = 'IN', jumlah, 0)) -SUM(IF( `inout_good` = 'OUT', jumlah, 0)) as jumlah,
+            ->selectRaw("SUM(IF( `inout_bad` = 'IN', jumlah, 0)) AS jml_in,
+            SUM(IF( `inout_bad` = 'OUT', jumlah, 0)) AS jml_out,
+            SUM(IF( `inout_bad` = 'IN', jumlah, 0)) -SUM(IF( `inout_bad` = 'OUT', jumlah, 0)) as jumlah,
             isipcsdus")
             ->join('mutasi_gudang_cabang', 'detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang')
             ->join('master_barang', 'detail_mutasi_gudang_cabang.kode_produk', '=', 'master_barang.kode_produk')
