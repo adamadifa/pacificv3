@@ -363,6 +363,8 @@ class LaporangudangcabangController extends Controller
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
         $mulai = $tahun . "-" . $bulan . "-01";
+
+
         $query = Barang::query();
         $query->selectRaw("master_barang.*,saldo_awal_gs,saldo_awal_bs,pusat,transit_in,retur,lainlain_in,penyesuaian_in,penyesuaianbad_in,repack,
         penjualan,promosi,reject_pasar,reject_mobil,reject_gudang,
