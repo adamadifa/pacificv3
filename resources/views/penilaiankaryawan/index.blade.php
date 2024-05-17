@@ -177,18 +177,40 @@
                                                     @endphp
                                                     <td>
                                                         @php
-                                                            if ($i == 0 && $d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
+                                                            if (
+                                                                $i == 0 &&
+                                                                $d->status == 2 &&
+                                                                !empty($d->$level) &&
+                                                                empty($d->$nextlevel)
+                                                            ) {
                                                                 //Jika Index 0 dan Stataus ==2 dan Level Tidak Kosong dan Level Selanjutnya Kosong Maka X
                                                                 echo "<i class='fa fa-close danger'></i>";
-                                                            } elseif ($i == 0 && $d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
+                                                            } elseif (
+                                                                $i == 0 &&
+                                                                $d->status == 2 &&
+                                                                !empty($d->$level) &&
+                                                                !empty($d->$nextlevel)
+                                                            ) {
                                                                 // Jika Index 0 dan Status == 2 dan LEvel Tidak Kosong dan Level Berikutnya Tidak Kosong Maka V
                                                                 echo "<i class='fa fa-check success'></i>";
-                                                            } elseif ($d->status == 2 && !empty($d->$level) && $level == 'dirut') {
+                                                            } elseif (
+                                                                $d->status == 2 &&
+                                                                !empty($d->$level) &&
+                                                                $level == 'dirut'
+                                                            ) {
                                                                 //Jika Status == 2 Level Tidak Kosong  dan Level == "DIRUT" maka X
                                                                 echo "<i class='fa fa-close danger'></i>";
-                                                            } elseif ($d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
+                                                            } elseif (
+                                                                $d->status == 2 &&
+                                                                !empty($d->$level) &&
+                                                                empty($d->$nextlevel)
+                                                            ) {
                                                                 echo "<i class='fa fa-close danger'></i>";
-                                                            } elseif ($d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
+                                                            } elseif (
+                                                                $d->status == 2 &&
+                                                                !empty($d->$level) &&
+                                                                !empty($d->$nextlevel)
+                                                            ) {
                                                                 echo "<i class='fa fa-check success'></i>";
                                                             } elseif ($d->status == null && empty($d->$level)) {
                                                                 echo "<i class='fa fa-history warning'></i>";
@@ -257,12 +279,16 @@
                                                             @if ($cekindex < count($approve) - 1)
                                                                 @php
                                                                     $nextindex = $cekindex + 1;
-                                                                    $ceklevel = strtolower($inisial[$approve[$nextindex]]);
+                                                                    $ceklevel = strtolower(
+                                                                        $inisial[$approve[$nextindex]],
+                                                                    );
                                                                 @endphp
                                                             @else
                                                                 @php
                                                                     $nextindex = $cekindex;
-                                                                    $ceklevel = strtolower($inisial[$approve[$nextindex]]);
+                                                                    $ceklevel = strtolower(
+                                                                        $inisial[$approve[$nextindex]],
+                                                                    );
                                                                 @endphp
                                                             @endif
 
@@ -306,7 +332,9 @@
                                                                     </a>
                                                                 @else
                                                                     @php
-                                                                        $ceklevel = strtolower($inisial[$approve[$lastindex]]);
+                                                                        $ceklevel = strtolower(
+                                                                            $inisial[$approve[$lastindex]],
+                                                                        );
                                                                     @endphp
                                                                     @if (!empty($d->$ceklevel))
                                                                         <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
