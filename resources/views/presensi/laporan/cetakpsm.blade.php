@@ -738,6 +738,16 @@
                                             $kodeshift = 'P';
                                         }
                                     @endphp
+
+                                    @if ($jam_out == 'NA')
+                                        @php
+                                            if ($namahari == 'Sabtu') {
+                                                $tidakhadir = 5;
+                                            } else {
+                                                $tidakhadir = 7;
+                                            }
+                                        @endphp
+                                    @endif
                                     {{ $kodeshift }}{{ $grandtotaljam < $total_jam ? $grandtotaljam : '' }}
 
                                     @if (!empty($ceklembur))
