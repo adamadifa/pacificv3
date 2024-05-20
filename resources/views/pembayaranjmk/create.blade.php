@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 <form action="/pembayaranjmk/store" method="POST" id="frmJmk">
     @csrf
@@ -31,7 +30,7 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">Pilih Karyawan</option>
                     @foreach ($karyawan as $d)
-                    <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                        <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
                     @endforeach
                 </select>
             </div>
@@ -45,11 +44,12 @@
     <div class="row">
 
         <div class="col-12">
-            <button type="submit" name="submit" class="btn btn-primary text-white w-100"><i class="feather icon-send mr-1"></i>Submit</button>
+            <button type="submit" name="submit" class="btn btn-primary text-white w-100"><i
+                    class="feather icon-send mr-1"></i>Submit</button>
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#nik").selectize();
@@ -62,37 +62,25 @@
 
             if (tgl_pembayaran == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Pembayaran Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Pembayaran Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_pembayaran").focus();
                 });
                 return false;
             } else if (nik == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Nik Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Nik Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#nik").focus();
                 });
                 return false;
-            } else if (jumlah == "" || jumlah == 0) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#jumlah").focus();
-                });
-
-                return false;
             }
         });
     });
-
 </script>
