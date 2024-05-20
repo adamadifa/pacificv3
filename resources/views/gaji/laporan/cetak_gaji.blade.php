@@ -857,6 +857,15 @@
                                     $izinabsen = 0;
                                     $izinsakit = 0;
                                 @endphp
+                                @if ($jam_out == 'NA')
+                                    @php
+                                        if ($namahari == 'Sabtu') {
+                                            $tidakhadir = 5;
+                                        } else {
+                                            $tidakhadir = 7;
+                                        }
+                                    @endphp
+                                @endif
                                 <!-- Menghitung Lembur Reguler-->
                                 @if (!empty($ceklembur))
                                     @php
@@ -1022,6 +1031,7 @@
                                 @endif
                                 @php
                                     $izinsakit = 0;
+                                    $izinabsen = 0;
                                 @endphp
                             @elseif($status == 'c')
                                 @php

@@ -37,6 +37,30 @@ class LaporanhrdController extends Controller
         return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen', 'cabang', 'show_all'));
     }
 
+    public function rekapsisacuti()
+    {
+
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
+        $cbg = new Cabang();
+        if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
+            if (
+                Auth::user()->level == "manager hrd" || Auth::user()->level == "admin"
+                || Auth::user()->level == "manager accounting"
+                || Auth::user()->level == "spv presensi"
+                || Auth::user()->level == "rom"
+            ) {
+                $cabang = $cbg->getCabang("PST");
+            } else {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
+            }
+        } else {
+            $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        }
+
+        $show_all = config('global.show_all');
+        return view('presensi.laporan.lap_rekapsisacuti', compact('bulan', 'departemen', 'cabang', 'show_all'));
+    }
 
     public function gaji()
     {

@@ -21,6 +21,11 @@
                         <i class="feather icon-file mr-1"></i>Rekap Keterlambatan
                     </li>
                 </a>
+                <a href="/laporanhrd/rekapsisacuti" style="color:#626262">
+                    <li class="list-group-item {{ request()->is(['laporanhrd/rekapsisacuti']) ? 'active' : '' }}">
+                        <i class="feather icon-file mr-1"></i>Rekap Sisa Cuti
+                    </li>
+                </a>
 
                 @if ($level == 'admin' || $level == 'manager hrd' || $level == 'spv presensi' || $level == 'manager accounting')
                     <a href="/laporanhrd/gaji" style="color:#626262">

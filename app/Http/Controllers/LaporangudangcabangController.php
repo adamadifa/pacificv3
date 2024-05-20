@@ -306,9 +306,9 @@ class LaporangudangcabangController extends Controller
             ->first();
 
         $mtsa = DB::table('detail_mutasi_gudang_cabang')
-            ->selectRaw("SUM(IF( `inout_good` = 'IN', jumlah, 0)) AS jml_in,
-            SUM(IF( `inout_good` = 'OUT', jumlah, 0)) AS jml_out,
-            SUM(IF( `inout_good` = 'IN', jumlah, 0)) -SUM(IF( `inout_good` = 'OUT', jumlah, 0)) as jumlah,
+            ->selectRaw("SUM(IF( `inout_bad` = 'IN', jumlah, 0)) AS jml_in,
+            SUM(IF( `inout_bad` = 'OUT', jumlah, 0)) AS jml_out,
+            SUM(IF( `inout_bad` = 'IN', jumlah, 0)) -SUM(IF( `inout_bad` = 'OUT', jumlah, 0)) as jumlah,
             isipcsdus")
             ->join('mutasi_gudang_cabang', 'detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang')
             ->join('master_barang', 'detail_mutasi_gudang_cabang.kode_produk', '=', 'master_barang.kode_produk')
@@ -363,6 +363,8 @@ class LaporangudangcabangController extends Controller
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
         $mulai = $tahun . "-" . $bulan . "-01";
+
+
         $query = Barang::query();
         $query->selectRaw("master_barang.*,saldo_awal_gs,saldo_awal_bs,pusat,transit_in,retur,lainlain_in,penyesuaian_in,penyesuaianbad_in,repack,
         penjualan,promosi,reject_pasar,reject_mobil,reject_gudang,

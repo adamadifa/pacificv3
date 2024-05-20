@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage', 'Laporan Presensi')
+@section('titlepage', 'Laporan Rekap Sisa Cuti')
 @section('content')
     <div class="content-wrapper">
         <div class="content-header row">
             <div class="content-header-left col-md-9 col-12 mb-2">
                 <div class="row breadcrumbs-top">
                     <div class="col-12">
-                        <h2 class="content-header-title float-left mb-0">Laporan Presensi</h2>
+                        <h2 class="content-header-title float-left mb-0">Laporan Rekap Sisa Cuti</h2>
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/laporanhrd/presensi">Laporan Presensi</a>
+                                <li class="breadcrumb-item"><a href="/laporanhrd/rekapsisacuti">Laporan Rekap Sisa Cuti</a>
                                 </li>
                             </ol>
                         </div>
@@ -27,7 +27,7 @@
                         <div class="col-lg-7 col-sm-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <form action="/laporanhrd/presensi/cetak" method="POST" id="frmPresensi"
+                                    <form action="/laporanhrd/rekapsisacuti/cetak" method="POST" id="frmPresensi"
                                         target="_blank">
                                         @csrf
 
@@ -106,18 +106,6 @@
                                                         <?php
                                                     }
                                                     ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <div class="form-group">
-                                                    <select name="jenis_laporan" required id="jenis_laporan"
-                                                        class="form-control">
-                                                        <option value="">Jenis Laporan</option>
-                                                        <option value="1">Periode Gaji</option>
-                                                        <option value="2">Periode Bulan Berjalan</option>
                                                     </select>
                                                 </div>
                                             </div>
