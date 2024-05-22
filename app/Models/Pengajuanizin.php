@@ -247,7 +247,7 @@ class Pengajuanizin extends Model
             $query->whereIn('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
             $query->where('hrd', 1);
             //Purnomo
-            $query->where('nik', '!=', '17.07.302');
+            $query->where('pengajuan_izin.nik', '!=', '17.07.302');
             $query->orWhere('nama_jabatan', 'GENERAL MANAGER');
             $query->whereNull('direktur');
             $query->orderBy('direktur');
