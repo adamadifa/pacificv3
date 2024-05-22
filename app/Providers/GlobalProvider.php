@@ -419,6 +419,7 @@ class GlobalProvider extends ServiceProvider
                         }
                     }
                     $qpi->whereIn('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
+                    $qpi->where('pengajuan_izin.nik', '!=', '17.07.302');
                     $qpi->whereNull('direktur');
                     $qpi->where('hrd', 1);
                     $qpi->orWhere('nama_jabatan', 'GENERAL MANAGER');
