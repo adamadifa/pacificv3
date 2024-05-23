@@ -37,8 +37,11 @@
 
 <body>
    <b style="font-size:14px;">
-      PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-      <br>
+      @if ($cabang != null)
+         PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+         <br>
+      @endif
+
       REKAP TANDA TANGAN<br>
       PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
       <br>

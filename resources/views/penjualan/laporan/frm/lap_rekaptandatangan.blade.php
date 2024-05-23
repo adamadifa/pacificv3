@@ -51,7 +51,7 @@
                                  <div class="col-12">
                                     <div class="form-group  ">
                                        <select name="id_karyawan" id="id_karyawan" class="form-control">
-                                          <option value="">Pilih Salesman</option>
+                                          <option value="">Semua Salesman</option>
                                        </select>
                                     </div>
                                  </div>
