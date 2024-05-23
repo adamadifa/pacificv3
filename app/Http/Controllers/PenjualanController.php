@@ -9645,6 +9645,12 @@ class PenjualanController extends Controller
         // dd($rekaptandatangan);
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Tanda Tangan $dari-$sampai.xls");
+        }
         return view('penjualan.laporan.cetak_rekaptandatangan', compact('rekaptandatangan', 'cabang', 'dari', 'sampai', 'salesman'));
     }
 }
