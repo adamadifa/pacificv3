@@ -9637,7 +9637,9 @@ class PenjualanController extends Controller
             $query->where('penjualan.id_karyawan', $id_karyawan);
         }
         $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-        $query->where('karyawan.kode_cabang', $kode_cabang);
+        if (!empty($request->kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+        }
         $query->groupBy('penjualan.kode_pelanggan');
         $rekaptandatangan = $query->get();
         // dd($rekaptandatangan);

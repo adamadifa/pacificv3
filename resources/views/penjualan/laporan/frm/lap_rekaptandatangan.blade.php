@@ -36,7 +36,7 @@
                                     <div class="form-group  ">
                                        <select name="kode_cabang" id="kode_cabang" class="form-control">
                                           @if (Auth::user()->kode_cabang != 'PCF' && Auth::user()->kode_cabang != 'PST')
-                                             <option value="">Pilih Cabang</option>
+                                             <option value="">Semua Cabang</option>
                                           @else
                                              <option value="">Pilih Cabang</option>
                                           @endif
@@ -112,7 +112,7 @@
             var end = new Date(sampai);
 
             var datestart = new Date('2018-09-01');
-            if (kode_cabang == "") {
+            if (cabang != "PCF" && kode_cabang == "" && cabang != "PST" && kode_cabang == "") {
                swal({
                   title: 'Oops',
                   text: 'Pilih Cabang Terlebih Dahulu !',
@@ -130,16 +130,6 @@
                   showConfirmButton: false
                }).then(function() {
                   $("#dari").focus();
-               });
-               return false;
-            } else if (id_karyawan == "") {
-               swal({
-                  title: 'Oops',
-                  text: 'Salesman Harus Diisi !',
-                  icon: 'warning',
-                  showConfirmButton: false
-               }).then(function() {
-                  $("#id_karyawan").focus();
                });
                return false;
             } else if (no_faktur == "") {
