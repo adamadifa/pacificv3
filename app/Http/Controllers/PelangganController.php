@@ -504,7 +504,7 @@ class PelangganController extends Controller
         }
 
         if ($request->hasfile('signature')) {
-            $signature = $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
+            $signature = $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
         } else {
             $signature = $file;
         }
