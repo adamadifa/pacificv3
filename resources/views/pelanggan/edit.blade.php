@@ -745,6 +745,15 @@
                                        alt="Card image">
                                  @endif
                               </div>
+                              <div class="col-lg-3 col-sm-12">
+                                 @if (!empty($data->signature))
+                                    @php
+                                       $path = Storage::url('pelanggan/' . $data->signature);
+                                    @endphp
+                                    <img class="card-img img-fluid" src="{{ url($path) }}"
+                                       alt="Card image">
+                                 @endif
+                              </div>
                            </div>
                            <div class="row">
                               <div class="col-12">
