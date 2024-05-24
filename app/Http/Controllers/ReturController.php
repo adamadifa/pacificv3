@@ -417,8 +417,9 @@ class ReturController extends Controller
             ->where('no_retur_penj', $request->no_retur_penj)
             ->get();
         $validasi_item = DB::table('retur_validasi_item')->get();
+        $validasi_check = DB::table('retur_validasi_detail')->where('no_retur_penj', $request->no_retur_penj)->get();
         if (Auth::user()->level != "salesman") {
-            return view('retur.show', compact('detail', 'retur', 'validasi_item'));
+            return view('retur.show', compact('detail', 'retur', 'validasi_item', 'validasi_check'));
         } else {
             return view('retur.showforsales', compact('detail'));
         }

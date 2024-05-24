@@ -91,13 +91,19 @@
    </tbody>
 </table>
 <form action="/retur/storevalidasi" method="POST">
+   @php
+      $item_check[];
+      foreach ($validasi_check as $d) {
+          $item_check[] = $d->kode_item;
+      }
+   @endphp
    @csrf
    <input type="hidden" name="no_retur_penj" value="{{ $retur->no_retur_penj }}">
    @foreach ($validasi_item as $d)
       <div class="row mb-1">
          <div class="col-12">
             <div class="vs-checkbox-con vs-checkbox-primary">
-               <input type="checkbox" class="voucher" name="kode_item[]" value="{{ $d->kode_item }}">
+               <input type="checkbox" class="voucher" {{ in_array($d->kode_item, $item_check) ? 'checked' : '' }} name="kode_item[]" value="{{ $d->kode_item }}">
                <span class="vs-checkbox">
                   <span class="vs-checkbox--check">
                      <i class="vs-icon feather icon-check"></i>
