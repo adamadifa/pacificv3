@@ -92,7 +92,7 @@
 </table>
 <form action="/retur/storevalidasi" method="POST">
    @php
-      $item_check[];
+      $item_check = [];
       foreach ($validasi_check as $d) {
           $item_check[] = $d->kode_item;
       }
