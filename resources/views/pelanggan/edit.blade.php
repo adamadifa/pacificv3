@@ -748,7 +748,7 @@
                               <div class="col-lg-3 col-sm-12">
                                  @if (!empty($data->signature))
                                     @php
-                                       $path = Storage::url('pelanggan/' . $data->signature);
+                                       $path = Storage::url('pelanggan/signature/' . $data->signature);
                                     @endphp
                                     <img class="card-img img-fluid" src="{{ url($path) }}"
                                        alt="Card image">
