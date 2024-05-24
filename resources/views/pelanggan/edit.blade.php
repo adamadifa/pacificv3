@@ -718,14 +718,14 @@
                            </div>
                            <div class="row">
                               <div class="col-12">
-                                 <div class="form-group  @error('foto') error @enderror">
+                                 <div class="form-group  @error('signature') error @enderror">
                                     <div class="custom-file">
                                        <input type="file" name="signature" class="custom-file-input"
                                           id="inputGroupFile01">
                                        <label class="custom-file-label" for="inputGroupFile01">Upload
                                           Tanda Tangan</label>
                                     </div>
-                                    @error('foto')
+                                    @error('signature')
                                        <div class="help-block">
                                           <ul role="alert">
                                              <li>{{ $message }}</li>

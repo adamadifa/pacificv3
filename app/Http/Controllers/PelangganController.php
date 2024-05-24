@@ -482,6 +482,7 @@ class PelangganController extends Controller
         $hari = $request->hari;
 
         $file = $pelanggan->foto;
+        $signature = $pelanggan->signature;
         $request->validate([
             'nama_pelanggan' => 'required',
             'alamat_pelanggan' => 'required',
@@ -500,6 +501,12 @@ class PelangganController extends Controller
             $foto = $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
         } else {
             $foto = $file;
+        }
+
+        if ($request->hasfile('signature')) {
+            $signature = $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
+        } else {
+            $signature = $file;
         }
         if (isset($request->lokasi)) {
             $lokasi = $request->lokasi;
@@ -537,6 +544,7 @@ class PelangganController extends Controller
                 'latitude' => $latitude,
                 'longitude' => $longitude,
                 'foto' => $foto,
+                'signature' => $signature,
                 'omset_toko' => str_replace(".", "", $request->omset_toko)
             ]);
 
@@ -548,6 +556,14 @@ class PelangganController extends Controller
                 $image_name =  $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
                 $destination_path = "/public/pelanggan";
                 $upload = $request->file('foto')->storeAs($destination_path, $image_name);
+            }
+
+            if ($request->hasfile('signature')) {
+                Storage::delete('public/pelanggan/signature/' . $file);
+                $image = $request->file('signature');
+                $image_name =  $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
+                $destination_path = "/public/pelanggan/signature";
+                $upload = $request->file('signature')->storeAs($destination_path, $image_name);
             }
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } else {
