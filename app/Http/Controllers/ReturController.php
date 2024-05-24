@@ -694,6 +694,7 @@ class ReturController extends Controller
             return Redirect::back()->with(['warning' => 'Checklist Minimal 1 ']);
         } else {
             DB::beginTransaction();
+            Validasireturcheck::where('no_retur_penj', $request->no_retur_penj)->delete();
             try {
                 for ($i = 0; $i < count($kode_item); $i++) {
                     $detail[] = [
