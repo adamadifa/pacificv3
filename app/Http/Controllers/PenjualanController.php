@@ -9633,7 +9633,7 @@ class PenjualanController extends Controller
                 DB::raw("(
                 SELECT penjualan.kode_pelanggan,
                 SUM(IF(penjualan.signature IS NOT NULL,1,0)) as sudahada,
-                SUM(IF(penjualan.signature IS NULL,1,0)) as belumada,
+                SUM(IF(penjualan.signature IS NULL,1,0)) as belumada
                 FROM penjualan
                 INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
                 WHERE  signature IS NOT NULL
