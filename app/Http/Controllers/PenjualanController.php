@@ -9625,7 +9625,7 @@ class PenjualanController extends Controller
             $query->selectRaw(
                 'penjualan.id_karyawan,nama_karyawan,
                 SUM(IF(penjualan.signature IS NOT NULL,1,0)) sudahada,
-                SUM(IF(penjualan.signature NULL,1,0)) belumada'
+                SUM(IF(penjualan.signature IS NULL,1,0)) belumada'
             );
             $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
             $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
