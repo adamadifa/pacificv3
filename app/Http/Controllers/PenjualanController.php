@@ -9615,42 +9615,79 @@ class PenjualanController extends Controller
         $id_karyawan = $request->id_karyawan;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        // dd($rekaptandatangan);
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
         lockreport($dari);
-        $query = Penjualan::query();
-        $query->selectRaw('penjualan.kode_pelanggan,nama_pelanggan,SUM(IF(cektandatangan IS NOT NULL,1,0))as cek');
-        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-        $query->leftJoin(
-            DB::raw("(
+
+        if (empty($kode_cabang)) {
+            $query = Penjualan::query();
+            $query->selectRaw(
+                'penjualan.id_karyawan,nama_karyawan,
+            SUM(IF(sudahada IS NOT NULL,1,0)) as ada,
+            SUM(IF(belumada IS NOT NULL,1,0)) as tidakada'
+            );
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $query->leftJoin(
+                DB::raw("(
+                SELECT penjualan.kode_pelanggan,
+                SUM(IF(penjualan.signature IS NOT NULL,1,0)) as sudahada,
+                SUM(IF(penjualan.signature IS NULL,1,0)) as belumada,
+                FROM penjualan
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                WHERE  signature IS NOT NULL
+                GROUP BY penjualan.kode_pelanggan
+            ) signature"),
+                function ($join) {
+                    $join->on('penjualan.kode_pelanggan', '=', 'signature.kode_pelanggan');
+                }
+            );
+
+            $query->orderBy('karyawan.kode_cabang');
+            $query->groupBy('penjualan.id_karyawan', 'nama_karyawan');
+            $rekaptandatangan = $query->get();
+            if (isset($_POST['export'])) {
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap Tanda Tangan $dari-$sampai.xls");
+            }
+            return view('penjualan.laporan.cetak_rekaptandatangan_allcabang', compact('rekaptandatangan', 'cabang', 'dari', 'sampai', 'salesman'));
+        } else {
+            $query = Penjualan::query();
+            $query->selectRaw('penjualan.kode_pelanggan,nama_pelanggan,SUM(IF(cektandatangan IS NOT NULL,1,0))as cek');
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $query->leftJoin(
+                DB::raw("(
                 SELECT penjualan.kode_pelanggan,SUM(IF(signature IS NOT NULL,1,0)) as cektandatangan
                 FROM penjualan
                 INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
                 WHERE  signature IS NOT NULL
                 GROUP BY penjualan.kode_pelanggan
             ) signature"),
-            function ($join) {
-                $join->on('penjualan.kode_pelanggan', '=', 'signature.kode_pelanggan');
-            }
-        );
+                function ($join) {
+                    $join->on('penjualan.kode_pelanggan', '=', 'signature.kode_pelanggan');
+                }
+            );
 
-        if (!empty($request->id_karyawan)) {
-            $query->where('penjualan.id_karyawan', $id_karyawan);
+            if (!empty($request->id_karyawan)) {
+                $query->where('penjualan.id_karyawan', $id_karyawan);
+            }
+            $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+            if (!empty($request->kode_cabang)) {
+                $query->where('karyawan.kode_cabang', $kode_cabang);
+            }
+            $query->groupBy('penjualan.kode_pelanggan');
+            $rekaptandatangan = $query->get();
+            if (isset($_POST['export'])) {
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap Tanda Tangan $dari-$sampai.xls");
+            }
+            return view('penjualan.laporan.cetak_rekaptandatangan', compact('rekaptandatangan', 'cabang', 'dari', 'sampai', 'salesman'));
         }
-        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-        if (!empty($request->kode_cabang)) {
-            $query->where('karyawan.kode_cabang', $kode_cabang);
-        }
-        $query->groupBy('penjualan.kode_pelanggan');
-        $rekaptandatangan = $query->get();
-        // dd($rekaptandatangan);
-        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
-        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
-        if (isset($_POST['export'])) {
-            // Fungsi header dengan mengirimkan raw data excel
-            header("Content-type: application/vnd-ms-excel");
-            // Mendefinisikan nama file ekspor "hasil-export.xls"
-            header("Content-Disposition: attachment; filename=Rekap Tanda Tangan $dari-$sampai.xls");
-        }
-        return view('penjualan.laporan.cetak_rekaptandatangan', compact('rekaptandatangan', 'cabang', 'dari', 'sampai', 'salesman'));
     }
 }
