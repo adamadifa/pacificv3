@@ -57,6 +57,8 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $d->id_karyawan }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
+                    <td>{{ $d->ada }}</td>
+                    <td>{{ $d->tidakada }}</td>
 
                 </tr>
             @endforeach
