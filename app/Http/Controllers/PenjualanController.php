@@ -9624,26 +9624,11 @@ class PenjualanController extends Controller
             $query = Penjualan::query();
             $query->selectRaw(
                 'penjualan.id_karyawan,nama_karyawan,
-            SUM(IF(sudahada IS NOT NULL,1,0)) as ada,
-            SUM(IF(belumada IS NOT NULL,1,0)) as tidakada'
+                SUM(IF(penjualan.signature IS NOT NULL,1,0) sudahada,
+                SUM(IF(penjualan.signature NULL,1,0) belumada'
             );
             $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
             $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-            $query->leftJoin(
-                DB::raw("(
-                SELECT penjualan.kode_pelanggan,
-                SUM(IF(penjualan.signature IS NOT NULL,1,0)) as sudahada,
-                SUM(IF(penjualan.signature IS NULL,1,0)) as belumada
-                FROM penjualan
-                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                WHERE  signature IS NOT NULL
-                GROUP BY penjualan.kode_pelanggan
-            ) signature"),
-                function ($join) {
-                    $join->on('penjualan.kode_pelanggan', '=', 'signature.kode_pelanggan');
-                }
-            );
-
             $query->orderBy('karyawan.kode_cabang');
             $query->groupBy('penjualan.id_karyawan', 'nama_karyawan');
             $rekaptandatangan = $query->get();
