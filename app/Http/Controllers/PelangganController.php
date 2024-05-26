@@ -482,8 +482,8 @@ class PelangganController extends Controller
         $hari = $request->hari;
 
         $file = $pelanggan->foto;
-        $signature = $pelanggan->signature;
-        $signature_karyawan = $pelanggan->signature_karyawan;
+        $signature_file = $pelanggan->signature;
+        $signature_karyawan_file = $pelanggan->signature_karyawan;
         $request->validate([
             'nama_pelanggan' => 'required',
             'alamat_pelanggan' => 'required',
@@ -509,13 +509,13 @@ class PelangganController extends Controller
         if ($request->hasfile('signature')) {
             $signature = $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
         } else {
-            $signature = $file;
+            $signature = $signature_file;
         }
 
         if ($request->hasfile('signature_karyawan')) {
             $signature_karyawan = $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
         } else {
-            $signature_karyawan = $file;
+            $signature_karyawan = $signature_karyawan_file;
         }
         if (isset($request->lokasi)) {
             $lokasi = $request->lokasi;
@@ -571,7 +571,7 @@ class PelangganController extends Controller
                 }
 
                 if ($request->hasfile('signature')) {
-                    Storage::delete('public/pelanggan/signature/' . $file);
+                    Storage::delete('public/pelanggan/signature/' . $signature_file);
                     $image = $request->file('signature');
                     $image_name =  $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
                     $destination_path = "/public/pelanggan/signature";
@@ -579,7 +579,7 @@ class PelangganController extends Controller
                 }
 
                 if ($request->hasfile('signature_karyawan')) {
-                    Storage::delete('public/pelanggan/signature_karyawan/' . $file);
+                    Storage::delete('public/pelanggan/signature_karyawan/' . $signature_karyawan_file);
                     $image = $request->file('signature_karyawan');
                     $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
                     $destination_path = "/public/pelanggan/signature_karyawan";
