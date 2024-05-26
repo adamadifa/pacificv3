@@ -562,6 +562,8 @@ class PelangganController extends Controller
                 ]);
 
             if ($simpan) {
+                echo 'test';
+                die;
                 //Upload File
                 if ($request->hasfile('foto')) {
                     Storage::delete('public/pelanggan/' . $file);
