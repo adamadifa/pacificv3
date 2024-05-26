@@ -526,64 +526,69 @@ class PelangganController extends Controller
             $latitude = "";
             $longitude = "";
         }
-        $simpan = DB::table('pelanggan')
-            ->where('kode_pelanggan', $kode_pelanggan)
-            ->update([
-                'nik' => $request->nik,
-                'no_kk' => $request->no_kk,
-                'nama_pelanggan' => $request->nama_pelanggan,
-                'tgl_lahir' => $request->tgl_lahir,
-                'alamat_pelanggan' => $request->alamat_pelanggan,
-                'alamat_toko' => $request->alamat_toko,
-                'no_hp' => $request->no_hp,
-                'hari' => $hari,
-                'pasar' => $request->pasar,
-                'kode_cabang' => $request->kode_cabang,
-                'id_sales' => $request->id_karyawan,
-                'limitpel' => str_replace(".", "", $request->limitpel),
-                'jatuhtempo' => $request->jatuhtempo,
-                'status_pelanggan' => $request->status_pelanggan,
-                'kepemilikan' => $request->kepemilikan,
-                'lama_usaha' => $request->lama_usaha,
-                'status_outlet' => $request->status_outlet,
-                'type_outlet' => $request->type_outlet,
-                'cara_pembayaran' => $request->cara_pembayaran,
-                'lama_langganan' => $request->lama_langganan,
-                'jaminan' => $request->jaminan,
-                'latitude' => $latitude,
-                'longitude' => $longitude,
-                'foto' => $foto,
-                'signature' => $signature,
-                'omset_toko' => str_replace(".", "", $request->omset_toko)
-            ]);
 
-        if ($simpan) {
-            //Upload File
-            if ($request->hasfile('foto')) {
-                Storage::delete('public/pelanggan/' . $file);
-                $image = $request->file('foto');
-                $image_name =  $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
-                $destination_path = "/public/pelanggan";
-                $upload = $request->file('foto')->storeAs($destination_path, $image_name);
-            }
+        try {
+            $simpan = DB::table('pelanggan')
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->update([
+                    'nik' => $request->nik,
+                    'no_kk' => $request->no_kk,
+                    'nama_pelanggan' => $request->nama_pelanggan,
+                    'tgl_lahir' => $request->tgl_lahir,
+                    'alamat_pelanggan' => $request->alamat_pelanggan,
+                    'alamat_toko' => $request->alamat_toko,
+                    'no_hp' => $request->no_hp,
+                    'hari' => $hari,
+                    'pasar' => $request->pasar,
+                    'kode_cabang' => $request->kode_cabang,
+                    'id_sales' => $request->id_karyawan,
+                    'limitpel' => str_replace(".", "", $request->limitpel),
+                    'jatuhtempo' => $request->jatuhtempo,
+                    'status_pelanggan' => $request->status_pelanggan,
+                    'kepemilikan' => $request->kepemilikan,
+                    'lama_usaha' => $request->lama_usaha,
+                    'status_outlet' => $request->status_outlet,
+                    'type_outlet' => $request->type_outlet,
+                    'cara_pembayaran' => $request->cara_pembayaran,
+                    'lama_langganan' => $request->lama_langganan,
+                    'jaminan' => $request->jaminan,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'foto' => $foto,
+                    'signature' => $signature,
+                    'signature_karyawan' => $signature_karyawan,
+                    'omset_toko' => str_replace(".", "", $request->omset_toko)
+                ]);
 
-            if ($request->hasfile('signature')) {
-                Storage::delete('public/pelanggan/signature/' . $file);
-                $image = $request->file('signature');
-                $image_name =  $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
-                $destination_path = "/public/pelanggan/signature";
-                $upload = $request->file('signature')->storeAs($destination_path, $image_name);
-            }
+            if ($simpan) {
+                //Upload File
+                if ($request->hasfile('foto')) {
+                    Storage::delete('public/pelanggan/' . $file);
+                    $image = $request->file('foto');
+                    $image_name =  $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
+                    $destination_path = "/public/pelanggan";
+                    $upload = $request->file('foto')->storeAs($destination_path, $image_name);
+                }
 
-            if ($request->hasfile('signature_karyawan')) {
-                Storage::delete('public/pelanggan/signature_karyawan/' . $file);
-                $image = $request->file('signature_karyawan');
-                $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
-                $destination_path = "/public/pelanggan/signature_karyawan";
-                $upload = $request->file('signature_karyawan')->storeAs($destination_path, $image_name);
+                if ($request->hasfile('signature')) {
+                    Storage::delete('public/pelanggan/signature/' . $file);
+                    $image = $request->file('signature');
+                    $image_name =  $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
+                    $destination_path = "/public/pelanggan/signature";
+                    $upload = $request->file('signature')->storeAs($destination_path, $image_name);
+                }
+
+                if ($request->hasfile('signature_karyawan')) {
+                    Storage::delete('public/pelanggan/signature_karyawan/' . $file);
+                    $image = $request->file('signature_karyawan');
+                    $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
+                    $destination_path = "/public/pelanggan/signature_karyawan";
+                    $upload = $request->file('signature_karyawan')->storeAs($destination_path, $image_name);
+                }
+                return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
             }
-            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
-        } else {
+        } catch (\Exception $e) {
+            dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Di Updat']);
         }
     }
