@@ -512,11 +512,11 @@ class PelangganController extends Controller
             $signature = $signature_file;
         }
 
-        if ($request->hasfile('signature_karyawan')) {
-            $signature_karyawan = $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
-        } else {
-            $signature_karyawan = $signature_karyawan_file;
-        }
+        // if ($request->hasfile('signature_karyawan')) {
+        //     $signature_karyawan = $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
+        // } else {
+        //     $signature_karyawan = $signature_karyawan_file;
+        // }
         if (isset($request->lokasi)) {
             $lokasi = $request->lokasi;
             $lok = explode(",", $lokasi);
@@ -556,7 +556,7 @@ class PelangganController extends Controller
                     'longitude' => $longitude,
                     'foto' => $foto,
                     'signature' => $signature,
-                    'signature_karyawan' => $signature_karyawan,
+                    // 'signature_karyawan' => $signature_karyawan,
                     'omset_toko' => str_replace(".", "", $request->omset_toko)
                 ]);
 
