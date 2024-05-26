@@ -588,7 +588,7 @@ class PelangganController extends Controller
                 return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
             }
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Di Updat']);
         }
     }
