@@ -483,6 +483,7 @@ class PelangganController extends Controller
 
         $file = $pelanggan->foto;
         $signature = $pelanggan->signature;
+        $signature_karyawan = $pelanggan->signature_karyawan;
         $request->validate([
             'nama_pelanggan' => 'required',
             'alamat_pelanggan' => 'required',
@@ -494,6 +495,8 @@ class PelangganController extends Controller
             'id_karyawan' => 'required',
             'status_pelanggan' => 'required',
             'foto' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
+            'signature' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
+            'signature_karyawan' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
 
         ]);
 
@@ -507,6 +510,12 @@ class PelangganController extends Controller
             $signature = $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
         } else {
             $signature = $file;
+        }
+
+        if ($request->hasfile('signature_karyawan')) {
+            $signature_karyawan = $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
+        } else {
+            $signature_karyawan = $file;
         }
         if (isset($request->lokasi)) {
             $lokasi = $request->lokasi;
@@ -564,6 +573,14 @@ class PelangganController extends Controller
                 $image_name =  $kode_pelanggan . "." . $request->file('signature')->getClientOriginalExtension();
                 $destination_path = "/public/pelanggan/signature";
                 $upload = $request->file('signature')->storeAs($destination_path, $image_name);
+            }
+
+            if ($request->hasfile('signature_karyawan')) {
+                Storage::delete('public/pelanggan/signature_karyawan/' . $file);
+                $image = $request->file('signature_karyawan');
+                $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
+                $destination_path = "/public/pelanggan/signature_karyawan";
+                $upload = $request->file('signature_karyawan')->storeAs($destination_path, $image_name);
             }
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } else {

@@ -723,9 +723,28 @@
                                        <input type="file" name="signature" class="custom-file-input"
                                           id="inputGroupFile01">
                                        <label class="custom-file-label" for="inputGroupFile01">Upload
-                                          Tanda Tangan</label>
+                                          Tanda Tangan (Pemilik)</label>
                                     </div>
                                     @error('signature')
+                                       <div class="help-block">
+                                          <ul role="alert">
+                                             <li>{{ $message }}</li>
+                                          </ul>
+                                       </div>
+                                    @enderror
+                                 </div>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col-12">
+                                 <div class="form-group  @error('signature_karyawan') error @enderror">
+                                    <div class="custom-file">
+                                       <input type="file" name="signature_karyawan" class="custom-file-input"
+                                          id="inputGroupFile01">
+                                       <label class="custom-file-label" for="inputGroupFile01">Upload
+                                          Tanda Tangan (Karyawan)</label>
+                                    </div>
+                                    @error('signature_karyawan')
                                        <div class="help-block">
                                           <ul role="alert">
                                              <li>{{ $message }}</li>
@@ -749,6 +768,15 @@
                                  @if (!empty($data->signature))
                                     @php
                                        $path = Storage::url('pelanggan/signature/' . $data->signature);
+                                    @endphp
+                                    <img class="card-img img-fluid" src="{{ url($path) }}"
+                                       alt="Card image">
+                                 @endif
+                              </div>
+                              <div class="col-lg-3 col-sm-12">
+                                 @if (!empty($data->signature_karyawan))
+                                    @php
+                                       $path = Storage::url('pelanggan/signature_karyawan/' . $data->signature_karyawan);
                                     @endphp
                                     <img class="card-img img-fluid" src="{{ url($path) }}"
                                        alt="Card image">
