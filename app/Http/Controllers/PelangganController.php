@@ -478,8 +478,8 @@ class PelangganController extends Controller
         // foreach ($request->hari as $d) {
         //     $hari .= $d . ",";
         // }
-        echo 'test';
-        die;
+        // echo 'test';
+        // die;
         $hari = $request->hari;
 
         $file = $pelanggan->foto;
