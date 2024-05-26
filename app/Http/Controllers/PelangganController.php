@@ -496,7 +496,7 @@ class PelangganController extends Controller
             'status_pelanggan' => 'required',
             'foto' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
             'signature' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
-            'signature_karyawan' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
+            // 'signature_karyawan' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
 
         ]);
 
