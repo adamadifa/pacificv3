@@ -478,7 +478,8 @@ class PelangganController extends Controller
         // foreach ($request->hari as $d) {
         //     $hari .= $d . ",";
         // }
-
+        echo 'test';
+        die;
         $hari = $request->hari;
 
         $file = $pelanggan->foto;
@@ -496,7 +497,7 @@ class PelangganController extends Controller
             'status_pelanggan' => 'required',
             'foto' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
             'signature' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
-            // 'signature_karyawan' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
+            'signature_karyawan' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
 
         ]);
 
@@ -512,11 +513,11 @@ class PelangganController extends Controller
             $signature = $signature_file;
         }
 
-        // if ($request->hasfile('signature_karyawan')) {
-        //     $signature_karyawan = $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
-        // } else {
-        //     $signature_karyawan = $signature_karyawan_file;
-        // }
+        if ($request->hasfile('signature_karyawan')) {
+            $signature_karyawan = $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
+        } else {
+            $signature_karyawan = $signature_karyawan_file;
+        }
         if (isset($request->lokasi)) {
             $lokasi = $request->lokasi;
             $lok = explode(",", $lokasi);
@@ -578,15 +579,16 @@ class PelangganController extends Controller
                     $upload = $request->file('signature')->storeAs($destination_path, $image_name);
                 }
 
-                // if ($request->hasfile('signature_karyawan')) {
-                //     Storage::delete('public/pelanggan/signature_karyawan/' . $signature_karyawan_file);
-                //     $image = $request->file('signature_karyawan');
-                //     $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
-                //     $destination_path = "/public/pelanggan/signature_karyawan";
-                //     $upload = $request->file('signature_karyawan')->storeAs($destination_path, $image_name);
-                // }
-                return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+                if ($request->hasfile('signature_karyawan')) {
+                    Storage::delete('public/pelanggan/signature_karyawan/' . $signature_karyawan_file);
+                    $image = $request->file('signature_karyawan');
+                    $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
+                    $destination_path = "/public/pelanggan/signature_karyawan";
+                    $upload = $request->file('signature_karyawan')->storeAs($destination_path, $image_name);
+                }
             }
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } catch (\Exception $e) {
             //dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Di Updat']);
