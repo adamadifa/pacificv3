@@ -578,13 +578,13 @@ class PelangganController extends Controller
                     $upload = $request->file('signature')->storeAs($destination_path, $image_name);
                 }
 
-                if ($request->hasfile('signature_karyawan')) {
-                    Storage::delete('public/pelanggan/signature_karyawan/' . $signature_karyawan_file);
-                    $image = $request->file('signature_karyawan');
-                    $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
-                    $destination_path = "/public/pelanggan/signature_karyawan";
-                    $upload = $request->file('signature_karyawan')->storeAs($destination_path, $image_name);
-                }
+                // if ($request->hasfile('signature_karyawan')) {
+                //     Storage::delete('public/pelanggan/signature_karyawan/' . $signature_karyawan_file);
+                //     $image = $request->file('signature_karyawan');
+                //     $image_name =  $kode_pelanggan . "." . $request->file('signature_karyawan')->getClientOriginalExtension();
+                //     $destination_path = "/public/pelanggan/signature_karyawan";
+                //     $upload = $request->file('signature_karyawan')->storeAs($destination_path, $image_name);
+                // }
                 return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
             }
         } catch (\Exception $e) {
