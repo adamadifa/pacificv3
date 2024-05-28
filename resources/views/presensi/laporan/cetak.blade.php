@@ -442,12 +442,12 @@
                                     if ($jam_in_tanggal > $jam_masuk_tanggal) {
                                         //Hitung Jam Keterlambatan
                                         $j1 = strtotime($jam_masuk_tanggal);
-                                        // if ($jam_in_tanggal > $jam_awal_istirahat_tanggal) {
-                                        //     $j2 = strtotime($jam_awal_istirahat_tanggal);
-                                        // } else {
-                                        //     $j2 = strtotime($jam_in_tanggal);
-                                        // }
-                                        $j2 = strtotime($jam_in_tanggal);
+                                        if ($jam_in_tanggal > $jam_awal_istirahat_tanggal) {
+                                            $j2 = strtotime($jam_awal_istirahat_tanggal);
+                                        } else {
+                                            $j2 = strtotime($jam_in_tanggal);
+                                        }
+                                        //$j2 = strtotime($jam_in_tanggal);
                                         $diffterlambat = $j2 - $j1;
                                         //Jam Terlambat
                                         $jamterlambat = floor($diffterlambat / (60 * 60));
