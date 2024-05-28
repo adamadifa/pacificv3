@@ -309,11 +309,11 @@
                   <i class="feather icon-file mr-1"></i>Komisi Driver, Helper & Gudang
                </li>
             </a>
-            <a href="/laporaninsentif" style="color:#626262">
+            {{-- <a href="/laporaninsentif" style="color:#626262">
                <li class="list-group-item {{ request()->is(['laporaninsentif']) ? 'active' : '' }}">
                   <i class="feather icon-file mr-1"></i>Insentif KA Admin
                </li>
-            </a>
+            </a> --}}
          </ul>
       </div>
    </div>
