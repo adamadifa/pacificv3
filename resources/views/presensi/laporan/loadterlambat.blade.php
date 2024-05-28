@@ -11,6 +11,7 @@
     $jam_in = date('H:i', strtotime($d->jam_in));
     $jam_out = date('H:i', strtotime($d->jam_out));
     $jam_istirahat = date('H:i', strtotime($d->jam_istirahat));
+    $jam_istirahat_awal = date('H:i', strtotime($d->jam_awal_istirahat));
     $jam_pulang = date('H:i', strtotime($d->jam_pulang));
     $jam_masuk = $d->tgl_presensi . ' ' . $d->jam_masuk;
     $jam_awal_istirahat = $d->tgl_presensi . ' ' . $d->jam_awal_istirahat;
@@ -19,7 +20,11 @@
     if (!empty($d->jam_in)) {
         if ($jam_in > $d->jam_masuk) {
             $j1 = strtotime($jam_masuk);
-            $j2 = strtotime($d->jam_in);
+            if ($jam_in > $jam_istirahat_awal && !empty($d->jam_awal_istirahat)) {
+                $j2 = strtotime($d->jam_in);
+            } else {
+                $j2 = $jam_istirahat_awal;
+            }
     
             $diffterlambat = $j2 - $j1;
     
