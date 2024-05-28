@@ -444,7 +444,7 @@
                                         $j1 = strtotime($jam_masuk_tanggal);
                                         if (
                                             $jam_in_tanggal > $jam_awal_istirahat_tanggal &&
-                                            $jam_awal_istirahat_tanggal != 'NA'
+                                            !empty($jam_awal_istirahat_tanggal)
                                         ) {
                                             $j2 = strtotime($jam_awal_istirahat_tanggal);
                                         } else {
