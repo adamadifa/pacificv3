@@ -20,12 +20,12 @@
     if (!empty($d->jam_in)) {
         if ($jam_in > $d->jam_masuk) {
             $j1 = strtotime($jam_masuk);
-            if ($jam_in > $jam_istirahat_awal && !empty($d->jam_awal_istirahat)) {
-                $j2 = strtotime($d->jam_in);
-            } else {
-                $j2 = $jam_istirahat_awal;
-            }
-    
+            // if ($jam_in > $jam_istirahat_awal && !empty($d->jam_awal_istirahat)) {
+            //     $j2 = strtotime($d->jam_in);
+            // } else {
+            //     $j2 = $jam_istirahat_awal;
+            // }
+            $j2 = strtotime($d->jam_in);
             $diffterlambat = $j2 - $j1;
     
             $jamterlambat = floor($diffterlambat / (60 * 60));
