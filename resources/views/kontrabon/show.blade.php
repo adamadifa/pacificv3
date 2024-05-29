@@ -23,18 +23,19 @@
     </thead>
     <tbody>
         @php
-        $totalkontrabon = 0;
+            $totalkontrabon = 0;
         @endphp
         @foreach ($detailkontrabon as $d)
-        @php
-        $totalkontrabon += $d->jmlbayar;
-        @endphp
-        <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ date("d-m-Y",strtotime($d->tgl_pembelian)) }}</td>
-            <td><a href="#" class="detailpembelian" nobukti_pembelian="{{ $d->nobukti_pembelian }}">{{ $d->nobukti_pembelian }}</a></td>
-            <td class="text-right">{{ desimal($d->jmlbayar) }}</td>
-        </tr>
+            @php
+                $totalkontrabon += $d->jmlbayar;
+            @endphp
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ date('d-m-Y', strtotime($d->tgl_pembelian)) }}</td>
+                <td><a href="#" class="detailpembelian"
+                        nobukti_pembelian="{{ $d->nobukti_pembelian }}">{{ $d->nobukti_pembelian }}</a></td>
+                <td class="text-right">{{ desimal($d->jmlbayar) }}</td>
+            </tr>
         @endforeach
         <tr class="thead-dark">
             <th colspan="3">TOTAL</th>
@@ -49,14 +50,14 @@
     $(function() {
         function loaddetailpembelian(nobukti_pembelian) {
             $.ajax({
-                type: 'POST'
-                , url: '/pembelian/showdetailpembeliankontrabon'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , nobukti_pembelian: nobukti_pembelian
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/pembelian/showdetailpembeliankontrabon',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    nobukti_pembelian: nobukti_pembelian
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loaddetailpembelian").html(respond);
                 }
             });
@@ -69,5 +70,4 @@
         });
 
     });
-
 </script>

@@ -80,12 +80,12 @@
             border: none;
             border-top: solid 2px #101010;
         }
-
     </style>
 </head>
 
 <!-- Set "A5", "A4" or "A3" for class name -->
 <!-- Set also "landscape" if you need -->
+
 <body class="A4">
 
     <!-- Each sheet element should have the class "sheet" -->
@@ -122,24 +122,25 @@
                 <th>Jumlah</th>
             </tr>
             @php
-            $totalpembelian = 0;
+                $totalpembelian = 0;
+                $totaljmlbayar = 0;
             @endphp
             @foreach ($detailkontrabon as $d)
-            @php
-            $total = ($d->qty * $d->harga) + $d->penyesuaian;
-            $totalpembelian += $total;
-            @endphp
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ date("d-m-y",strtotime($d->tgl_pembelian)) }}</td>
-                <td>{{ $d->nobukti_pembelian }}</td>
-                <td></td>
-                <td>{{ $d->nama_barang }}</td>
-                <td align="center">{{ desimal($d->qty) }}</td>
-                <td align="right"> {{ desimal($d->harga) }}</td>
-                <td align="right"> {{ desimal($total) }}</td>
-            </tr>
-
+                @php
+                    $total = $d->qty * $d->harga + $d->penyesuaian;
+                    $totalpembelian += $total;
+                    $totaljmlbayar += $d->jml_bayar;
+                @endphp
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ date('d-m-y', strtotime($d->tgl_pembelian)) }}</td>
+                    <td>{{ $d->nobukti_pembelian }}</td>
+                    <td></td>
+                    <td>{{ $d->nama_barang }}</td>
+                    <td align="center">{{ desimal($d->qty) }}</td>
+                    <td align="right"> {{ desimal($d->harga) }}</td>
+                    <td align="right"> {{ desimal($d->jml_bayar) }}</td>
+                </tr>
             @endforeach
             <tr>
                 <th colspan="7">JUMLAH</th>
