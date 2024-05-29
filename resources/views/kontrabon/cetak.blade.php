@@ -129,7 +129,7 @@
                 @php
                     $total = $d->qty * $d->harga + $d->penyesuaian;
                     $totalpembelian += $total;
-                    $totaljmlbayar += $d->jml_bayar;
+                    $totaljmlbayar += $d->jmlbayar;
                 @endphp
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -139,7 +139,7 @@
                     <td>{{ $d->nama_barang }}</td>
                     <td align="center">{{ desimal($d->qty) }}</td>
                     <td align="right"> {{ desimal($d->harga) }}</td>
-                    <td align="right"> {{ desimal($d->jml_bayar) }}</td>
+                    <td align="right"> {{ desimal($d->jmlbayar) }}</td>
                 </tr>
             @endforeach
             <tr>
