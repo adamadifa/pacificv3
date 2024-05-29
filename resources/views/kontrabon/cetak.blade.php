@@ -123,13 +123,11 @@
             </tr>
             @php
                 $totalpembelian = 0;
-                $totaljmlbayar = 0;
             @endphp
             @foreach ($detailkontrabon as $d)
                 @php
                     $total = $d->qty * $d->harga + $d->penyesuaian;
                     $totalpembelian += $total;
-                    $totaljmlbayar += $d->jmlbayar;
                 @endphp
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -139,7 +137,7 @@
                     <td>{{ $d->nama_barang }}</td>
                     <td align="center">{{ desimal($d->qty) }}</td>
                     <td align="right"> {{ desimal($d->harga) }}</td>
-                    <td align="right"> {{ desimal($d->jmlbayar) }}</td>
+                    <td align="right"> {{ desimal($total) }}</td>
                 </tr>
             @endforeach
             <tr>
@@ -152,7 +150,7 @@
         <table class="datatable5">
             <tr>
                 <td>TERBILANG</td>
-                <td><i>{{ ucwords(strtolower(terbilang($totaljmlbayar))) }}</i></td>
+                <td><i>{{ ucwords(strtolower(terbilang($totalpembelian))) }}</i></td>
             </tr>
         </table>
         <br>
