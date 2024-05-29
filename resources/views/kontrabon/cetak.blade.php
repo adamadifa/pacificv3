@@ -152,7 +152,7 @@
         <table class="datatable5">
             <tr>
                 <td>TERBILANG</td>
-                <td><i>{{ ucwords(strtolower(terbilang($totalpembelian))) }}</i></td>
+                <td><i>{{ ucwords(strtolower(terbilang($totaljmlbayar))) }}</i></td>
             </tr>
         </table>
         <br>
