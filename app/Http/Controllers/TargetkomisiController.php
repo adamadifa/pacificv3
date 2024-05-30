@@ -5485,6 +5485,7 @@ class TargetkomisiController extends Controller
         $query->where('kode_cabang', $cabang);
         $query->where('nama_karyawan', '!=', '');
         $query->where('karyawan.id_karyawan', '!=', 'SKLT09');
+        $query->where('status_aktif_sales', 1);
         $komisi = $query->get();
         $nmbulan  = $namabulan[$bulan];
         if (isset($_POST['export'])) {
