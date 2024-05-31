@@ -5614,12 +5614,12 @@ class TargetkomisiController extends Controller
                 INNER JOIN kendaraan ON dpb.no_kendaraan = kendaraan.no_polisi
                 LEFT JOIN (
                     SElECT detail_dpb.no_dpb,
-                        SUM(floor(jml_pengambilan)) as jmlpengambilan
+                        SUM(jml_pengambilan) as jmlpengambilan
                         FROM detail_dpb
                         GROUP BY detail_dpb.no_dpb
                 )	pengambilan ON (dpb.no_dpb = pengambilan.no_dpb)
 
-                WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai'
+                WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' AND no_kendaraan !='ZL'
                 GROUP BY karyawan.kode_cabang
             ) kendaraan"),
             function ($join) {
