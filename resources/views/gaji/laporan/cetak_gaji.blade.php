@@ -1037,6 +1037,7 @@
                                 @endif
                                 @php
                                     $izinsakit = 0;
+                                    //KESAHALAN IZIN
                                 @endphp
                             @elseif($status == 'c')
                                 @php
