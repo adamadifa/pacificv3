@@ -401,6 +401,9 @@ class HargaController extends Controller
         $pajak = $request->pajak;
         $status_promo = $request->status_promo;
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        if (!empty($pelanggan->kategori_harga)) {
+            $kategori_salesman = $pelanggan->kategori_harga;
+        }
         // $barang = DB::table('barang')
         //     ->select('barang.*')
         //     ->where('kode_cabang', $kode_cabang)->where('kategori_harga', $kategori_salesman)
@@ -575,6 +578,9 @@ class HargaController extends Controller
         $pajak = $request->pajak;
         $status_promo = $request->status_promo;
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        if (!empty($pelanggan->kategori_harga)) {
+            $kategori_salesman = $pelanggan->kategori_harga;
+        }
         // $barang = DB::table('barang')
         //     ->select('barang.*')
         //     ->where('kode_cabang', $kode_cabang)->where('kategori_harga', $kategori_salesman)

@@ -558,7 +558,8 @@ class PelangganController extends Controller
                     'foto' => $foto,
                     'signature' => $signature,
                     'signature_karyawan' => $signature_karyawan,
-                    'omset_toko' => str_replace(".", "", $request->omset_toko)
+                    'omset_toko' => str_replace(".", "", $request->omset_toko),
+                    'kategori_harga' => $request->kategori_harga
                 ]);
 
             // if ($simpan) {
@@ -592,7 +593,7 @@ class PelangganController extends Controller
             }
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Di Updat']);
         }
     }

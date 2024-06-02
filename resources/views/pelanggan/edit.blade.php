@@ -438,7 +438,37 @@
                                     </div>
                                  </div>
                               </div>
+                              <div class="row">
+                                 <div class="col-12">
+                                    <div class="form-group  @error('kategori_harga') error @enderror">
+                                       <select name="kategori_harga" id="" class="form-control">
+                                          <option value="">Kategori Harga</option>
+                                          <option
+                                             @isset($data->kategori_harga) @if (old('kategori_harga'))
+                                                       {{ old('kategori_harga') == 'TO' ? 'selected' : '' }} @else
+                                                       {{ $data->kategori_harga == 'TO' ? 'selected' : '' }} @endif @else
+                                                       {{ old('kategori_harga') == 'TO' ? 'selected' : '' }}
+                                                       @endisset
+                                             value="TO">TO</option>
+                                          <option
+                                             @isset($data->kategori_harga) @if (old('kategori_harga'))
+                                                       {{ old('kategori_harga') == 'CANVASER' ? 'selected' : '' }} @else
+                                                       {{ $data->kategori_harga == 'CANVASER' ? 'selected' : '' }} @endif @else
+                                                       {{ old('kategori_harga') == 'CANVASER' ? 'selected' : '' }}
+                                                       @endisset
+                                             value="CANVASER">CANVASER</option>
 
+                                       </select>
+                                       @error('kategori_harga')
+                                          <div class="help-block">
+                                             <ul role="alert">
+                                                <li>{{ $message }}</li>
+                                             </ul>
+                                          </div>
+                                       @enderror
+                                    </div>
+                                 </div>
+                              </div>
                            </div>
                         </div>
 
