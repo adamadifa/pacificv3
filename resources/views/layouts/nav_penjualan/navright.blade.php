@@ -187,7 +187,22 @@
         </div>
     </div>
 @else
-    @if ($leve == 'kepala gudang')
+    @if ($level == 'kepala gudang')
+        <div class="card">
+            <div class="card-content">
+                <div class="card-body">
+                    <h4 class="card-title">Laporan Penjualan</h4>
+                    <ul class="list-group list-group-flush">
+                        <a href="/laporanpenjualan/rekappenjualan" style="color:#626262">
+                            <li
+                                class="list-group-item {{ request()->is(['laporanpenjualan/rekappenjualan']) ? 'active' : '' }}">
+                                <i class="feather icon-file mr-1"></i>Rekap Penjualan
+                            </li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+        </div>
     @else
         <div class="card">
             <div class="card-content">
