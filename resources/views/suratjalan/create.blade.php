@@ -93,6 +93,7 @@
                     <option value="ARP MANDIRI">ANGKUTAN ARP MANDIRI</option>
                     <option value="CAHAYA BARU">ANGKUTAN CAHAYA BARU</option>
                     <option value="LAHANG JAYA ABADI">LAHANG JAYA ABADI</option>
+                    <option value="SINAR GEMILANG">SINAR GEMILANG</option>
 
                 </select>
             </div>
