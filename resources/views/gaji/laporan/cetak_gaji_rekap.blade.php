@@ -844,7 +844,6 @@
                                         } else {
                                             $j2 = strtotime($jam_in_tanggal);
                                         }
-
                                         $diffterlambat = $j2 - $j1;
                                         //Jam Terlambat
                                         $jamterlambat = floor($diffterlambat / (60 * 60));
@@ -1127,6 +1126,15 @@
                                     $izinabsen = 0;
                                     $izinsakit = 0;
                                 @endphp
+                                @if ($jam_out == 'NA')
+                                    @php
+                                        if ($namahari == 'Sabtu') {
+                                            $tidakhadir = 5;
+                                        } else {
+                                            $tidakhadir = 7;
+                                        }
+                                    @endphp
+                                @endif
                                 <!-- Menghitung Lembur Reguler-->
                                 @if (!empty($ceklembur))
                                     @php
@@ -1224,8 +1232,8 @@
                                 @endif
 
                                 {{-- @php
-                                echo $premilembur_harilibur;
-                            @endphp --}}
+                                    echo $premilembur_harilibur;
+                                @endphp --}}
                             @elseif($status == 's')
                                 @if ($namahari != 'Minggu')
                                     @if (!empty($sid))
@@ -1295,7 +1303,9 @@
                                     if ($bulan == '5' && $tahun == '2024') {
                                         $izinabsen = 0;
                                     }
-                                    //$izinabsen = 0;
+
+                                    // $izinabsen = 0;
+
                                 @endphp
                             @elseif($status == 'c')
                                 @php
@@ -1513,7 +1523,7 @@
                             0,
                         ); // Potongan Upah
                         $penambah = $d->jml_penambah;
-                        $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersih
+                        $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersihmlah Upah Bersih
 
                     @endphp
                     <!--UJI COBA-->
