@@ -1041,7 +1041,7 @@
                                     //     $izinabsen = 0;
                                     // }
 
-                                    $izinabsen = 0;
+                                    // $izinabsen = 0;
                                 @endphp
                             @elseif($status == 'c')
                                 @php
