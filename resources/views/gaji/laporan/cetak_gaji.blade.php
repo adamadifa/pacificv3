@@ -1037,9 +1037,11 @@
                                 @endif
                                 @php
                                     $izinsakit = 0;
-                                    if ($bulan == '5' && $tahun == '2024') {
-                                        $izinabsen = 0;
-                                    }
+                                    // if ($bulan == '5' && $tahun == '2024') {
+                                    //     $izinabsen = 0;
+                                    // }
+
+                                    $izinabsen = 0;
                                 @endphp
                             @elseif($status == 'c')
                                 @php
