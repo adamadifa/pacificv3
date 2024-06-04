@@ -1,5 +1,5 @@
 @if ($level != 'salesman')
-    @if ($level == 'kepala gudang')
+    @if ($level == 'kepala gudang' || $level == 'spv gudang')
         <div class="card">
             <div class="card-content">
                 <div class="card-body">
