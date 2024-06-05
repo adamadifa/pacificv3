@@ -5551,11 +5551,13 @@ class TargetkomisiController extends Controller
             $startmonth = $startmonth;
             $startyear = $startyear;
         }
+
+        $startmonth = $startmonth < 10 ? "0" . $startmonth : $startmonth;
         // $date = explode("-", $last3month);
         // dd($last3month);
         $startdate = $startyear . "-" . $startmonth . "-01";
 
-        dd($startdate . "-" . $enddate);
+        // dd($startdate . "-" . $enddate);
 
         $cbg = Auth::user()->kode_cabang;
         $kode_cabang = $request->kode_cabang;
