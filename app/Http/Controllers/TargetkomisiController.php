@@ -5543,7 +5543,7 @@ class TargetkomisiController extends Controller
         $date = explode("-", $last3month);
         $startdate = $date[0] . "-" . $date[1] . "-01";
 
-        //dd($startdate . "-" . $enddate);
+        dd($startdate . "-" . $enddate);
 
         $cbg = Auth::user()->kode_cabang;
         $kode_cabang = $request->kode_cabang;
