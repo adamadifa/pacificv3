@@ -5539,10 +5539,21 @@ class TargetkomisiController extends Controller
 
 
         //dd($lastdateofmonth);
-        $last3month = date('Y-m-d', strtotime('-3 month', strtotime($sampai)));
-        $date = explode("-", $last3month);
-        dd($last3month);
-        $startdate = $date[0] . "-" . $date[1] . "-01";
+        // $last3month = date('Y-m-d', strtotime('-3 month', strtotime($sampai)));
+        $bulansampai = date('m', strtotime($sampai));
+        $tahunsampai = date('Y', strtotime($sampai));
+        $startmonth = $bulansampai - 3;
+        $startyear = $tahunsampai;
+        if ($startmonth <= 0) {
+            $startmonth = $startmonth + 12;
+            $startyear = $startyear - 1;
+        } else {
+            $startmonth = $startmonth;
+            $startyear = $startyear;
+        }
+        // $date = explode("-", $last3month);
+        // dd($last3month);
+        $startdate = $startyear . "-" . $startmonth . "-01";
 
         dd($startdate . "-" . $enddate);
 
