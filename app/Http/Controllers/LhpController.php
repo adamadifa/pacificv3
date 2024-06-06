@@ -64,7 +64,7 @@ class LhpController extends Controller
         $cabang = $cbg->getCabang($kode_cabang);
 
 
-        $tanggal = $request->tanggal;
+        $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
 
