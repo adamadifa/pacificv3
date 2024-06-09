@@ -36,7 +36,7 @@ class GudangController extends Controller
         $lastsaldo = DB::select("SELECT tanggal, kode_cabang FROM (SELECT MAX(tanggal) as tanggal,kode_cabang FROM saldoawal_bj GROUP BY kode_cabang ) as saldobj WHERE kode_cabang != 'PST' ORDER BY tanggal");
         // (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
         //     WHERE saldomax.kode_cabang = mc.kode_cabang)
-
+        dd($lastsaldo);
         $barang = DB::table('master_barang')
             ->where('status', 1)
             ->orderBy('kode_produk')
