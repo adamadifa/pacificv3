@@ -171,7 +171,10 @@
             <th>Klaten</th>
             <th>Pusat</th>
             <th>Purwakarta</th>
-
+            <th>Garut</th>
+            <th>Bekasi</th>
+            <th>Tangerang</th>
+            <th>Banten</th>
          </tr>
       </thead>
       <tbody>
