@@ -33,6 +33,9 @@ class GudangController extends Controller
         $dari = date('Y-m') . "-01";
         $sampai = date('Y-m-t', strtotime($dari));
 
+        $lastsaldo = DB::selectRaw("SELECT tanggal, kode_cabang FROM (SELECT MAX(tanggal) as tanggal,kode_cabang FROM saldoawal_bj GROUP BY kode_cabang ) as saldobj WHERE kode_cabang != 'PST' ORDER BY tanggal")->first();
+        // (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
+        //     WHERE saldomax.kode_cabang = mc.kode_cabang)
 
         $barang = DB::table('master_barang')
             ->where('status', 1)
@@ -103,28 +106,22 @@ class GudangController extends Controller
             WHERE saldomax.kode_cabang = mc.kode_cabang)
             AND tgl_mutasi_gudang_cabang <= CURDATE()
             AND jenis_mutasi='SURAT JALAN'
-            OR tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
-            WHERE saldomax.kode_cabang = mc.kode_cabang)
+            OR tgl_mutasi_gudang_cabang >= '$lastsaldo->tanggal'
             AND tgl_mutasi_gudang_cabang <= CURDATE()
             AND jenis_mutasi='TRANSIT IN'
-            OR tgl_mutasi_gudang_cabang>= (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
-            WHERE saldomax.kode_cabang = mc.kode_cabang)
+            OR tgl_mutasi_gudang_cabang>= '$lastsaldo->tanggal'
             AND tgl_mutasi_gudang_cabang <= CURDATE()
             AND jenis_mutasi='TRANSIT OUT'
-            OR tgl_mutasi_gudang_cabang>= (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
-            WHERE saldomax.kode_cabang = mc.kode_cabang)
+            OR tgl_mutasi_gudang_cabang>= '$lastsaldo->tanggal'
             AND tgl_mutasi_gudang_cabang <= CURDATE()
             AND jenis_mutasi='REJECT GUDANG'
-            OR tgl_mutasi_gudang_cabang>= (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
-            WHERE saldomax.kode_cabang = mc.kode_cabang)
+            OR tgl_mutasi_gudang_cabang>= '$lastsaldo->tanggal'
             AND tgl_mutasi_gudang_cabang <= CURDATE()
             AND jenis_mutasi='REJECT PASAR'
-            OR tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
-            WHERE saldomax.kode_cabang = mc.kode_cabang)
+            OR tgl_mutasi_gudang_cabang >= '$lastsaldo->tanggal'
             AND tgl_mutasi_gudang_cabang <= CURDATE()
             AND jenis_mutasi='REPACK'
-            OR tgl_mutasi_gudang_cabang>= (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
-            WHERE saldomax.kode_cabang = mc.kode_cabang)
+            OR tgl_mutasi_gudang_cabang>= '$lastsaldo->tanggal'
             AND tgl_mutasi_gudang_cabang <= CURDATE()
             AND jenis_mutasi='PENYESUAIAN'
             GROUP BY kode_cabang
@@ -141,9 +138,7 @@ class GudangController extends Controller
             kode_cabang
             FROM detail_dpb
             INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
-            WHERE tgl_pengambilan >= (SELECT MAX(saldomax.tanggal)
-            FROM saldoawal_bj saldomax
-            WHERE saldomax.kode_cabang = dpb.kode_cabang) AND tgl_pengambilan <= CURDATE()
+            WHERE tgl_pengambilan >= $lastsaldo->tanggal AND tgl_pengambilan <= CURDATE()
             GROUP BY kode_cabang
             ) dpb"),
             function ($join) {
