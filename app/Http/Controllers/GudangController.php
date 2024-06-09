@@ -33,7 +33,7 @@ class GudangController extends Controller
         $dari = date('Y-m') . "-01";
         $sampai = date('Y-m-t', strtotime($dari));
 
-        $lastsaldo = DB::select("SELECT tanggal, kode_cabang FROM (SELECT MAX(tanggal) as tanggal,kode_cabang FROM saldoawal_bj GROUP BY kode_cabang ) as saldobj WHERE kode_cabang != 'PST' ORDER BY tanggal");
+        $lastsaldo = DB::select("SELECT tanggal, kode_cabang FROM (SELECT MAX(tanggal) as tanggal,kode_cabang FROM saldoawal_bj GROUP BY kode_cabang ) as saldobj WHERE kode_cabang != 'PST' ORDER BY tanggal LIMIT 1");
         // (SELECT MAX(saldomax.tanggal) FROM saldoawal_bj saldomax
         //     WHERE saldomax.kode_cabang = mc.kode_cabang)
         dd($lastsaldo);
