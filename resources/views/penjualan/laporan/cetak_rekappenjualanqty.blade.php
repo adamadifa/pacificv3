@@ -51,7 +51,7 @@
          <tr bgcolor="#024a75" style="color:white; font-size:12;">
             <th rowspan="2">No</th>
             <th rowspan="2">Nama Produk</th>
-            <th colspan="11">Cabang</th>
+            <th colspan="15">Cabang</th>
             <th rowspan="2">Total</th>
          </tr>
          <tr bgcolor="#024a75" style="color:white; font-size:12;">
@@ -156,7 +156,7 @@
          <tr bgcolor="#024a75" style="color:white; font-size:12;">
             <th rowspan="2">No</th>
             <th rowspan="2">Nama Produk</th>
-            <th colspan="11">Cabang</th>
+            <th colspan="15">Cabang</th>
             <th rowspan="2">Total</th>
          </tr>
          <tr bgcolor="#024a75" style="color:white; font-size:12;">
