@@ -95,7 +95,7 @@ class GudangController extends Controller
 
             SELECT
             $select_mutasi
-            kode_cabang
+            kode_cabangd
             FROM detail_mutasi_gudang_cabang dmc
             INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang
             WHERE tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
