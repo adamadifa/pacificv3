@@ -9302,6 +9302,8 @@ class PenjualanController extends Controller
         COUNT(kode_pelanggan) as jmlpelangganaktif,
         SUM(IF(latitude IS NOT NULL AND latitude !=0 AND longitude IS NOT NULL AND longitude !=0,1,0)) as lokasi,
         SUM(IF(status_location=1,1,0)) as updatebysfa,
+        SUM(IF(signature IS NOT NULL ,1,0)) as signature_pemilik,
+        SUM(IF(signature_karyawan IS NOT NULL ,1,0)) as signature_karyawan,
         SUM(IF(LENGTH(pelanggan.no_hp) >= 10,1,0)) as nohpcomplete');
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->where('pelanggan.time_stamps', '<=', $sampai);
