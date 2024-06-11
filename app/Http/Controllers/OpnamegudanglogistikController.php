@@ -109,8 +109,8 @@ class OpnamegudanglogistikController extends Controller
             $tahunlalu = $tahun;
         }
 
-        $ceksaldo = DB::table('opname_gl')->where('bulan', $bulanlalu)->where('tahun', $tahunlalu)->count();
-        $ceknow = DB::table('opname_gl')->where('bulan', $bulan)->where('tahun', $tahun)->count();
+        $ceksaldo = DB::table('opname_gl')->where('bulan', $bulanlalu)->where('tahun', $tahunlalu)->where('kode_kategori', $kategori)->count();
+        $ceknow = DB::table('opname_gl')->where('bulan', $bulan)->where('tahun', $tahun)->where('kode_kategori', $kategori)->count();
         $cekall = DB::table('opname_gl')->count();
         if (empty($ceksaldo) && !empty($cekall) || !empty($ceknow)) {
             echo "1";
