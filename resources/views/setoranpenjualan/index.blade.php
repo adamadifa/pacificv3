@@ -30,12 +30,10 @@
                         <form action="/setoranpenjualan" id="frmcari">
                             <div class="row">
                                 <div class="col-lg-6 col-sm-12">
-                                    <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker
-                                        value="{{ Request('dari') }}" />
+                                    <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
                                 </div>
                                 <div class="col-lg-6 col-sm-12">
-                                    <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker
-                                        value="{{ Request('sampai') }}" />
+                                    <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
                                 </div>
                             </div>
                             <div class="row">
@@ -44,8 +42,8 @@
                                         <select name="kode_cabang" id="kode_cabang" class="form-control">
                                             <option value="">Pilih Cabang</option>
                                             @foreach ($cabang as $c)
-                                                <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
-                                                    value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                                <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }} value="{{ $c->kode_cabang }}">
+                                                    {{ strtoupper($c->nama_cabang) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -58,8 +56,8 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-4 col-sm-12">
-                                    <button type="submit" name="submit" value="1" class="btn btn-primary"><i
-                                            class="fa fa-search"></i> Cari Data </button>
+                                    <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data
+                                    </button>
                                 </div>
                             </div>
                         </form>
@@ -133,9 +131,17 @@
                                             $oplogam = '+';
                                         }
 
-                                        $totalsetoran = $d->setoran_kertas + $uk + $d->setoran_logam + $ul + $d->setoran_bg + $d->setoran_transfer + $d->setoran_lainnya;
+                                        $totalsetoran =
+                                            $d->setoran_kertas +
+                                            $uk +
+                                            $d->setoran_logam +
+                                            $ul +
+                                            $d->setoran_bg +
+                                            $d->setoran_transfer +
+                                            $d->setoran_lainnya;
                                         $selisih = $totalsetoran - $totallhp;
-                                        $kontenkertas = number_format($d->setoran_kertas, '0', '', '.') . $opkertas . number_format($uk, '0', '', '.');
+                                        $kontenkertas =
+                                            number_format($d->setoran_kertas, '0', '', '.') . $opkertas . number_format($uk, '0', '', '.');
                                         $kontenlogam = number_format($d->setoran_logam, '0', '', '.') . $oplogam . number_format($ul, '0', '', '.');
 
                                         if ($d->cektunai == $d->lhp_tunai) {
@@ -176,18 +182,15 @@
                                         <td class="{{ $colorsetorantunai }} text-right">{{ rupiah($d->lhp_tunai) }}</td>
                                         <td class="{{ $colorsetorantagihan }} text-right">{{ rupiah($d->lhp_tagihan) }}
                                         </td>
-                                        <td class="{{ $colortotallhp }} text-right"><u><a class="text-white"
-                                                    target="_blank"
+                                        <td class="{{ $colortotallhp }} text-right"><u><a class="text-white" target="_blank"
                                                     href=" /setoranpenjualan/detailsetoran?kode_cabang={{ $d->kode_cabang }}&tgl_lhp={{ $d->tgl_lhp }}&id_karyawan={{ $d->id_karyawan }}">{{ rupiah($totallhp) }}</a></u>
                                         </td>
                                         <td class="text-right"><a href="#" class="detailkertas" data-toggle="popover"
-                                                data-placement="{{ $position }}" data-container="body"
-                                                data-original-title="Keterangan"
+                                                data-placement="{{ $position }}" data-container="body" data-original-title="Keterangan"
                                                 data-content="{{ $kontenkertas }}">{{ !empty($d->setoran_kertas + $uk) ? rupiah($d->setoran_kertas + $uk) : '' }}</a>
                                         </td>
                                         <td class="text-right"><a href="#" class="detaillogam" data-toggle="popover"
-                                                data-placement="{{ $position }}" data-container="body"
-                                                data-original-title="Keterangan"
+                                                data-placement="{{ $position }}" data-container="body" data-original-title="Keterangan"
                                                 data-content="{{ $kontenlogam }}">{{ !empty($d->setoran_logam + $ul) ? rupiah($d->setoran_logam + $ul) : '' }}</a>
                                         </td>
                                         <td class="text-right">{{ !empty($d->setoran_bg) ? rupiah($d->setoran_bg) : '' }}
@@ -199,22 +202,18 @@
                                         <td class="text-right">{{ rupiah($totalsetoran) }}</td>
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a href="#" class="info ml-1" data-toggle="popover"
-                                                    data-placement="{{ $position }}" data-container="body"
-                                                    data-original-title="Keterangan"
-                                                    data-content="{{ $d->keterangan }}"><i
+                                                <a href="#" class="info ml-1" data-toggle="popover" data-placement="{{ $position }}"
+                                                    data-container="body" data-original-title="Keterangan" data-content="{{ $d->keterangan }}"><i
                                                         class="feather icon-info"></i></a>
-                                                <a href="/setoranpenjualan/{{ Crypt::encrypt($d->kode_setoran) }}/synclhp"
-                                                    class="success ml-1"><i class="feather icon-refresh-ccw"></i></a>
-                                                <a href="#" class="success ml-1 edit"
-                                                    kodesetoran="{{ Crypt::encrypt($d->kode_setoran) }}"><i
+                                                <a href="/setoranpenjualan/{{ Crypt::encrypt($d->kode_setoran) }}/synclhp" class="success ml-1"><i
+                                                        class="feather icon-refresh-ccw"></i></a>
+                                                <a href="#" class="success ml-1 edit" kodesetoran="{{ Crypt::encrypt($d->kode_setoran) }}"><i
                                                         class="feather icon-edit"></i></a>
                                                 <form method="POST" class="deleteform"
                                                     action="/setoranpenjualan/{{ Crypt::encrypt($d->kode_setoran) }}/delete">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <a href="#" tanggal="{{ $d->tgl_lhp }}"
-                                                        class="delete-confirm ml-1">
+                                                    <a href="#" tanggal="{{ $d->tgl_lhp }}" class="delete-confirm ml-1">
                                                         <i class="feather icon-trash danger"></i>
                                                     </a>
                                                 </form>
@@ -274,8 +273,8 @@
         </div>
     </div>
     <!-- Input Setoran Penjualan -->
-    <div class="modal fade text-left" id="mdlinputsetoranpenjualan" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputsetoranpenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -291,8 +290,8 @@
         </div>
     </div>
     <!-- Edit Setoran Penjualan -->
-    <div class="modal fade text-left" id="mdleditsetoranpenjualan" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditsetoranpenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">

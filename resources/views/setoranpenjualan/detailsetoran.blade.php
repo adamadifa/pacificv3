@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,9 +30,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size: 14px">
         PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }} <br>
@@ -56,42 +57,41 @@
         </thead>
         <tbody>
             @php
-            $totaltagihan = 0;
-            $totaltunai = 0;
-            $totalgirotocash = 0;
+                $totaltagihan = 0;
+                $totaltunai = 0;
+                $totalgirotocash = 0;
             @endphp
             @foreach ($kasbesar as $d)
-            @php
-            if($d->jenistransaksi=="tunai"){
-            $tunai = $d->bayar;
-            $tagihan = 0;
-            $girotocash =0;
-            }else{
-            if($d->girotocash==1){
-            $tunai = 0;
-            $tagihan = 0;
-            $girotocash = $d->bayar;
-            }else{
-            $tunai = 0;
-            $tagihan = $d->bayar;
-            $girotocash = 0;
-            }
-            }
+                @php
+                    if ($d->jenistransaksi == 'tunai') {
+                        $tunai = $d->bayar;
+                        $tagihan = 0;
+                        $girotocash = 0;
+                    } else {
+                        if ($d->girotocash == 1) {
+                            $tunai = 0;
+                            $tagihan = 0;
+                            $girotocash = $d->bayar;
+                        } else {
+                            $tunai = 0;
+                            $tagihan = $d->bayar;
+                            $girotocash = 0;
+                        }
+                    }
 
-
-            $totaltagihan += $tagihan;
-            $totaltunai += $tunai;
-            $totalgirotocash += $girotocash;
-            @endphp
-            <tr>
-                <td>{{ date("d-m-Y",strtotime($d->tglbayar)) }}</td>
-                <td>{{ $d->no_fak_penj }}</td>
-                <td>{{ $d->kode_pelanggan }}</td>
-                <td>{{ $d->nama_pelanggan }}</td>
-                <td style="text-align: right">{{ !empty($tunai) ? rupiah($tunai) : '' }}</td>
-                <td style="text-align: right">{{ !empty($tagihan) ? rupiah($tagihan) : '' }}</td>
-                <td style="text-align: right">{{ !empty($girotocash) ? rupiah($girotocash) : '' }}</td>
-            </tr>
+                    $totaltagihan += $tagihan;
+                    $totaltunai += $tunai;
+                    $totalgirotocash += $girotocash;
+                @endphp
+                <tr>
+                    <td>{{ date('d-m-Y', strtotime($d->tglbayar)) }}</td>
+                    <td>{{ $d->no_fak_penj }}</td>
+                    <td>{{ $d->kode_pelanggan }}</td>
+                    <td>{{ $d->nama_pelanggan }}</td>
+                    <td style="text-align: right">{{ !empty($tunai) ? rupiah($tunai) : '' }}</td>
+                    <td style="text-align: right">{{ !empty($tagihan) ? rupiah($tagihan) : '' }}</td>
+                    <td style="text-align: right">{{ !empty($girotocash) ? rupiah($girotocash) : '' }}</td>
+                </tr>
             @endforeach
             <tr>
                 <th colspan="4">TOTAL</th>
@@ -122,36 +122,36 @@
         </thead>
         <tbody>
             @php
-            $totalgiro = 0;
+                $totalgiro = 0;
             @endphp
             @foreach ($listgiro as $d)
-            @php
-            $totalgiro += $d->jumlah;
-            if ($d->status == 0) {
-            $status = "Pending";
-            $color = "#9c2305";
-            $textcolor = "white";
-            } else if ($d->status == 1) {
-            $status = "Diterima";
-            $color = "Green";
-            $textcolor = "white";
-            } else if ($d->status == 2) {
-            $status = "Ditolak";
-            $color = "red";
-            $textcolor = "white";
-            }
-            @endphp
-            <tr style="background-color:{{ $color }}; color:{{ $textcolor }}">
-                <td>{{ $d->no_giro }}</td>
-                <td>{{ date("d-m-Y",strtotime($d->tgl_giro)) }}</td>
-                <td>{{ $d->no_fak_penj }}</td>
-                <td>{{ $d->kode_pelanggan }}</td>
-                <td>{{ $d->nama_pelanggan }}</td>
-                <td>{{ $d->namabank }}</td>
-                <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
-                <td style="text-align: center">{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
-                <td>{{ $status }}</td>
-            </tr>
+                @php
+                    $totalgiro += $d->jumlah;
+                    if ($d->status == 0) {
+                        $status = 'Pending';
+                        $color = '#9c2305';
+                        $textcolor = 'white';
+                    } elseif ($d->status == 1) {
+                        $status = 'Diterima';
+                        $color = 'Green';
+                        $textcolor = 'white';
+                    } elseif ($d->status == 2) {
+                        $status = 'Ditolak';
+                        $color = 'red';
+                        $textcolor = 'white';
+                    }
+                @endphp
+                <tr style="background-color:{{ $color }}; color:{{ $textcolor }}">
+                    <td>{{ $d->no_giro }}</td>
+                    <td>{{ date('d-m-Y', strtotime($d->tgl_giro)) }}</td>
+                    <td>{{ $d->no_fak_penj }}</td>
+                    <td>{{ $d->kode_pelanggan }}</td>
+                    <td>{{ $d->nama_pelanggan }}</td>
+                    <td>{{ $d->namabank }}</td>
+                    <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
+                    <td style="text-align: center">{{ date('d-m-Y', strtotime($d->tglcair)) }}</td>
+                    <td>{{ $status }}</td>
+                </tr>
             @endforeach
             <tr>
                 <th colspan="6">TOTAL</th>
@@ -182,51 +182,51 @@
         </thead>
         <tbody>
             @php
-            $totaltransfer = 0;
-            $totalgirototransfer = 0;
+                $totaltransfer = 0;
+                $totalgirototransfer = 0;
             @endphp
             @foreach ($listtransfer as $d)
-            @php
+                @php
 
-            if ($d->status == 0) {
-            $status = "Pending";
-            $color = "#9c2305";
-            $textcolor = "white";
-            } else if ($d->status == 1) {
-            $status = "Diterima";
-            $color = "Green";
-            $textcolor = "white";
-            } else if ($d->status == 2) {
-            $status = "Ditolak";
-            $color = "red";
-            $textcolor = "white";
-            }
+                    if ($d->status == 0) {
+                        $status = 'Pending';
+                        $color = '#9c2305';
+                        $textcolor = 'white';
+                    } elseif ($d->status == 1) {
+                        $status = 'Diterima';
+                        $color = 'Green';
+                        $textcolor = 'white';
+                    } elseif ($d->status == 2) {
+                        $status = 'Ditolak';
+                        $color = 'red';
+                        $textcolor = 'white';
+                    }
 
-            if($d->girotocash==1){
-            $girototransfer = $d->jumlah;
-            $transfer = 0;
-            }else{
-            $transfer= $d->jumlah;
-            $girototransfer = 0;
-            }
+                    if ($d->girotocash == 1) {
+                        $girototransfer = $d->jumlah;
+                        $transfer = 0;
+                    } else {
+                        $transfer = $d->jumlah;
+                        $girototransfer = 0;
+                    }
 
-            $totaltransfer += $transfer;
-            $totalgirototransfer += $girototransfer;
-            @endphp
-            <tr style="background-color:{{ $color }}; color:{{ $textcolor }}">
-                <td>{{ $d->kode_transfer }}</td>
-                <td>{{ date("d-m-Y",strtotime($d->tgl_transfer)) }}</td>
-                <td>{{ $d->no_fak_penj }}</td>
-                <td>{{ $d->kode_pelanggan }}</td>
-                <td>{{ $d->nama_pelanggan }}</td>
-                <td>{{ $d->namabank }}</td>
-                <td>{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
-                <td style="text-align: right">{{ rupiah($transfer) }}</td>
-                <td style="text-align: right">{{ rupiah($girototransfer) }}</td>
-                <td>{{ $status }}</td>
-                <td></td>
+                    $totaltransfer += $transfer;
+                    $totalgirototransfer += $girototransfer;
+                @endphp
+                <tr style="background-color:{{ $color }}; color:{{ $textcolor }}">
+                    <td>{{ $d->kode_transfer }}</td>
+                    <td>{{ date('d-m-Y', strtotime($d->tgl_transfer)) }}</td>
+                    <td>{{ $d->no_fak_penj }}</td>
+                    <td>{{ $d->kode_pelanggan }}</td>
+                    <td>{{ $d->nama_pelanggan }}</td>
+                    <td>{{ $d->namabank }}</td>
+                    <td>{{ date('d-m-Y', strtotime($d->tglcair)) }}</td>
+                    <td style="text-align: right">{{ rupiah($transfer) }}</td>
+                    <td style="text-align: right">{{ rupiah($girototransfer) }}</td>
+                    <td>{{ $status }}</td>
+                    <td></td>
 
-            </tr>
+                </tr>
             @endforeach
             <tr>
                 <th colspan="7">TOTAL</th>
@@ -240,39 +240,40 @@
     </table>
     <h4>SUMMARY <br> TANGGAL <?php echo DateToIndo2($tgl_lhp); ?><br></h4>
     <?php
-                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer ;
-                    ?>
+    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer;
+    ?>
     <table class="datatable3">
 
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Penjualan Tunai</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltunai, '0', '', '.');  ?></td>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltunai, '0', '', '.'); ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Tagihan</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltagihan, '0', '', '.');  ?></td>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltagihan, '0', '', '.'); ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Giro</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgiro, '0', '', '.');  ?></td>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgiro, '0', '', '.'); ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Transfer</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltransfer, '0', '', '.');  ?></td>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltransfer, '0', '', '.'); ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Ganti Giro Ke Cash</th>
-            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirotocash, '0', '', '.');  ?></td>
+            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirotocash, '0', '', '.'); ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Ganti Giro Ke Transfer</th>
-            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirototransfer, '0', '', '.');  ?></td>
+            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirototransfer, '0', '', '.'); ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">TOTAL</th>
-            <td style="background-color:green; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalsummary, '0', '', '.');  ?></td>
+            <td style="background-color:green; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalsummary, '0', '', '.'); ?></td>
         </tr>
 
     </table>
 </body>
+
 </html>

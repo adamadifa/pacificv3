@@ -41,7 +41,8 @@ class SetoranpenjualanController extends Controller
             $sampai = date('Y-m-d');
         }
         $query = Setoranpenjualan::query();
-        $query->selectRaw(" kode_setoran,tgl_lhp,setoran_penjualan.id_karyawan,setoran_penjualan.kode_cabang,nama_karyawan,lhp_tunai,
+        $query->selectRaw(" kode_setoran,
+        tgl_lhp,setoran_penjualan.id_karyawan,setoran_penjualan.kode_cabang,nama_karyawan,lhp_tunai,
         ifnull(cektunai,0) AS cektunai,lhp_tagihan,ifnull(cekkredit,0) AS cekkredit,ifnull(ceksetorangiro,0) AS ceksetorangiro,
         ifnull(ceksetorantransfer,0) AS ceksetorantransfer,ifnull(cekgirotocash,0) AS cekgirotocash,
         setoran_kertas,setoran_logam,setoran_bg,setoran_transfer,setoran_lainnya,keterangan,girotocash,girototransfer,

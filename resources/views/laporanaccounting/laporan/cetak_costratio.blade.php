@@ -213,8 +213,7 @@
                             <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
                                 @if ($d->kode_kategori == 'C02')
                                     @php
-                                        $total_kategori +=
-                                            ${"total_kategori_$kode_cbg"} + $logistik->$kode_cbg + $bahan->$kode_cbg;
+                                        $total_kategori += ${"total_kategori_$kode_cbg"} + $logistik->$kode_cbg + $bahan->$kode_cbg;
                                     @endphp
                                     {{ rupiah(${"total_kategori_$kode_cbg"} + $logistik->$kode_cbg + $bahan->$kode_cbg) }}
                                 @else
@@ -281,15 +280,13 @@
                     $swan_cbg = 'netswan' . $c->kode_cabang;
                     $returswan_cbg = 'returswan' . $c->kode_cabang;
                     ${"swan_$kode_cbg"} = $penjualan->$swan_cbg - $retur->$returswan_cbg;
-                    ${"cr_swan_biaya_$kode_cbg"} =
-                        ${"swan_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"swan_$kode_cbg"}) * 100) : 0;
+                    ${"cr_swan_biaya_$kode_cbg"} = ${"swan_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"swan_$kode_cbg"}) * 100) : 0;
 
                     //AIDA
                     $aida_cbg = 'netaida' . $c->kode_cabang;
                     $returaida_cbg = 'returaida' . $c->kode_cabang;
                     ${"aida_$kode_cbg"} = $penjualan->$aida_cbg - $retur->$returaida_cbg;
-                    ${"cr_aida_biaya_$kode_cbg"} =
-                        ${"aida_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"aida_$kode_cbg"}) * 100) : 0;
+                    ${"cr_aida_biaya_$kode_cbg"} = ${"aida_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"aida_$kode_cbg"}) * 100) : 0;
 
                     //PPN
                     $ppn_cbg = 'ppn_' . $kode_cbg;
@@ -298,36 +295,24 @@
                     //Penjualan
                     ${"penjualan_$kode_cbg"} = ${"swan_$kode_cbg"} + ${"aida_$kode_cbg"} + ${"ppn_$kode_cbg"};
                     ${"cr_penjualan_biaya_$kode_cbg"} =
-                        ${"penjualan_$kode_cbg"} != 0
-                            ? ROUND((${"total$kode_cbg"} / ${"penjualan_$kode_cbg"}) * 100)
-                            : 0;
+                        ${"penjualan_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"penjualan_$kode_cbg"}) * 100) : 0;
 
                     //Piutang
                     $piutang_cbg = 'piutang_' . strtoupper($kode_cbg);
                     ${'piutang_' . $kode_cbg} = $piutang->$piutang_cbg;
-                    ${"cr_swan_piutang_$kode_cbg"} =
-                        ${"swan_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"swan_$kode_cbg"}) * 100) : 0;
-                    ${"cr_aida_piutang_$kode_cbg"} =
-                        ${"aida_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"aida_$kode_cbg"}) * 100) : 0;
+                    ${"cr_swan_piutang_$kode_cbg"} = ${"swan_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"swan_$kode_cbg"}) * 100) : 0;
+                    ${"cr_aida_piutang_$kode_cbg"} = ${"aida_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"aida_$kode_cbg"}) * 100) : 0;
                     ${"cr_penjualan_piutang_$kode_cbg"} =
-                        ${"penjualan_$kode_cbg"} != 0
-                            ? ROUND((${'piutang_' . $kode_cbg} / ${"penjualan_$kode_cbg"}) * 100)
-                            : 0;
+                        ${"penjualan_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"penjualan_$kode_cbg"}) * 100) : 0;
 
                     //Biaya + Piutang
                     ${'biaya_piutang_' . $kode_cbg} = ${"total$kode_cbg"} + ${'piutang_' . $kode_cbg};
                     ${"cr_swan_biayapiutang_$kode_cbg"} =
-                        ${"swan_$kode_cbg"} != 0
-                            ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"swan_$kode_cbg"}) * 100)
-                            : 0;
+                        ${"swan_$kode_cbg"} != 0 ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"swan_$kode_cbg"}) * 100) : 0;
                     ${"cr_aida_biayapiutang_$kode_cbg"} =
-                        ${"aida_$kode_cbg"} != 0
-                            ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"aida_$kode_cbg"}) * 100)
-                            : 0;
+                        ${"aida_$kode_cbg"} != 0 ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"aida_$kode_cbg"}) * 100) : 0;
                     ${"cr_penjualan_biayapiutang_$kode_cbg"} =
-                        ${"penjualan_$kode_cbg"} != 0
-                            ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"penjualan_$kode_cbg"}) * 100)
-                            : 0;
+                        ${"penjualan_$kode_cbg"} != 0 ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"penjualan_$kode_cbg"}) * 100) : 0;
                 @endphp
             @endforeach
             @php
@@ -351,8 +336,7 @@
                 $total_biaya_piutang = $grandtotal + $totalpiutang;
                 $cr_swan_biayapiutang_total = $totalswan != 0 ? ROUND(($total_biaya_piutang / $totalswan) * 100) : 0;
                 $cr_aida_biayapiutang_total = $totalaida != 0 ? ROUND(($total_biaya_piutang / $totalaida) * 100) : 0;
-                $cr_penjualan_biayapiutang_total =
-                    $totalpenjualan != 0 ? ROUND(($total_biaya_piutang / $totalpenjualan) * 100) : 0;
+                $cr_penjualan_biayapiutang_total = $totalpenjualan != 0 ? ROUND(($total_biaya_piutang / $totalpenjualan) * 100) : 0;
             @endphp
             <tr>
                 <th style="background-color:rgb(0, 52, 93); color:white" colspan="2" rowspan="4">PENJUALAN</th>
