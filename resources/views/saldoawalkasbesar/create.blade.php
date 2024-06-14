@@ -12,7 +12,7 @@
                 <select name="kode_cabang" id="kode_cabang" class="form-control ">
                     <option value="">Pilih Cabang</option>
                     @foreach ($cabang as $d)
-                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                        <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                     @endforeach
                 </select>
             </div>
@@ -120,43 +120,43 @@
             var tahun = $("#frmSaldokasbesar").find("#tahun").val();
             if (kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Cabang Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $('#kode_cabang').focus();
                 });
             } else if (bulan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Bulan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Bulan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $('#frmSaldokasbesar').find('#bulan').focus();
                 });
             } else if (tahun == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tahun Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tahun Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $('#frmSaldokasbesar').find('#tahun').focus();
                 });
             } else {
                 $.ajax({
-                    type: 'POST'
-                    , url: '/saldoawalkasbesar/getsaldo'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/saldoawalkasbesar/getsaldo',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 1) {
                             $("#getsa").val(0);
                             swal("Oops!", "Saldo Bulan Sebelumnya Belum Diset! Atau Saldo Bulan Tersebut Sudah Ada", "warning");
@@ -217,10 +217,10 @@
             var getsa = $("#getsa").val();
             if (getsa == "" || getsa == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Lakukan Gets Saldo Dulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Lakukan Gets Saldo Dulu !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
@@ -229,5 +229,4 @@
             }
         });
     });
-
 </script>
