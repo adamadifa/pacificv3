@@ -96,8 +96,7 @@
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                                                     <option value="">Semua Cabang</option>
                                                     @foreach ($cabang as $c)
-                                                        <option
-                                                            {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
+                                                        <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
                                                             value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
                                                         </option>
                                                     @endforeach
@@ -119,24 +118,21 @@
                                         <div class="form-group">
                                             <select name="status_pelanggan" id="status_pelanggan" class="form-control">
                                                 <option value="">Status</option>
-                                                <option {{ Request('status_pelanggan') == '1' ? 'selected' : '' }}
-                                                    value="1">
+                                                <option {{ Request('status_pelanggan') == '1' ? 'selected' : '' }} value="1">
                                                     AKTIF
                                                 </option>
-                                                <option {{ Request('status_pelanggan') == '0' ? 'selected' : '' }}
-                                                    value="0">
+                                                <option {{ Request('status_pelanggan') == '0' ? 'selected' : '' }} value="0">
                                                     NON
                                                     AKTIF</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-lg-2 col-sm-12">
-                                        <x-inputtext label="Kode Pelanggan" field="kode_pelanggan"
-                                            icon="feather icon-credit-card" value="{{ Request('kode_pelanggan') }}" />
+                                        <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="feather icon-credit-card"
+                                            value="{{ Request('kode_pelanggan') }}" />
                                     </div>
                                     <div class="col-lg-3 col-sm-12">
-                                        <x-inputtext label="Nama Pelanggan" field="nama" icon="feather icon-user"
-                                            value="{{ Request('nama') }}" />
+                                        <x-inputtext label="Nama Pelanggan" field="nama" icon="feather icon-user" value="{{ Request('nama') }}" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -150,12 +146,11 @@
                                     </div>
                                     <div class="col-lg-2">
                                         <div class="form-group">
-                                            <button type="submit" name="submit" value="1" class="btn btn-primary"><i
-                                                    class="fa fa-search"></i> </button>
-                                            <button type="submit" name="export" value="2"
-                                                class="btn btn-success"><i class="fa fa-download"></i> </button>
-                                            <a href="#" id="shownonaktif" class="btn btn-danger"><i
-                                                    class="feather icon-slash"></i> </a>
+                                            <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="submit" name="export" value="2" class="btn btn-success"><i class="fa fa-download"></i>
+                                            </button>
+                                            <a href="#" id="shownonaktif" class="btn btn-danger"><i class="feather icon-slash"></i> </a>
                                         </div>
                                     </div>
                                 </div>
@@ -163,8 +158,7 @@
 
                             </form>
                             <div class="table-responsive" id="mytable">
-                                <table class="table table-hover-animation"
-                                    @if (Auth::user()->level == 'salesman') style="font-size: 11px" @endif>
+                                <table class="table table-hover-animation" @if (Auth::user()->level == 'salesman') style="font-size: 11px" @endif>
                                     <thead class="thead-dark">
                                         <tr>
                                             @if (Auth::user()->level != 'salesman')
@@ -213,14 +207,10 @@
                                                         @php
                                                             $path = Storage::url('pelanggan/' . $d->foto);
                                                         @endphp
-                                                        <ul
-                                                            class="list-unstyled users-list m-0  d-flex align-items-center">
-                                                            <li data-toggle="tooltip" data-popup="tooltip-custom"
-                                                                data-placement="bottom"
-                                                                data-original-title="Vinnie Mostowy"
-                                                                class="avatar pull-up">
-                                                                <img class="media-object rounded-circle"
-                                                                    src="{{ url($path) }}" alt="Avatar"
+                                                        <ul class="list-unstyled users-list m-0  d-flex align-items-center">
+                                                            <li data-toggle="tooltip" data-popup="tooltip-custom" data-placement="bottom"
+                                                                data-original-title="Vinnie Mostowy" class="avatar pull-up">
+                                                                <img class="media-object rounded-circle" src="{{ url($path) }}" alt="Avatar"
                                                                     height="30" width="30">
                                                             </li>
                                                         </ul>
@@ -241,8 +231,7 @@
                                                 <td>
                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                         @if (in_array($level, $pelanggan_edit))
-                                                            <a class="ml-1"
-                                                                href="/pelanggan/{{ \Crypt::encrypt($d->kode_pelanggan) }}/edit"><i
+                                                            <a class="ml-1" href="/pelanggan/{{ \Crypt::encrypt($d->kode_pelanggan) }}/edit"><i
                                                                     class="feather icon-edit success"></i></a>
                                                         @endif
                                                         @if (Auth::user()->level != 'salesman')
@@ -250,8 +239,7 @@
                                                                 href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i
                                                                     class=" feather icon-file-text info"></i></a>
                                                         @else
-                                                            <a class="ml-1"
-                                                                href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/capturetoko"><i
+                                                            <a class="ml-1" href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/capturetoko"><i
                                                                     class="feather icon-camera info"></i></a>
                                                         @endif
                                                         @if (in_array($level, $pelanggan_hapus))
@@ -270,15 +258,11 @@
                                                                     href="/limitkredit/{{ \Crypt::encrypt($d->kode_pelanggan) }}/create"><i
                                                                         class="feather icon-external-link primary"></i></a>
 
-                                                                <a class="ml-1 ajukanfaktur"
-                                                                    kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}"
-                                                                    href="#"><i
-                                                                        class="feather icon-external-link warning"></i></a>
+                                                                <a class="ml-1 ajukanfaktur" kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}"
+                                                                    href="#"><i class="feather icon-external-link warning"></i></a>
 
-                                                                <a class="ml-1 ajuanrouting"
-                                                                    kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}"
-                                                                    href="#"><i
-                                                                        class="feather icon-external-link info"></i></a>
+                                                                <a class="ml-1 ajuanrouting" kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}"
+                                                                    href="#"><i class="feather icon-external-link info"></i></a>
                                                             @endif
                                                         @endif
                                                     </div>
@@ -298,8 +282,7 @@
             <!-- Data list view end -->
         </div>
     </div>
-    <div class="modal fade text-left" id="mdlshownonaktif" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlshownonaktif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -315,8 +298,7 @@
         </div>
     </div>
 
-    <div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -332,8 +314,7 @@
     </div>
 
 
-    <div class="modal fade text-left" id="mdlajuanrouting" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlajuanrouting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

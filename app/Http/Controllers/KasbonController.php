@@ -70,11 +70,12 @@ class KasbonController extends Controller
         }
 
         if ($level == "kepala penjualan") {
-            if (Auth::user()->id == "27") {
-                $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);
-            } else {
-                $query->where('master_karyawan.id_kantor', $cabang);
-            }
+            // if (Auth::user()->id == "27") {
+            //     $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);
+            // } else {
+            //     $query->where('master_karyawan.id_kantor', $cabang);
+            // }
+            $query->where('master_karyawan.id_kantor', $cabang);
             $query->where('nama_jabatan', '!=', 'KEPALA PENJUALAN');
             $query->where('master_karyawan.id_perusahaan', "PCF");
         }
