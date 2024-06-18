@@ -786,7 +786,7 @@ class GlobalProvider extends ServiceProvider
                 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil',
                 'supervisor sales', 'staff keuangan 2',
                 'staff keuangan 3', 'audit', 'manager audit', 'admin pajak', 'admin pajak 2',
-                'admin medsos', 'admin garut', 'admin gudang cabang', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'kepala gudang', 'spv gudang pust'
+                'admin medsos', 'admin garut', 'admin gudang cabang', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'kepala gudang', 'spv gudang pusat'
             ];
             $harga_net = [
                 'admin', 'manager accounting', 'rom', 'spv accounting',
