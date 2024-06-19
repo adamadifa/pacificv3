@@ -162,6 +162,7 @@
                             swal("Oops!", "Saldo Bulan Sebelumnya Belum Diset! Atau Saldo Bulan Tersebut Sudah Ada", "warning");
                             nonaktifsaldo();
                         } else {
+
                             $("#getsa").val(1);
                             aktifsaldo();
                             //readonly();
