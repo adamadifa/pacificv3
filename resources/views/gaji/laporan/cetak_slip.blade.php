@@ -875,8 +875,8 @@
                                 @endif
 
                                 {{-- @php
-                                echo $premilembur_harilibur;
-                            @endphp --}}
+                                    echo $premilembur_harilibur;
+                                @endphp --}}
                             @elseif($status == 's')
                                 @if ($namahari != 'Minggu')
                                     @if (!empty($sid))
@@ -1208,6 +1208,7 @@
                         $total_all_bersih += $jmlbersih;
 
                     @endphp
+
                     <td style="width: 35%">
                         <table class="datatable3">
                             <tr>
