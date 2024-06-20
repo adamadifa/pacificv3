@@ -73,6 +73,7 @@
             $totaljam1bulan = 173;
 
             $total_gajipokok = 0; // Total All Gaji Pokok
+
             // Total Tunjangan
             $total_tunjangan_jabatan = 0; //Total All Tunjangan Jabatan
             $total_tunjangan_masakerja = 0; // Total All Tunjangan Masa Kerja
@@ -131,14 +132,14 @@
             $total_all_kasbon = 0; // Total ALl Kasbon
             $total_all_nonpjp = 0; // Total All Non PJP
             $total_all_spip = 0; // Total ALl SPIP
-            $total_all_pengurang = 0; // Total ALl SPIP
-            $total_all_penambah = 0; // Total ALl SPIP
+            $total_all_pengurang = 0; // Total ALl Pengurang
+            $total_all_penambah = 0; // Total ALl Pengurang
 
             $total_all_potongan = 0; // Total All Potongan
 
             // Total Gaji Bersih
             $total_all_bersih = 0;
-            $show_for_hrd = ['14', '4', '5', '2', '9', '20', '9', '11'];
+
         @endphp
         @foreach ($presensi as $d)
             @php
@@ -446,8 +447,11 @@
                             if ($jam_in_tanggal > $jam_masuk_tanggal) {
                                 //Hitung Jam Keterlambatan
                                 $j1 = strtotime($jam_masuk_tanggal);
-                                $j2 = strtotime($jam_in_tanggal);
-
+                                if ($jam_in_tanggal > $jam_awal_istirahat_tanggal && !empty($jam_awal_istirahat_tanggal)) {
+                                    $j2 = strtotime($jam_awal_istirahat_tanggal);
+                                } else {
+                                    $j2 = strtotime($jam_in_tanggal);
+                                }
                                 $diffterlambat = $j2 - $j1;
                                 //Jam Terlambat
                                 $jamterlambat = floor($diffterlambat / (60 * 60));
@@ -714,13 +718,21 @@
                         } else {
                             $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
                         }
-
                     @endphp
                     @if ($status == 'h')
                         @php
                             $izinabsen = 0;
                             $izinsakit = 0;
                         @endphp
+                        @if ($jam_out == 'NA')
+                            @php
+                                if ($namahari == 'Sabtu') {
+                                    $tidakhadir = 5;
+                                } else {
+                                    $tidakhadir = 7;
+                                }
+                            @endphp
+                        @endif
                         <!-- Menghitung Lembur Reguler-->
                         @if (!empty($ceklembur))
                             @php
@@ -783,7 +795,7 @@
                                     $jmljam_lembur_liburnasional = 0;
                                     $jmljam_lembur_reguler = $jmljam_lembur;
                                 }
-                                // $jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
+                                //$jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
                                 $kategori_lembur = $ceklemburharilibur[0]['kategori'];
                             @endphp
                             @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull))
@@ -818,8 +830,8 @@
                         @endif
 
                         {{-- @php
-                        echo $premilembur_harilibur;
-                    @endphp --}}
+                                    echo $premilembur_harilibur;
+                                @endphp --}}
                     @elseif($status == 's')
                         @if ($namahari != 'Minggu')
                             @if (!empty($sid))
@@ -886,6 +898,12 @@
                         @endif
                         @php
                             $izinsakit = 0;
+                            if ($bulan == '5' && $tahun == '2024') {
+                                $izinabsen = 0;
+                            }
+
+                            // $izinabsen = 0;
+
                         @endphp
                     @elseif($status == 'c')
                         @php
@@ -905,11 +923,7 @@
                         $izinsakit = 0;
 
                     @endphp
-                    @if (
-                        !empty($ceklibur) ||
-                            !empty($cekliburpenggantiminggu) ||
-                            !empty($cekwfh) ||
-                            (!empty($cekwfhfull) && $cekmasakerja >= 3))
+                    @if (!empty($ceklibur) || !empty($cekliburpenggantiminggu) || !empty($cekwfh) || (!empty($cekwfhfull) && $cekmasakerja >= 3))
                         @php
                             $tidakhadir = 0; // Dihitung Hadir dan Full Jam Kerja
                         @endphp
@@ -956,7 +970,8 @@
                             }
 
                             $jmldirumahkan += 1;
-                            $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
+                            $totaljamdirumahkan =
+                                $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
                             $totaldirumahkan += $totaljamdirumahkan;
                         @endphp
                     @endif
@@ -973,6 +988,7 @@
                     $totalizinsakit += $izinsakit;
                 @endphp
                 <!-- Total Jam Kerja 1 Bulan -->
+
             @endfor
             @if ($d->nama_jabatan == 'DIREKTUR')
                 @php
@@ -981,8 +997,17 @@
                 @endphp
             @else
                 @php
-                    $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
-                    $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
+                    $totaljamkerja =
+                        $totaljam1bulan -
+                        $totalterlambat -
+                        $totalkeluar -
+                        $totaldirumahkan -
+                        $totaltidakhadir -
+                        $totalpulangcepat -
+                        $totalizinabsen -
+                        $totalizinsakit;
+                    $totalpotonganjam =
+                        $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
                 @endphp
             @endif
 
@@ -1001,7 +1026,8 @@
                 $upah_perjam = $upah / 173;
 
                 //Insentif
-                $jmlinsentif = $d->iu_masakerja + $d->iu_lembur + $d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
+                $jmlinsentif =
+                    $d->iu_masakerja + $d->iu_lembur + $d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
             @endphp
 
             @if ($d->nama_jabatan == 'SECURITY')
@@ -1022,6 +1048,7 @@
                         $upah_otl_libur_nasional = 13143 * $total_overtime_libur_nasional;
                         $upah_otl_2 = 0;
                     }
+
                 @endphp
             @else
                 @php
@@ -1050,7 +1077,10 @@
                 @endphp
             @endif
             @php
-                $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $d->jml_pengurang + $spip, 0); // Potongan Upah
+                $potongan = ROUND(
+                    $bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $d->jml_pengurang + $spip,
+                    0,
+                ); // Potongan Upah
                 $penambah = $d->jml_penambah;
                 $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersih
 
