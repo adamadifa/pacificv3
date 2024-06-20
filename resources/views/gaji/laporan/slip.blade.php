@@ -139,6 +139,7 @@
 
             // Total Gaji Bersih
             $total_all_bersih = 0;
+            $show_for_hrd = ['14', '4', '5', '2', '9', '20', '9', '11'];
 
         @endphp
         @foreach ($presensi as $d)
