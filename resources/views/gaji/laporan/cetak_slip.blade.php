@@ -1267,7 +1267,7 @@
                             </tr>
                             <tr>
                                 <td>∑ JAM KERJA BULAN INI</td>
-                                <td>{{ desimal($totaljamkerja) }} JAM</td>
+                                <td>{{ desimal($totaljamkerja) }} JAM {{ $totaltidakhadir }}</td>
                                 <td></td>
                             </tr>
                             <tr>
