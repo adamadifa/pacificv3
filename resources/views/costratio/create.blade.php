@@ -21,15 +21,15 @@
     </div>
     <div class="row mb-2">
         <div class="col-12">
-            @if (Auth::user()->kode_cabang == "PCF" || Auth::user()->level=="admin pusat")
-            <select name="kode_cabang" id="kode_cabang" class="form-control">
-                <option value="">Cabang</option>
-                @foreach ($cabang as $d)
-                <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
-                @endforeach
-            </select>
+            @if (Auth::user()->kode_cabang == 'PCF' || Auth::user()->level == 'admin pusat')
+                <select name="kode_cabang" id="kode_cabang" class="form-control">
+                    <option value="">Cabang</option>
+                    @foreach ($cabang as $d)
+                        <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                    @endforeach
+                </select>
             @else
-            <input type="hidden" name="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
+                <input type="hidden" name="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
             @endif
 
         </div>
@@ -42,7 +42,7 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#jumlah").maskMoney();
@@ -53,40 +53,40 @@
             var kode_cabang = $("#kode_cabang").val();
             if (tanggal == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmCostratio").find("#tanggal").focus();
                 });
                 return false;
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmCostratio").find("#keterangan").focus();
                 });
                 return false;
             } else if (jumlah == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmCostratio").find("#jumlah").focus();
                 });
                 return false;
             } else if (kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Cabang Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmCostratio").find("#kode_cabang").focus();
                 });
@@ -94,5 +94,4 @@
             }
         });
     });
-
 </script>

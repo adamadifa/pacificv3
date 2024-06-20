@@ -29,7 +29,7 @@
                 <select name="kode_akun" id="kode_akun" class="form-control select2">
                     <option value="">Pilih Akun</option>
                     @foreach ($coa as $d)
-                    <option value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
+                        <option value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
                     @endforeach
                 </select>
             </div>
@@ -105,7 +105,7 @@
                 <select name="kode_cabang" id="kode_cabang" class="form-control ">
                     <option value="">Pilih Cabang</option>
                     @foreach ($cabang as $d)
-                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                        <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                     @endforeach
                 </select>
             </div>
@@ -157,7 +157,7 @@
     </div>
 </form>
 
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script>
     $(function() {
@@ -179,15 +179,15 @@
         function cektutuplaporan() {
             var tanggal = $("#tgl_ledger").val();
             $.ajax({
-                type: "POST"
-                , url: "/cektutuplaporan"
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tanggal: tanggal
-                    , jenislaporan: "ledger"
-                }
-                , cache: false
-                , success: function(respond) {
+                type: "POST",
+                url: "/cektutuplaporan",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tanggal: tanggal,
+                    jenislaporan: "ledger"
+                },
+                cache: false,
+                success: function(respond) {
                     console.log(respond);
                     $("#cektutuplaporan").val(respond);
                 }
@@ -212,22 +212,22 @@
             var status_dk = $("input[name='status_dk']:checked").val();
             var peruntukan = $("input[name='peruntukan']:checked").val();
             $.ajax({
-                type: 'POST'
-                , url: '/ledger/storetemp'
-                , data: {
-                    _token: "{{ csrf_token(); }}"
-                    , kode_ledger: kode_ledger
-                    , kode_cabang: kode_cabang
-                    , tgl_ledger: tgl_ledger
-                    , pelanggan: pelanggan
-                    , keterangan: keterangan
-                    , jumlah: jumlah
-                    , kode_akun: kode_akun
-                    , status_dk: status_dk
-                    , peruntukan: peruntukan
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/ledger/storetemp',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kode_ledger: kode_ledger,
+                    kode_cabang: kode_cabang,
+                    tgl_ledger: tgl_ledger,
+                    pelanggan: pelanggan,
+                    keterangan: keterangan,
+                    jumlah: jumlah,
+                    kode_akun: kode_akun,
+                    status_dk: status_dk,
+                    peruntukan: peruntukan
+                },
+                cache: false,
+                success: function(respond) {
                     if (respond == 0) {
                         swal("Success", "Data Berhasil Disimpan", "success");
                         loadledgertemp();
@@ -251,64 +251,64 @@
 
             if (cektutuplaporan == 1) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Laporan Sudah Di Tutup !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Laporan Sudah Di Tutup !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $('#tgl_ledger').focus();
                 });
             } else if (tgl_ledger == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $('#tgl_ledger').focus();
                 });
             } else if (pelanggan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Pelanggan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Pelanggan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#pelanggan").focus();
                 });
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
             } else if (jumlah == "" || jumlah == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jumlah").focus();
                 });
             } else if (kode_akun == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Kode Akun Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Kode Akun Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_akun").focus();
                 });
             } else if (peruntukan == "PC" && kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Kode Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Kode Cabang Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $('#FrmInputledger').find('#kode_cabang').focus();
                 });
@@ -323,14 +323,14 @@
         function cekledgertemp() {
             var kode_ledger = $("#kode_ledger").val();
             $.ajax({
-                type: 'POST'
-                , url: '/cekledgertemp'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , kode_ledger: kode_ledger
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/cekledgertemp',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kode_ledger: kode_ledger
+                },
+                cache: false,
+                success: function(respond) {
                     $("#cekledgertemp").val(respond);
                 }
             });
@@ -339,14 +339,14 @@
         function loadledgertemp() {
             var kode_ledger = $("#kode_ledger").val();
             $.ajax({
-                type: 'POST'
-                , url: '/getledgertemp'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , kode_ledger: kode_ledger
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/getledgertemp',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kode_ledger: kode_ledger
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadledgertemp").html(respond);
                     cekledgertemp();
                 }
@@ -382,10 +382,10 @@
             var cekledgertemp = $("#cekledgertemp").val();
             if (cekledgertemp == "" || cekledgertemp == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Data Masih Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Data Masih Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_ledger").focus();
                 });
@@ -394,5 +394,4 @@
             }
         });
     });
-
 </script>
