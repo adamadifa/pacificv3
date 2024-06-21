@@ -53,20 +53,16 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <x-inputtext label="Tanggal Transaksi" field="tgltransaksi"
-                                                    icon="feather icon-calendar" datepicker />
+                                                <x-inputtext label="Tanggal Transaksi" field="tgltransaksi" icon="feather icon-calendar" datepicker />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
                                                 <input type="hidden" name="kode_pelanggan" id="kode_pelanggan">
-                                                <input type="hidden" id="kode_cabang" class="form-control"
-                                                    name="kode_cabang">
-                                                <input type="hidden" id="jatuhtempo" class="form-control"
-                                                    name="jatuhtempo">
+                                                <input type="hidden" id="kode_cabang" class="form-control" name="kode_cabang">
+                                                <input type="hidden" id="jatuhtempo" class="form-control" name="jatuhtempo">
                                                 <input type="hidden" id="limitpel" class="form-control" name="limitpel">
-                                                <x-inputtext label="Pelanggan" field="nama_pelanggan"
-                                                    icon="feather icon-user" readonly />
+                                                <x-inputtext label="Pelanggan" field="nama_pelanggan" icon="feather icon-user" readonly />
                                             </div>
                                         </div>
                                         <div class="row">
@@ -74,16 +70,14 @@
                                                 <input type="hidden" name="id_karyawan" id="id_karyawan">
                                                 <input type="hidden" name="kategori_salesman" id="kategori_salesman">
                                                 <input type="hidden" name="status_promo" id="status_promo">
-                                                <x-inputtext label="Salesman" field="nama_karyawan"
-                                                    icon="feather icon-users" readonly />
+                                                <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" readonly />
                                             </div>
                                         </div>
 
                                         @if (Auth::user()->kode_cabang == 'BDG')
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <x-inputtext label="No. PO Pelanggan" field="no_po"
-                                                        icon="fa fa-barcode" />
+                                                    <x-inputtext label="No. PO Pelanggan" field="no_po" icon="fa fa-barcode" />
                                                 </div>
                                             </div>
                                         @endif
@@ -93,8 +87,7 @@
                                                 <small class="danger">Pelanggan Memiliki Faktur Belum Lunas, Keterangan ini
                                                     Wajib Diisi !</small>
                                                 <div class="form-group mt-2">
-                                                    <textarea name="keterangan" placeholder="Keterangan" id="keterangan" cols="30" rows="10"
-                                                        class="form-control"></textarea>
+                                                    <textarea name="keterangan" placeholder="Keterangan" id="keterangan" cols="30" rows="10" class="form-control"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -137,13 +130,11 @@
                                     <div class="card-header d-flex align-items-start pb-0">
                                         <div class="avatar bg-rgba-info m-2" style="padding:3rem ">
                                             <div class="avatar-content">
-                                                <i class="feather icon-shopping-cart text-info"
-                                                    style="font-size: 4rem"></i>
+                                                <i class="feather icon-shopping-cart text-info" style="font-size: 4rem"></i>
                                             </div>
                                         </div>
                                         <div>
-                                            <h2 class="text-bold-700" style="font-size: 6rem; padding:2rem"
-                                                id="grandtotal">0,00</h2>
+                                            <h2 class="text-bold-700" style="font-size: 6rem; padding:2rem" id="grandtotal">0,00</h2>
                                         </div>
                                     </div>
                                 </div>
@@ -156,18 +147,14 @@
                                         <div class="row">
                                             <div class="col-lg-4 col-sm-12">
                                                 <div class="form-group" style="margin-bottom:5px !important">
-                                                    <div class=" form-label-group position-relative has-icon-left"
-                                                        style="margin-bottom:5px !important">
+                                                    <div class=" form-label-group position-relative has-icon-left" style="margin-bottom:5px !important">
                                                         <div class="controls">
                                                             <input type="hidden" name="kode_barang" id="kode_barang">
                                                             <input type="hidden" name="isipcsdus" id="isipcsdus">
                                                             <input type="hidden" name="isipcs" id="isipcs">
-                                                            <input type="text" autocomplete="off" id="nama_barang"
-                                                                value="" readonly class="form-control"
-                                                                name="nama_barang" placeholder="Produk"
-                                                                style="height: 80px">
-                                                            <div class="form-control-position"
-                                                                style="top:23px !important">
+                                                            <input type="text" autocomplete="off" id="nama_barang" value="" readonly
+                                                                class="form-control" name="nama_barang" placeholder="Produk" style="height: 80px">
+                                                            <div class="form-control-position" style="top:23px !important">
                                                                 <i class="fa fa-barcode"></i>
                                                             </div>
                                                         </div>
@@ -181,10 +168,8 @@
                                                             <div class=" form-label-group position-relative has-icon-left"
                                                                 style="margin-bottom:5px !important">
                                                                 <div class="controls">
-                                                                    <input type="text" autocomplete="off"
-                                                                        id="jml_dus" value=""
-                                                                        class="form-control text-right" name="jml_dus"
-                                                                        placeholder="Dus">
+                                                                    <input type="text" autocomplete="off" id="jml_dus" value=""
+                                                                        class="form-control text-right" name="jml_dus" placeholder="Dus">
                                                                     <div class="form-control-position">
                                                                         <i class="feather icon-file"></i>
                                                                     </div>
@@ -199,12 +184,9 @@
                                                             <div class=" form-label-group position-relative has-icon-left"
                                                                 style="margin-bottom:5px !important">
                                                                 <div class="controls">
-                                                                    <input type="hidden" id="harga_dus_old"
-                                                                        name="harga_dus_old">
-                                                                    <input type="text" autocomplete="off"
-                                                                        id="harga_dus" value=""
-                                                                        class="form-control text-right" name="harga_dus"
-                                                                        placeholder="Harga / Dus">
+                                                                    <input type="hidden" id="harga_dus_old" name="harga_dus_old">
+                                                                    <input type="text" autocomplete="off" id="harga_dus" value=""
+                                                                        class="form-control text-right" name="harga_dus" placeholder="Harga / Dus">
                                                                     <div class="form-control-position">
                                                                         <i class="feather icon-tag"></i>
                                                                     </div>
@@ -223,9 +205,8 @@
                                                             <div class=" form-label-group position-relative has-icon-left"
                                                                 style="margin-bottom:5px !important">
                                                                 <div class="controls">
-                                                                    <input type="text" autocomplete="off"
-                                                                        id="jml_pack" class="form-control text-right"
-                                                                        name="jml_pack" placeholder="Pack">
+                                                                    <input type="text" autocomplete="off" id="jml_pack"
+                                                                        class="form-control text-right" name="jml_pack" placeholder="Pack">
                                                                     <div class="form-control-position">
                                                                         <i class="feather icon-file"></i>
                                                                     </div>
@@ -240,11 +221,9 @@
                                                             <div class=" form-label-group position-relative has-icon-left"
                                                                 style="margin-bottom:5px !important">
                                                                 <div class="controls">
-                                                                    <input type="hidden" id="harga_pack_old"
-                                                                        name="harga_pack_old">
-                                                                    <input type="text" autocomplete="off"
-                                                                        id="harga_pack" class="form-control text-right"
-                                                                        name="harga_pack" placeholder="Harga / Pack">
+                                                                    <input type="hidden" id="harga_pack_old" name="harga_pack_old">
+                                                                    <input type="text" autocomplete="off" id="harga_pack"
+                                                                        class="form-control text-right" name="harga_pack" placeholder="Harga / Pack">
                                                                     <div class="form-control-position">
                                                                         <i class="feather icon-tag"></i>
                                                                     </div>
@@ -263,9 +242,8 @@
                                                             <div class=" form-label-group position-relative has-icon-left"
                                                                 style="margin-bottom:5px !important">
                                                                 <div class="controls">
-                                                                    <input type="text" autocomplete="off"
-                                                                        id="jml_pcs" class="form-control text-right"
-                                                                        name="jml_pcs" placeholder="Pcs">
+                                                                    <input type="text" autocomplete="off" id="jml_pcs"
+                                                                        class="form-control text-right" name="jml_pcs" placeholder="Pcs">
                                                                     <div class="form-control-position">
                                                                         <i class="feather icon-file"></i>
                                                                     </div>
@@ -280,11 +258,9 @@
                                                             <div class=" form-label-group position-relative has-icon-left"
                                                                 style="margin-bottom:5px !important">
                                                                 <div class="controls">
-                                                                    <input type="hidden" id="harga_pcs_old"
-                                                                        name="harga_pcs_old">
-                                                                    <input type="text" autocomplete="off"
-                                                                        id="harga_pcs" class="form-control text-right"
-                                                                        name="harga_pcs" placeholder="Harga / Pcs">
+                                                                    <input type="hidden" id="harga_pcs_old" name="harga_pcs_old">
+                                                                    <input type="text" autocomplete="off" id="harga_pcs"
+                                                                        class="form-control text-right" name="harga_pcs" placeholder="Harga / Pcs">
                                                                     <div class="form-control-position">
                                                                         <i class="feather icon-tag"></i>
                                                                     </div>
@@ -298,8 +274,7 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="vs-checkbox-con vs-checkbox-primary">
-                                                            <input type="checkbox" class="promo" id="promo"
-                                                                name="promo" value="1">
+                                                            <input type="checkbox" class="promo" id="promo" name="promo" value="1">
                                                             <span class="vs-checkbox">
                                                                 <span class="vs-checkbox--check">
                                                                     <i class="vs-icon feather icon-check"></i>
@@ -348,8 +323,7 @@
                                             <div class="col-lg-3 col-sm-12">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <span class="font-size:1rem;"><b><i
-                                                                    class="feather icon-tag mr-1"></i>Potongan</b></span>
+                                                        <span class="font-size:1rem;"><b><i class="feather icon-tag mr-1"></i>Potongan</b></span>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -357,56 +331,51 @@
                                                     <div class="col-12">
                                                         <div class="form-group" style="margin-bottom:5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potaida"
-                                                                    class="form-control text-right money" name="potaida"
-                                                                    placeholder="Aida">
+                                                                <input type="text" id="potaida" class="form-control text-right money"
+                                                                    name="potaida" placeholder="Aida">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonaida.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonaida.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom:5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potswan"
-                                                                    class="form-control text-right money" name="potswan"
-                                                                    placeholder="Swan">
+                                                                <input type="text" id="potswan" class="form-control text-right money"
+                                                                    name="potswan" placeholder="Swan">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonswan.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonswan.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom:5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potstick"
-                                                                    class="form-control text-right money" name="potstick"
-                                                                    placeholder="Stick">
+                                                                <input type="text" id="potstick" class="form-control text-right money"
+                                                                    name="potstick" placeholder="Stick">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonstik.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonstik.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom:5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potsp"
-                                                                    class="form-control text-right money" name="potsp"
-                                                                    placeholder="Premium">
+                                                                <input type="text" id="potsp" class="form-control text-right money"
+                                                                    name="potsp" placeholder="Premium">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonsp.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonsp.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom:5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potsb"
-                                                                    class="form-control text-right money" name="potsb"
-                                                                    placeholder="Sambal">
+                                                                <input type="text" id="potsb" class="form-control text-right money"
+                                                                    name="potsb" placeholder="Sambal">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonsambal.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonsambal.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -417,8 +386,7 @@
                                             <div class="col-lg-3 col-sm-12">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <span class="font-size:1rem;"><b><i
-                                                                    class="feather icon-tag mr-1"></i>Potongan
+                                                        <span class="font-size:1rem;"><b><i class="feather icon-tag mr-1"></i>Potongan
                                                                 Istimewa</b></span>
                                                     </div>
                                                 </div>
@@ -427,34 +395,31 @@
                                                     <div class="col-12">
                                                         <div class="form-group" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potisaida"
-                                                                    class="form-control text-right money" name="potisaida"
-                                                                    placeholder="Aida">
+                                                                <input type="text" id="potisaida" class="form-control text-right money"
+                                                                    name="potisaida" placeholder="Aida">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonaida.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonaida.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potisswan"
-                                                                    class="form-control text-right money" name="potisswan"
-                                                                    placeholder="Swan">
+                                                                <input type="text" id="potisswan" class="form-control text-right money"
+                                                                    name="potisswan" placeholder="Swan">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonswan.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonswan.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="potisstick"
-                                                                    class="form-control text-right money"
+                                                                <input type="text" id="potisstick" class="form-control text-right money"
                                                                     name="potisstick" placeholder="Stick">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonstik.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonstik.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -465,8 +430,7 @@
                                             <div class="col-lg-3 col-sm-12">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <span class="font-size:1rem;"><b><i
-                                                                    class="feather icon-tag mr-1"></i>Penyesuaian</b></span>
+                                                        <span class="font-size:1rem;"><b><i class="feather icon-tag mr-1"></i>Penyesuaian</b></span>
                                                     </div>
                                                 </div>
                                                 <hr>
@@ -474,34 +438,31 @@
                                                     <div class="col-12">
                                                         <div class="form-group" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="penyaida"
-                                                                    class="form-control text-right money" name="penyaida"
-                                                                    placeholder="Aida">
+                                                                <input type="text" id="penyaida" class="form-control text-right money"
+                                                                    name="penyaida" placeholder="Aida">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonaida.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonaida.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="penyswan"
-                                                                    class="form-control text-right money" name="penyswan"
-                                                                    placeholder="Swan">
+                                                                <input type="text" id="penyswan" class="form-control text-right money"
+                                                                    name="penyswan" placeholder="Swan">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonswan.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonswan.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="form-group" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="penystick"
-                                                                    class="form-control text-right money" name="penystick"
-                                                                    placeholder="Stick">
+                                                                <input type="text" id="penystick" class="form-control text-right money"
+                                                                    name="penystick" placeholder="Stick">
                                                                 <div class="form-control-position">
-                                                                    <img src="{{ asset('app-assets/images/icons/diskonstik.png') }}"
-                                                                        width="18px" height="18px" alt="">
+                                                                    <img src="{{ asset('app-assets/images/icons/diskonstik.png') }}" width="18px"
+                                                                        height="18px" alt="">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -511,16 +472,14 @@
                                             <div class="col-lg-3 col-sm-12">
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <span class="font-size:1rem;"><b><i
-                                                                    class="feather icon-tag mr-1"></i>Pembayaran</b></span>
+                                                        <span class="font-size:1rem;"><b><i class="feather icon-tag mr-1"></i>Pembayaran</b></span>
                                                     </div>
                                                 </div>
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <div class="form-group" style="margin-bottom: 5px">
-                                                            <select class="form-control" name="jenistransaksi"
-                                                                id="jenistransaksi">
+                                                            <select class="form-control" name="jenistransaksi" id="jenistransaksi">
                                                                 <option value="">Jenis Transaksi</option>
                                                                 <option value="tunai">Tunai</option>
                                                                 <option value="kredit">Kredit</option>
@@ -528,17 +487,15 @@
                                                             <input type="hidden" id="jenisbayar" name="jenisbayar">
                                                         </div>
                                                         <div class="form-group tunai" style="margin-bottom: 5px">
-                                                            <select class="form-control" name="jenisbayartunai"
-                                                                id="jenisbayartunai">
+                                                            <select class="form-control" name="jenisbayartunai" id="jenisbayartunai">
                                                                 <option value="tunai">Cash</option>
                                                                 <option value="transfer">Transfer</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group tunai" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="voucher"
-                                                                    class="form-control text-right money" name="voucher"
-                                                                    placeholder="Voucher">
+                                                                <input type="text" id="voucher" class="form-control text-right money"
+                                                                    name="voucher" placeholder="Voucher">
                                                                 <div class="form-control-position" style="top:5px">
                                                                     <i class="feather icon-tag"></i>
                                                                 </div>
@@ -548,10 +505,8 @@
                                                         @if ($pajak == 1)
                                                             <div class="form-group" style="margin-bottom: 5px">
                                                                 <div class="position-relative has-icon-left">
-                                                                    <input type="text" id="totalnonppn"
-                                                                        class="form-control text-right money"
-                                                                        style="font-weight: bold" readonly
-                                                                        name="totalnonppn" placeholder="Total">
+                                                                    <input type="text" id="totalnonppn" class="form-control text-right money"
+                                                                        style="font-weight: bold" readonly name="totalnonppn" placeholder="Total">
                                                                     <div class="form-control-position" style="top:5px">
                                                                         <i class="feather icon-shopping-cart"></i>
                                                                     </div>
@@ -559,12 +514,12 @@
                                                             </div>
                                                             <div class="input-group" style="margin-bottom: 5px">
                                                                 <div class="input-group-append">
-                                                                    <span class="input-group-text" id="basic-addon2"
-                                                                        style="text-align: right">PPN 11%</span>
+                                                                    <span class="input-group-text" id="basic-addon2" style="text-align: right">PPN
+                                                                        11%</span>
                                                                 </div>
                                                                 <input type="text" class="form-control text-right"
-                                                                    style="font-weight: bold; padding-right:27px" readonly
-                                                                    placeholder="PPN 11%" id="ppn" name="ppn">
+                                                                    style="font-weight: bold; padding-right:27px" readonly placeholder="PPN 11%"
+                                                                    id="ppn" name="ppn">
                                                             </div>
                                                             {{-- <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
@@ -581,10 +536,8 @@
 
                                                         <div class="form-group" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="total"
-                                                                    class="form-control text-right money"
-                                                                    style="font-weight: bold" readonly name="total"
-                                                                    placeholder="Total">
+                                                                <input type="text" id="total" class="form-control text-right money"
+                                                                    style="font-weight: bold" readonly name="total" placeholder="Total">
                                                                 <div class="form-control-position" style="top:5px">
                                                                     <i class="feather icon-shopping-cart"></i>
                                                                 </div>
@@ -593,9 +546,8 @@
 
                                                         <div class="form-group kredit" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
-                                                                <input type="text" id="titipan"
-                                                                    class="form-control text-right money" name="titipan"
-                                                                    placeholder="Titipan">
+                                                                <input type="text" id="titipan" class="form-control text-right money"
+                                                                    name="titipan" placeholder="Titipan">
                                                                 <div class="form-control-position" style="top:5px">
                                                                     <i class="feather icon-tag"></i>
                                                                 </div>
@@ -621,10 +573,8 @@
     </div>
 
     <!--- Modal Pilih Pelanggan -->
-    <div class="modal fade text-left" id="mdlpelanggan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document"
-            style="max-width: 960px">
+    <div class="modal fade text-left" id="mdlpelanggan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document" style="max-width: 960px">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel18">Data Pelanggan</h4>
@@ -634,8 +584,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-hover-animation tabelpelanggan" style="width:100% !important"
-                            id="tabelpelanggan">
+                        <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Kode Pelanggan</th>
@@ -655,10 +604,8 @@
     </div>
 
     <!-- Modal Pilih Barang -->
-    <div class="modal fade text-left" id="mdlbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document"
-            style="max-width: 1200px">
+    <div class="modal fade text-left" id="mdlbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document" style="max-width: 1200px">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel18">Data</h4>
@@ -675,8 +622,7 @@
 
 
     <!--- Modal Pilih Pelanggan -->
-    <div class="modal fade text-left" id="mdleditbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered " role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1010,7 +956,7 @@
                 if (cektutuplaporan > 0) {
                     swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                     return false;
-                } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0 &&
+                } else if (parseInt(totalpiutang) > parseInt(limitpel) && sikluspembayaran == 0 &&
                     jenistransaksi == 'kredit') {
                     swal({
                         title: 'Oops',
@@ -1021,7 +967,7 @@
                         $("#no_fak_penj").focus();
                     });
                     return false;
-                } else if (parseInt(subtotal) >= parseInt(limitpel) && sikluspembayaran == 1 &&
+                } else if (parseInt(subtotal) > parseInt(limitpel) && sikluspembayaran == 1 &&
                     jenistransaksi == 'kredit') {
                     swal({
                         title: 'Oops',
