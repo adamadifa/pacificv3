@@ -60,8 +60,7 @@
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="hidden" name="status_karyawan" id="status_karyawan"
-                            value="{{ $karyawan->status_karyawan }}">
+                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $karyawan->status_karyawan }}">
                         {{ $karyawan->status_karyawan == 'T' ? 'Karyawan Tetap' : 'Karyawan Kontrak' }}
                     </td>
                 </tr>
@@ -69,8 +68,7 @@
                     <tr>
                         <th>Akhir Kontrak</th>
                         <td>
-                            <input type="hidden" name="akhir_kontrak" id="akhir_kontrak"
-                                value="{{ $kontrak->sampai }}">
+                            <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $kontrak->sampai }}">
                             {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : '' }}
                         </td>
                     </tr>
@@ -78,8 +76,7 @@
                 <tr>
                     <th>Gaji Pokok + Tunjangan</th>
                     <td style="text-align: right">
-                        <input type="hidden" name="gapok_tunjangan" id="gapok_tunjangan"
-                            value="{{ $gaji->gajitunjangan }}">
+                        <input type="hidden" name="gapok_tunjangan" id="gapok_tunjangan" value="{{ $gaji->gajitunjangan }}">
                         {{ rupiah($gaji->gajitunjangan) }}
                     </td>
                 </tr>
@@ -161,8 +158,7 @@
                     <th>JMK Sudah Dibayar</th>
                     <td style="text-align: right">
                         {{ rupiah($jmk != null ? $jmk->jml_jmk : 0) }}
-                        <input type="hidden" name="jmk_sudahbayar" id="jmk_sudahbayar"
-                            value="{{ $jmk != null ? $jmk->jml_jmk : 0 }}">
+                        <input type="hidden" name="jmk_sudahbayar" id="jmk_sudahbayar" value="{{ $jmk != null ? $jmk->jml_jmk : 0 }}">
                     </td>
                 </tr>
                 <tr>
@@ -172,8 +168,8 @@
                             // $plafonmax = ((40/100) * $gaji->gajitunjangan )* 20;
                             $jmksudahdibayar = $jmk != null ? $jmk->jml_jmk : 0;
                             $plafonjmk = $totaljmk - $jmksudahdibayar;
-                        $plafonmax = $plafonjmk < $plafon ? $plafonjmk : $plafon; @endphp {{ rupiah($plafonmax) }} <input type="hidden" name="plafon_max"
-                            id="plafon_max" value="{{ $plafonmax }}">
+                        $plafonmax = $plafonjmk < $plafon ? $plafonjmk : $plafon; @endphp {{ rupiah($plafonmax) }} <input type="hidden" name="plafon_max" id="plafon_max"
+                            value="{{ $plafonmax }}">
                     </td>
                 </tr>
 
@@ -183,8 +179,7 @@
                     <label for="" class="form-label">Tanggal Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tanggal Pinjaman" value="" field="tgl_pinjaman"
-                        icon="feather icon-calendar" datepicker />
+                    <x-inputtext label="Tanggal Pinjaman" value="" field="tgl_pinjaman" icon="feather icon-calendar" datepicker />
                 </div>
             </div>
             <div class="row">
@@ -192,8 +187,7 @@
                     <label for="" class="form-label">Jumlah Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Jumlah Pinjaman" value="" field="jml_pinjaman" icon="feather icon-file"
-                        right />
+                    <x-inputtext label="Jumlah Pinjaman" value="" field="jml_pinjaman" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -201,8 +195,7 @@
                     <label for="" class="form-label">Angsuran</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Angsuran" value="{{ $tenormax }}" field="angsuran" icon="feather icon-file"
-                        right />
+                    <x-inputtext label="Angsuran" value="{{ $tenormax }}" field="angsuran" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -210,8 +203,7 @@
                     <label for="" class="form-label">Jumlah Angsuran / Bulan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Jumlah Angsuran" value="" field="jml_angsuran" icon="feather icon-file"
-                        right readonly />
+                    <x-inputtext label="Jumlah Angsuran" value="" field="jml_angsuran" icon="feather icon-file" right readonly />
                 </div>
             </div>
             <div class="row">
@@ -219,8 +211,7 @@
                     <label for="" class="form-label">Mulai Cicilan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Mulai Cicilan" value="" field="mulai_cicilan"
-                        icon="feather icon-calendar" readonly />
+                    <x-inputtext label="Mulai Cicilan" value="" field="mulai_cicilan" icon="feather icon-calendar" readonly />
                 </div>
             </div>
             <div class="row">
