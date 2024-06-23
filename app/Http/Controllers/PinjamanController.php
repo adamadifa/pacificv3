@@ -302,7 +302,7 @@ class PinjamanController extends Controller
             ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->first();
 
-
+        //Mulai Cicilan bulan 8
         if ($bln_cicilan == 1) {
             $bln_cicilan = 12;
             $thn_cicilan = $thn_cicilan - 1;
@@ -321,7 +321,7 @@ class PinjamanController extends Controller
         $last_nopinjaman = $pinjaman != null ? $pinjaman->no_pinjaman : '';
         $no_pinjaman  = buatkode($last_nopinjaman, "PJK" . $tahun, 3);
         $cicilan_terakhir = $jumlah_angsuran + ($jumlah_pinjaman - ($jumlah_angsuran * $angsuran));
-        $cekpembayaran = DB::table('pinjaman_potongangaji')->where('bulan', $bln_cicilan)->where('tahun', $thn_cicilan)->count();
+        $cekpembayaran = DB::table('pinjaman_potongangajid')->where('bulan', $bln_cicilan)->where('tahun', $thn_cicilan)->count();
         if ($cekpembayaran > 0) {
             return Redirect::back()->with(['warning' => 'Pinjaman Pada Periode Ini Sudah Ditutup']);
         }
