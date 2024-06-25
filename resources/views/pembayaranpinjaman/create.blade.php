@@ -15,7 +15,7 @@
         </div>
     </div>
 </div>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#jumlah").maskMoney();
@@ -44,14 +44,14 @@
         function loadrencanabayar() {
             var no_pinjaman = "{{ $no_pinjaman }}";
             $.ajax({
-                type: 'POST'
-                , url: '/pinjaman/getrencanabayar'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_pinjaman: no_pinjaman
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/pinjaman/getrencanabayar',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_pinjaman: no_pinjaman
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadrencanabayar").html(respond);
                 }
             });
@@ -60,14 +60,14 @@
         function loadhistoribayar() {
             var no_pinjaman = "{{ $no_pinjaman }}";
             $.ajax({
-                type: 'POST'
-                , url: '/pinjaman/gethistoribayar'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_pinjaman: no_pinjaman
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/pinjaman/gethistoribayar',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_pinjaman: no_pinjaman
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadhistoribayar").html(respond);
                     loadsisatagihan();
                 }
@@ -104,49 +104,49 @@
 
             if (tgl_bayar == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Bayar Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Bayar Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_bayar").focus();
                 });
             } else if (jumlah == "" || jumlah == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Bayar Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Bayar Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jumlah").focus();
                 });
             } else if (jm > sisa) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Bayar Tidak Boleh Lebih Dari Sisa Tagihan !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Bayar Tidak Boleh Lebih Dari Sisa Tagihan !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jumlah").focus();
                 });
             } else {
                 $.ajax({
-                    type: 'POST'
-                    , url: '/pembayaranpinjaman/store'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , no_pinjaman: "{{ $no_pinjaman }}"
-                        , tgl_bayar: tgl_bayar
-                        , jumlah: jumlah
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/pembayaranpinjaman/store',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_pinjaman: "{{ $no_pinjaman }}",
+                        tgl_bayar: tgl_bayar,
+                        jumlah: jumlah
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             swal({
-                                title: 'Success'
-                                , text: 'Data Berhasil Disimpan !'
-                                , icon: 'success'
-                                , showConfirmButton: false
+                                title: 'Success',
+                                text: 'Data Berhasil Disimpan !',
+                                icon: 'success',
+                                showConfirmButton: false
                             }).then(function() {
                                 loadrencanabayar();
                                 loadhistoribayar();
@@ -158,5 +158,4 @@
             }
         });
     });
-
 </script>

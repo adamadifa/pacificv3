@@ -2,17 +2,17 @@
     <div class="col-3">
         <div class="row">
             <div class="col-12">
-                @if($pinjaman->foto == null)
-                @if($pinjaman->jenis_kelamin == "1")
-                <img src="{{ asset('app-assets/images/male.jpg') }}" class="card-img" style="height: 350px !important">
+                @if ($pinjaman->foto == null)
+                    @if ($pinjaman->jenis_kelamin == '1')
+                        <img src="{{ asset('app-assets/images/male.jpg') }}" class="card-img" style="height: 350px !important">
+                    @else
+                        <img src="{{ asset('app-assets/images/female.jpg') }}" class="card-img" style="height: 350px !important">
+                    @endif
                 @else
-                <img src="{{ asset('app-assets/images/female.jpg') }}" class="card-img" style="height: 350px !important">
-                @endif
-                @else
-                @php
-                $path = Storage::url('karyawan/'.$pinjaman->foto);
-                @endphp
-                <img src="{{ url($path) }}" class="card-img" style="height: 350px !important">
+                    @php
+                        $path = Storage::url('karyawan/' . $pinjaman->foto);
+                    @endphp
+                    <img src="{{ url($path) }}" class="card-img" style="height: 350px !important">
                 @endif
             </div>
         </div>
@@ -49,10 +49,10 @@
                         <th>Masa Kerja</th>
                         <td>
                             @php
-                            $awal = date_create($pinjaman->tgl_masuk);
-                            $akhir = date_create(date($pinjaman->tgl_pinjaman)); // waktu sekarang
-                            $diff = date_diff( $awal, $akhir );
-                            echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                                $awal = date_create($pinjaman->tgl_masuk);
+                                $akhir = date_create(date($pinjaman->tgl_pinjaman)); // waktu sekarang
+                                $diff = date_diff($awal, $akhir);
+                                echo $diff->y . ' tahun, ' . $diff->m . ' bulan, ' . $diff->d . ' Hari';
                             @endphp
                         </td>
                     </tr>
@@ -119,8 +119,8 @@
     <div class="col-7">
         <div class="row">
             <div class="col-12">
-                @if (in_array($level,$inputbayarpinjaman))
-                <a href="#" class="btn btn-primary mb-1" id="inputbayar" no_pinjaman="{{ $pinjaman->no_pinjaman }}">Input Bayar</a>
+                @if (in_array($level, $inputbayarpinjaman))
+                    <a href="#" class="btn btn-primary mb-1" id="inputbayar" no_pinjaman="{{ $pinjaman->no_pinjaman }}">Input Bayar</a>
                 @endif
 
                 <table class="table table-bordered">
@@ -188,14 +188,14 @@
         function loadrencanabayar() {
             var no_pinjaman = "{{ $pinjaman->no_pinjaman }}";
             $.ajax({
-                type: 'POST'
-                , url: '/pinjaman/getrencanabayar'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_pinjaman: no_pinjaman
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/pinjaman/getrencanabayar',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_pinjaman: no_pinjaman
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadrencanabayar").html(respond);
                 }
             });
@@ -204,14 +204,14 @@
         function loadhistoribayar() {
             var no_pinjaman = "{{ $pinjaman->no_pinjaman }}";
             $.ajax({
-                type: 'POST'
-                , url: '/pinjaman/gethistoribayar'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_pinjaman: no_pinjaman
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/pinjaman/gethistoribayar',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_pinjaman: no_pinjaman
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadhistoribayar").html(respond);
                     loadsisatagihan();
                 }
@@ -239,18 +239,18 @@
             e.preventDefault();
             var no_pinjaman = $(this).attr("no_pinjaman");
             $('#mdlinputbayarpinjaman').modal({
-                backdrop: 'static'
-                , keyboard: false
+                backdrop: 'static',
+                keyboard: false
             });
             $.ajax({
-                type: 'POST'
-                , url: '/pembayaranpinjaman/create'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_pinjaman: no_pinjaman
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/pembayaranpinjaman/create',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_pinjaman: no_pinjaman
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadinputbayarpinjaman").html(respond);
                 }
             });
@@ -258,5 +258,4 @@
 
 
     });
-
 </script>

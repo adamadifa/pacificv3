@@ -21,6 +21,8 @@ class PembayaranpinjamanController extends Controller
 
         $query = Pinjamanpotongangaji::query();
         $query->select('pinjaman_potongangaji.kode_potongan', 'bulan', 'tahun', 'totalpembayaran');
+
+
         if (empty($request->bulan) && empty($request->tahun)) {
             $bulanini = date("m");
             $tahunini = date("Y");
@@ -35,6 +37,9 @@ class PembayaranpinjamanController extends Controller
                 $query->where('tahun', $request->tahun);
             }
         }
+
+
+
         if (!in_array($level, $level_show_all)) {
             $query->leftJoin(
                 DB::raw("(
