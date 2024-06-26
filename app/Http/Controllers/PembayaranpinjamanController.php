@@ -349,8 +349,7 @@ class PembayaranpinjamanController extends Controller
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
             DB::rollBack();
-
-            dd($e);
+            //dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
