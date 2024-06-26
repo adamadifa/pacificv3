@@ -150,18 +150,21 @@ class SetoranpenjualanController extends Controller
             ->whereNull('historibayar.id_giro')
             ->whereNull('historibayar.id_transfer')
             ->whereNull('historibayar.girotocash')
+            ->whereNull('status_bayar')
 
             ->orWhere('tglbayar', $tgl_lhp)
             ->where('historibayar.id_karyawan', $id_karyawan)
             ->whereNull('historibayar.id_giro')
             ->whereNull('historibayar.id_transfer')
             ->where('historibayar.girotocash', 1)
+            ->whereNull('status_bayar')
 
             ->orWhere('tglbayar', $tgl_lhp)
             ->where('historibayar.id_karyawan', $id_karyawan)
             ->whereNotNull('historibayar.id_giro')
             ->whereNull('historibayar.id_transfer')
             ->where('historibayar.girotocash', 1)
+            ->whereNull('status_bayar')
 
             ->orderBy('tglbayar')
             ->orderBy('historibayar.no_fak_penj')
