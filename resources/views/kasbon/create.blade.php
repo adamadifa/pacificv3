@@ -60,8 +60,7 @@
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="hidden" name="status_karyawan" id="status_karyawan"
-                            value="{{ $karyawan->status_karyawan }}">
+                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $karyawan->status_karyawan }}">
                         {{ $karyawan->status_karyawan == 'T' ? 'Karyawan Tetap' : 'Karyawan Kontrak' }}
                     </td>
                 </tr>
@@ -69,8 +68,7 @@
                     <tr>
                         <th>Akhir Kontrak</th>
                         <td>
-                            <input type="hidden" name="akhir_kontrak" id="akhir_kontrak"
-                                value="{{ $kontrak->sampai }}">
+                            <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $kontrak->sampai }}">
                             {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : '' }}
                         </td>
                     </tr>
@@ -121,8 +119,7 @@
             <label for="" class="form-label">Tanggal Kasbon</label>
         </div>
         <div class="col-8">
-            <x-inputtext label="Tanggal Kasbon" value="" field="tgl_kasbon" icon="feather icon-calendar"
-                datepicker />
+            <x-inputtext label="Tanggal Kasbon" value="" field="tgl_kasbon" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
@@ -144,8 +141,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button href="#" id="btnSubmit" class="btn btn-primary btn-block"><i
-                        class="feather icon-send mr-1"></i>Submit</button>
+                <button href="#" id="btnSubmit" class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i>Submit</button>
             </div>
         </div>
     </div>
