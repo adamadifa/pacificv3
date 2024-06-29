@@ -34,18 +34,16 @@
                         <form action="/pembelian">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext field="nobukti_pembelian" value="{{ Request('nobukti_pembelian') }}"
-                                        label="No. Bukti Pembelian" icon="feather icon-credit-card" />
+                                    <x-inputtext field="nobukti_pembelian" value="{{ Request('nobukti_pembelian') }}" label="No. Bukti Pembelian"
+                                        icon="feather icon-credit-card" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <x-inputtext field="dari" value="{{ Request('dari') }}" label="Dari"
-                                        icon="feather icon-calendar" datepicker />
+                                    <x-inputtext field="dari" value="{{ Request('dari') }}" label="Dari" icon="feather icon-calendar" datepicker />
                                 </div>
                                 <div class="col-6">
-                                    <x-inputtext field="sampai" value="{{ Request('sampai') }}" label="Sampai"
-                                        icon="feather icon-calendar" datepicker />
+                                    <x-inputtext field="sampai" value="{{ Request('sampai') }}" label="Sampai" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
@@ -56,8 +54,8 @@
                                             <select name="kode_dept" id="kode_dept" class="form-control">
                                                 <option value="">Semua Departemen</option>
                                                 @foreach ($departemen as $d)
-                                                    <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }}
-                                                        value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                                    <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">
+                                                        {{ $d->nama_dept }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -68,8 +66,7 @@
                                         <select name="kode_supplier" id="kode_supplier" class="form-control select2">
                                             <option value="">Semua Supplier</option>
                                             @foreach ($supplier as $d)
-                                                <option
-                                                    {{ Request('kode_supplier') == $d->kode_supplier ? 'selected' : '' }}
+                                                <option {{ Request('kode_supplier') == $d->kode_supplier ? 'selected' : '' }}
                                                     value="{{ $d->kode_supplier }}">{{ $d->nama_supplier }}</option>
                                             @endforeach
                                         </select>
@@ -91,10 +88,8 @@
                                     <div class="form-group">
                                         <select name="jenistransaksi" id="jenistransaksi" class="form-control">
                                             <option value="">Tunai / Kredit</option>
-                                            <option {{ Request('jenistransaksi') == 'tunai' ? 'selected' : '' }}
-                                                value="tunai">Tunai</option>
-                                            <option {{ Request('jenistransaksi') == 'kredit' ? 'selected' : '' }}
-                                                value="kredit">Kredit</option>
+                                            <option {{ Request('jenistransaksi') == 'tunai' ? 'selected' : '' }} value="tunai">Tunai</option>
+                                            <option {{ Request('jenistransaksi') == 'kredit' ? 'selected' : '' }} value="kredit">Kredit</option>
                                         </select>
                                     </div>
                                 </div>
@@ -195,12 +190,10 @@
                                             @endif
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <a class="ml-1 detailpembelian" href="#"
-                                                        nobukti_pembelian="{{ $d->nobukti_pembelian }}"><i
+                                                    <a class="ml-1 detailpembelian" href="#" nobukti_pembelian="{{ $d->nobukti_pembelian }}"><i
                                                             class=" feather icon-file-text info"></i></a>
                                                     @if (in_array($level, $pembelian_edit))
-                                                        <a class="ml-1"
-                                                            href="/pembelian/{{ \Crypt::encrypt($d->nobukti_pembelian) }}/edit"><i
+                                                        <a class="ml-1" href="/pembelian/{{ \Crypt::encrypt($d->nobukti_pembelian) }}/edit"><i
                                                                 class="feather icon-edit success"></i></a>
                                                     @endif
                                                     @if (empty($d->jmlbayar))
@@ -209,8 +202,7 @@
                                                                 action="/pembelian/{{ Crypt::encrypt($d->nobukti_pembelian) }}/delete">
                                                                 @csrf
                                                                 @method('DELETE')
-                                                                <a href="#" tanggal="{{ $d->tgl_pembelian }}"
-                                                                    class="delete-confirm ml-1">
+                                                                <a href="#" tanggal="{{ $d->tgl_pembelian }}" class="delete-confirm ml-1">
                                                                     <i class="feather icon-trash danger"></i>
                                                                 </a>
                                                             </form>
@@ -231,10 +223,8 @@
                                                                     </a>
                                                                 </form>
                                                             @else
-                                                                <a href="#"
-                                                                    nobukti_pembelian="{{ $d->nobukti_pembelian }}"
-                                                                    class="ml-1 prosespembelian"><i
-                                                                        class="feather icon-external-link success"></i></a>
+                                                                <a href="#" nobukti_pembelian="{{ $d->nobukti_pembelian }}"
+                                                                    class="ml-1 prosespembelian"><i class="feather icon-external-link success"></i></a>
                                                             @endif
                                                         @endif
                                                     @endif
@@ -255,8 +245,7 @@
         </div>
     </div>
     <!-- Detail Salesman -->
-    <div class="modal fade text-left" id="mdldetailpembelian" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdldetailpembelian" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:968px">
             <div class="modal-content">
                 <div class="modal-header">

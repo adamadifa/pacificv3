@@ -85,12 +85,11 @@
                                             <td>{{ $d->tahun }}</td>
                                             <td>
                                                 @if ($d->kp > 0)
-                                                    <a href="#" kodetarget="{{ $d->kode_target }}"
-                                                        class="detailapprovecabang"><i
+                                                    <a href="#" kodetarget="{{ $d->kode_target }}" class="detailapprovecabang"><i
                                                             class="fa fa-history warning"></i></a>
                                                 @else
-                                                    <a href="#" kodetarget="{{ $d->kode_target }}"
-                                                        class="detailapprovecabang"><i class="fa fa-check success"></i></a>
+                                                    <a href="#" kodetarget="{{ $d->kode_target }}" class="detailapprovecabang"><i
+                                                            class="fa fa-check success"></i></a>
                                                 @endif
                                             </td>
 
@@ -119,11 +118,10 @@
                                             <td>
 
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    @if ($d->bulan == 6 && $d->tahun == 2024)
+                                                    @if ($d->bulan == 7 && $d->tahun == 2024)
                                                         @if (in_array($level, $targetkomisiinput))
                                                             <a href="#" class="ml-1 btn btn-primary btn-sm settarget"
-                                                                kodetarget="{{ $d->kode_target }}"><i
-                                                                    class="feather icon-settings"></i> Input Qty</a>
+                                                                kodetarget="{{ $d->kode_target }}"><i class="feather icon-settings"></i> Input Qty</a>
                                                         @endif
                                                     @endif
                                                     {{-- @if (in_array($level, $generatecashin))
@@ -131,8 +129,7 @@
                                                             class="ml-1 btn btn-warning btn-sm"><i
                                                                 class="feather icon-settings"></i> Generate Cashin</a>
                                                     @endif --}}
-                                                    <a href="#" class="ml-1 detailtarget info"
-                                                        kodetarget="{{ $d->kode_target }}"><i
+                                                    <a href="#" class="ml-1 detailtarget info" kodetarget="{{ $d->kode_target }}"><i
                                                             class="feather icon-file-text"></i></a>
                                                     {{-- @php
                                                         $kode_cabang = Auth::user()->kode_cabang;
@@ -171,8 +168,7 @@
         </div>
     </div>
     <!-- Detail Approve Cabang -->
-    <div class="modal fade text-left" id="mdlapprovecabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdlapprovecabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -189,8 +185,7 @@
     </div>
 
     <!-- Input Target Cabang -->
-    <div class="modal fade text-left" id="mdlsettarget" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdlsettarget" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -207,8 +202,7 @@
     </div>
 
     <!-- Detail Target -->
-    <div class="modal fade text-left" id="mdldetailtarget" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdldetailtarget" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 950px" role="document">
             <div class="modal-content">
                 <div class="modal-header">
