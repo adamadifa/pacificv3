@@ -366,7 +366,10 @@ class LimitkreditController extends Controller
             ->where('kode_pelanggan', $kode_pelanggan)
             ->where('status_lunas', 2)
             ->get();
-        return view('limitkredit.create', compact('pelanggan', 'lasttopup', 'listfaktur'));
+
+
+        $klasifikasioutlet = DB::table('klasifikasi_outlet')->orderBy('kode')->get();
+        return view('limitkredit.create', compact('pelanggan', 'lasttopup', 'listfaktur', 'klasifikasioutlet'));
     }
 
     public function cetak($no_pengajuan)
@@ -533,6 +536,7 @@ class LimitkreditController extends Controller
                     'hari'  => $hari,
                     'status_outlet' => $status_outlet,
                     'type_outlet' => $type_outlet,
+                    'klasifikasi_outlet' => $request->klasifikasi_outlet,
                     'cara_pembayaran' => $cara_pembayaran,
                     'kepemilikan' => $kepemilikan,
                     'lama_langganan' => $lama_langganan,

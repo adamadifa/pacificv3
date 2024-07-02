@@ -315,7 +315,8 @@ class PelangganController extends Controller
 
             $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
         }
-        return view('pelanggan.create', compact('cabang', 'pasar'));
+        $klasifikasioutlet = DB::table('klasifikasi_outlet')->orderBy('kode')->get();
+        return view('pelanggan.create', compact('cabang', 'pasar', 'klasifikasioutlet'));
     }
 
     public function store(Request $request)
@@ -397,6 +398,7 @@ class PelangganController extends Controller
                 'lama_usaha' => $request->lama_usaha,
                 'status_outlet' => $request->status_outlet,
                 'type_outlet' => $request->type_outlet,
+                'klasifikasi_outlet' => $request->klasifikasi_outlet,
                 'cara_pembayaran' => $request->cara_pembayaran,
                 'lama_langganan' => $request->lama_langganan,
                 'jaminan' => $request->jaminan,
@@ -437,7 +439,9 @@ class PelangganController extends Controller
 
             $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
         }
-        return view('pelanggan.edit', compact('data', 'cabang', 'pasar'));
+
+        $klasifikasioutlet = DB::table('klasifikasi_outlet')->orderBy('kode')->get();
+        return view('pelanggan.edit', compact('data', 'cabang', 'pasar', 'klasifikasioutlet'));
     }
 
     public function delete($kode_pelanggan)
@@ -550,6 +554,7 @@ class PelangganController extends Controller
                     'lama_usaha' => $request->lama_usaha,
                     'status_outlet' => $request->status_outlet,
                     'type_outlet' => $request->type_outlet,
+                    'klasifikasi_outlet' => $request->klasifikasi_outlet,
                     'cara_pembayaran' => $request->cara_pembayaran,
                     'lama_langganan' => $request->lama_langganan,
                     'jaminan' => $request->jaminan,
