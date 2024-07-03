@@ -1366,7 +1366,7 @@ class GlobalProvider extends ServiceProvider
             $smmactivity = ['admin', 'manager accounting', 'rom', 'manager marketing', 'direktur', 'rsm'];
             $rsmactivity = ['admin', 'manager accounting', 'rom', 'manager marketing', 'direktur'];
 
-            $om_menu = ['admin', 'direktur', 'manager accounting', 'rom', 'kepala admin'];
+            $om_menu = ['admin', 'direktur', 'manager accounting', 'rom', 'kepala admin', 'manager audit'];
 
             $bufferlimit = ['admin', 'kepala admin'];
             $shareddata = [
