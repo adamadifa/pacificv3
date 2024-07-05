@@ -163,7 +163,7 @@
             </tr>
         </table>
         <br>
-        <div style="display: flex; justify-content:space-between">
+        <div style="display: flex; justify-content:space-between;">
             <div style="width: 20%">
                 Tembusan<br>
                 <ol>

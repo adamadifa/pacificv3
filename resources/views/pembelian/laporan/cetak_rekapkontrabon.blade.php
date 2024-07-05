@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Kontrabon {{ date("d-m-y") }}</title>
+    <title>Rekap Kontrabon {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAP KONTRABON<br>
@@ -63,10 +64,10 @@
                 <td><?php echo $k->nama_supplier; ?></td>
                 <td>
                     <?php
-                if ($k->ppn == 1) {
-                  echo "FP";
-                }
-                ?>
+                    if ($k->ppn == 1) {
+                        echo 'FP';
+                    }
+                    ?>
                 </td>
                 <td align="right"><?php echo desimal($k->jumlah); ?></td>
                 <td align="center"><?php echo $k->norekening; ?></td>
@@ -103,10 +104,10 @@
                 <td><?php echo $k->nama_supplier; ?></td>
                 <td>
                     <?php
-                if ($k->ppn == 1) {
-                echo "FP";
-                }
-                ?>
+                    if ($k->ppn == 1) {
+                        echo 'FP';
+                    }
+                    ?>
                 </td>
                 <td align="right"><?php echo desimal($k->jumlah); ?></td>
                 <td align="center"><?php echo $k->norekening; ?></td>
@@ -122,4 +123,5 @@
     </table>
 
 </body>
+
 </html>

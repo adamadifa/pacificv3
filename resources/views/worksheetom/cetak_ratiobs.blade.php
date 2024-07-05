@@ -80,10 +80,7 @@
                                 $d->{"reject_mobil_$p->kode_produk"} +
                                 $d->{"reject_gudang_$p->kode_produk"} -
                                 $d->{"repack_$p->kode_produk"};
-                            $harga =
-                                $d->{"retur_$p->kode_produk"} > 0
-                                    ? $d->{"totalretur_$p->kode_produk"} / $d->{"retur_$p->kode_produk"}
-                                    : 0;
+                            $harga = $d->{"retur_$p->kode_produk"} > 0 ? $d->{"totalretur_$p->kode_produk"} / $d->{"retur_$p->kode_produk"} : 0;
                             $total = ROUND($jmlreject, 2) * $harga;
                             $totalharga += $total;
                         @endphp
