@@ -12,10 +12,8 @@
                         <div class="card bg-analytics text-white">
                             <div class="card-content">
                                 <div class="card-body text-center">
-                                    <img src="{{ asset('app-assets/images/elements/decore-left.png') }}" class="img-left"
-                                        alt="card-img-left">
-                                    <img src="{{ asset('app-assets/images/elements/decore-right.png') }}" class="img-right"
-                                        alt="card-img-right">
+                                    <img src="{{ asset('app-assets/images/elements/decore-left.png') }}" class="img-left" alt="card-img-left">
+                                    <img src="{{ asset('app-assets/images/elements/decore-right.png') }}" class="img-right" alt="card-img-right">
                                     <div class="avatar avatar-xl bg-primary shadow mt-0">
                                         <div class="avatar-content">
                                             <i class="feather icon-award white font-large-1"></i>
@@ -39,8 +37,7 @@
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="form-body">
-                                        <input type="hidden" name="cabangdpp" id="cabangdppp"
-                                            value="{{ Auth::user()->kode_cabang }}">
+                                        <input type="hidden" name="cabangdpp" id="cabangdppp" value="{{ Auth::user()->kode_cabang }}">
                                         <div class="row mb-1">
                                             <div class="col-12">
                                                 <select class="form-control" id="bulandppp">
@@ -71,8 +68,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <a href="#" id="tampilkandppp" class="btn btn-primary"><i
-                                                        class="fa fa-eye"></i></a>
+                                                <a href="#" id="tampilkandppp" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -88,8 +84,7 @@
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="form-body">
-                                        <input type="hidden" name="cabangkendaraan" id="cabangkendaraan"
-                                            value="{{ Auth::user()->kode_cabang }}">
+                                        <input type="hidden" name="cabangkendaraan" id="cabangkendaraan" value="{{ Auth::user()->kode_cabang }}">
                                         <div class="row mb-1">
                                             <div class="col-12">
                                                 <select class="form-control" id="bulankendaraan">
@@ -120,8 +115,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <a href="#" id="tampilkankendaraan" class="btn btn-primary"><i
-                                                        class="fa fa-eye"></i></a>
+                                                <a href="#" id="tampilkankendaraan" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -144,23 +138,20 @@
                                     <div class="card-body">
                                         <div class="form-body">
                                             <div class="row mb-1">
-                                                <input type="hidden" name="cabangaup" id="cabangaup"
-                                                    value="{{ Auth::user()->kode_cabang }}">
+                                                <input type="hidden" name="cabangaup" id="cabangaup" value="{{ Auth::user()->kode_cabang }}">
                                             </div>
                                             <div class="row">
                                                 <div class="col-12">
                                                     @php
                                                         $hariini = date('Y-m-d');
                                                     @endphp
-                                                    <x-inputtext label="Tanggal AUP" field="tanggal_aup"
-                                                        icon="feather icon-calendar" datepicker="true"
+                                                    <x-inputtext label="Tanggal AUP" field="tanggal_aup" icon="feather icon-calendar" datepicker="true"
                                                         value="{{ $hariini }}" />
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <a href="#" id="tampilkanaup" class="btn btn-primary"><i
-                                                            class="fa fa-eye"></i></a>
+                                                    <a href="#" id="tampilkanaup" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -232,19 +223,14 @@
                                                             $rekappenjualan->totalpotistimewapending;
                                                     @endphp
                                                     <td class="text-right text-warning">
-                                                        <form action="/laporanpenjualan/cetak" method="post"
-                                                            id="frmpending" target="_blank">
+                                                        <form action="/laporanpenjualan/cetak" method="post" id="frmpending" target="_blank">
                                                             @csrf
-                                                            <input type="hidden" name="kode_cabang"
-                                                                value="{{ Auth::user()->kode_cabang }}">
-                                                            <input type="hidden" name="dari"
-                                                                value="{{ $dari }}">
-                                                            <input type="hidden" name="sampai"
-                                                                value="{{ $sampai }}">
+                                                            <input type="hidden" name="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
+                                                            <input type="hidden" name="dari" value="{{ $dari }}">
+                                                            <input type="hidden" name="sampai" value="{{ $sampai }}">
                                                             <input type="hidden" name="jenislaporan" value="standar">
                                                             <input type="hidden" name="status" value="pending">
-                                                            <a href="#" class="warning"
-                                                                id="showpending">{{ rupiah($totalnettopending) }}</a>
+                                                            <a href="#" class="warning" id="showpending">{{ rupiah($totalnettopending) }}</a>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -285,8 +271,7 @@
                                                     <option value="">Semua Cabang</option>
                                                 @endif
                                                 @foreach ($cabang as $c)
-                                                    <option
-                                                        {{ Auth::user()->kode_cabang == $c->kode_cabang ? 'selected' : '' }}
+                                                    <option {{ Auth::user()->kode_cabang == $c->kode_cabang ? 'selected' : '' }}
                                                         value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
                                                     </option>
                                                 @endforeach
@@ -325,8 +310,7 @@
                                                     <option value="">Semua Cabang</option>
                                                 @endif
                                                 @foreach ($cabang as $c)
-                                                    <option
-                                                        {{ Auth::user()->kode_cabang == $c->kode_cabang ? 'selected' : '' }}
+                                                    <option {{ Auth::user()->kode_cabang == $c->kode_cabang ? 'selected' : '' }}
                                                         value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
                                                     </option>
                                                 @endforeach
@@ -351,10 +335,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade text-left" id="mdldppp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="max-width:60%"
-            role="document">
+    <div class="modal fade text-left" id="mdldppp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="max-width:60%" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel16">Rekap DPPP</h4>
@@ -375,8 +357,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="mdlkendaraan" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal fade" id="mdlkendaraan" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -401,10 +382,8 @@
         </div>
     </div>
     <!-- Rekap AUP -->
-    <div class="modal fade text-left" id="mdlaup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="max-width:60%"
-            role="document">
+    <div class="modal fade text-left" id="mdlaup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="max-width:60%" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel16">Rekap Analisa Umur Piutang (AUP)</h4>

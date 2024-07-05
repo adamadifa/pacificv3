@@ -13,10 +13,8 @@
                         <div class="card bg-analytics text-white">
                             <div class="card-content">
                                 <div class="card-body text-center">
-                                    <img src="{{ asset('app-assets/images/elements/decore-left.png') }}" class="img-left"
-                                        alt="card-img-left">
-                                    <img src="{{ asset('app-assets/images/elements/decore-right.png') }}" class="img-right"
-                                        alt="card-img-right">
+                                    <img src="{{ asset('app-assets/images/elements/decore-left.png') }}" class="img-left" alt="card-img-left">
+                                    <img src="{{ asset('app-assets/images/elements/decore-right.png') }}" class="img-right" alt="card-img-right">
                                     <div class="avatar avatar-xl bg-primary shadow mt-0">
                                         <div class="avatar-content">
                                             <i class="feather icon-award white font-large-1"></i>
@@ -61,8 +59,7 @@
                                             <i class="feather icon-shopping-bag text-danger font-large-3"></i>
                                         </div>
                                     </div>
-                                    <h1 class="text-bold-700"><a
-                                            href="/ajuanfaktur?status=pending">{{ $jmlpengajuanfaktur }}</a></h1>
+                                    <h1 class="text-bold-700"><a href="/ajuanfaktur?status=pending">{{ $jmlpengajuanfaktur }}</a></h1>
                                     <p class="mb-0 line-ellipsis">Ajuan Jumlah Faktur
                                         {{ ucwords(Auth::user()->level) }}<br><br><br></p>
                                 </div>
@@ -95,8 +92,7 @@
                                             <i class="feather icon-file-text text-info font-large-3"></i>
                                         </div>
                                     </div>
-                                    <h1 class="text-bold-700"><a
-                                            href="/penilaiankaryawan/3/MP/list">{{ $jmlpenilaiankar }}</a></h1>
+                                    <h1 class="text-bold-700"><a href="/penilaiankaryawan/3/MP/list">{{ $jmlpenilaiankar }}</a></h1>
                                     <p class="mb-0 line-ellipsis">Penilaian Karyawan<br><br><br></p>
                                 </div>
                             </div>
@@ -135,8 +131,7 @@
                                                 <?php for ($a = 1; $a <= 12; $a++) { ?>
                                                 <option <?php if (date('m') == $a) {
                                                     echo 'selected';
-                                                } ?>
-                                                    value="
+                                                } ?> value="
                                                 <?php echo $a; ?>">
                                                     <?php echo $bulan[$a]; ?>
                                                 </option>
@@ -153,8 +148,7 @@
                                                 for ($t = startyear(); $t <= $tahun; $t++) { ?>
                                                 <option <?php if (date('Y') == $t) {
                                                     echo 'selected';
-                                                } ?>
-                                                    value="
+                                                } ?> value="
                                                 <?php echo $t; ?>">
                                                     <?php echo $t; ?>
                                                 </option>
@@ -165,8 +159,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a href="#" id="tampilkanpenjualancashin" class="btn btn-primary"><i
-                                                    class="fa fa-eye"></i></a>
+                                            <a href="#" id="tampilkanpenjualancashin" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -197,8 +190,7 @@
                                                 @php
                                                     $hariini = date('Y-m-d');
                                                 @endphp
-                                                <x-inputtext label="Tanggal AUP" field="tanggal_aup"
-                                                    icon="feather icon-calendar" datepicker="true"
+                                                <x-inputtext label="Tanggal AUP" field="tanggal_aup" icon="feather icon-calendar" datepicker="true"
                                                     value="{{ $hariini }}" />
                                             </div>
                                         </div>
@@ -212,8 +204,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <a href="#" id="tampilkanaup" class="btn btn-primary"><i
-                                                        class="fa fa-eye"></i></a>
+                                                <a href="#" id="tampilkanaup" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -284,8 +275,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <a href="#" id="tampilkandppp" class="btn btn-primary"><i
-                                                        class="fa fa-eye"></i></a>
+                                                <a href="#" id="tampilkandppp" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -348,8 +338,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <a href="#" id="tampilkankendaraan" class="btn btn-primary"><i
-                                                        class="fa fa-eye"></i></a>
+                                                <a href="#" id="tampilkankendaraan" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                             </div>
                                         </div>
                                     </div>
@@ -388,8 +377,7 @@
 
     <!-- Rekap Penjualan -->
     <!-- Rekap Penjualan -->
-    <div class="modal fade text-left" id="mdlrekappenjualan" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlrekappenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 1400px" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -416,8 +404,7 @@
         </div>
     </div>
     <!-- Rekap AUP -->
-    <div class="modal fade text-left" id="mdlaup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdlaup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -438,8 +425,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade text-left" id="mdldppp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdldppp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -461,8 +447,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="mdlkendaraan" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+    <div class="modal fade" id="mdlkendaraan" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
