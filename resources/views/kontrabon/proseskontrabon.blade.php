@@ -23,18 +23,18 @@
     </thead>
     <tbody>
         @php
-        $totalkontrabon = 0;
+            $totalkontrabon = 0;
         @endphp
         @foreach ($detailkontrabon as $d)
-        @php
-        $totalkontrabon += $d->jmlbayar;
-        @endphp
-        <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ date("d-m-Y",strtotime($d->tgl_pembelian)) }}</td>
-            <td><a href="#" class="detailpembelian" nobukti_pembelian="{{ $d->nobukti_pembelian }}">{{ $d->nobukti_pembelian }}</a></td>
-            <td class="text-right">{{ desimal($d->jmlbayar) }}</td>
-        </tr>
+            @php
+                $totalkontrabon += $d->jmlbayar;
+            @endphp
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ date('d-m-Y', strtotime($d->tgl_pembelian)) }}</td>
+                <td><a href="#" class="detailpembelian" nobukti_pembelian="{{ $d->nobukti_pembelian }}">{{ $d->nobukti_pembelian }}</a></td>
+                <td class="text-right">{{ desimal($d->jmlbayar) }}</td>
+            </tr>
         @endforeach
         <tr class="thead-dark">
             <th colspan="3">TOTAL</th>
@@ -61,7 +61,7 @@
                         <select name="kode_bank" id="kode_bank" class="form-control select2">
                             <option value="">Pilih Bank</option>
                             @foreach ($bank as $d)
-                            <option value="{{ $d->kode_bank }}">{{ $d->nama_bank }}</option>
+                                <option value="{{ $d->kode_bank }}">{{ $d->nama_bank }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -151,7 +151,7 @@
                         <select name="kode_cabang" id="kode_cabang" class="form-control ">
                             <option value="">Pilih Cabang</option>
                             @foreach ($cabang as $d)
-                            <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                                <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -177,9 +177,9 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
 <script>
     $(function() {
 
@@ -195,14 +195,14 @@
 
         function loaddetailpembelian(nobukti_pembelian) {
             $.ajax({
-                type: 'POST'
-                , url: '/pembelian/showdetailpembeliankontrabon'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , nobukti_pembelian: nobukti_pembelian
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/pembelian/showdetailpembeliankontrabon',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    nobukti_pembelian: nobukti_pembelian
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loaddetailpembelian").html(respond);
                 }
             });
@@ -252,20 +252,20 @@
             var no_bkk = $("#no_bkk").val();
             if (tglbayar == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Bayar Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Bayar Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tglbayar").focus();
                 });
                 return false;
             } else if (kode_bank == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Bank Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Bank Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_bank").focus();
                 });
@@ -273,10 +273,10 @@
 
             } else if (kode_bank == "KAS" && $('input[name="kategori_transaksi"]:checked').length == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Peruntukan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Peruntukan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_bank").focus();
                 });
@@ -284,10 +284,10 @@
 
             } else if (kode_akun == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Akun Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Akun Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_akun").focus();
                 });
@@ -295,10 +295,10 @@
 
             } else if ($(".cekcabang").is(':checked') && kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Cabang Harus Pilih !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Cabang Harus Pilih !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
@@ -306,10 +306,10 @@
 
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
@@ -317,10 +317,10 @@
 
             } else if (kode_bank == "KAS KECIL" && kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Cabang Harus Dipilih !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Cabang Harus Dipilih !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
@@ -328,10 +328,10 @@
 
             } else if (kode_bank == "KAS KECIL" && no_bkk == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'No. BKK Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'No. BKK Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#no_bkk").focus();
                 });
@@ -340,5 +340,4 @@
             }
         });
     });
-
 </script>

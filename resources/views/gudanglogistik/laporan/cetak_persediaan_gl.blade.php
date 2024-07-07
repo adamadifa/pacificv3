@@ -52,7 +52,7 @@
         <br>
     </b>
     <br>
-    <table class="datatable3" id="table-1" <?php if ($kategori == 'K001') {
+    <table class="datatable3" id="table-1" <?php if ($kategori == 'Z001') {
         echo "style='width: 100%'";
     } else {
         echo "style='width: 100%'";
@@ -63,22 +63,22 @@
                 <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;width:100px">KODE</th>
                 <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;width:300px">NAMA BARANG</th>
                 <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;width:100px">SATUAN</th>
-                <th <?php if ($kategori == 'K001') {
+                <th <?php if ($kategori == 'Z001') {
                     echo "colspan='3'";
                 } else {
                     echo "rowspan='2'";
                 } ?> style="color:white; font-size:14;width:180px">SALDO AWAL</th>
-                <th <?php if ($kategori == 'K001') {
+                <th <?php if ($kategori == 'Z001') {
                     echo "colspan='3'";
                 } else {
                     echo "rowspan='2'";
                 } ?> style="color:white; font-size:14;width:180px">MASUK</th>
-                <th <?php if ($kategori == 'K001') {
+                <th <?php if ($kategori == 'Z001') {
                     echo "colspan='3'";
                 } else {
                     echo "rowspan='2'";
                 } ?> style="color:white; font-size:14;width:180px">KELUAR</th>
-                <th <?php if ($kategori == 'K001') {
+                <th <?php if ($kategori == 'Z001') {
                     echo "colspan='3'";
                 } else {
                     echo "rowspan='2'";
@@ -87,7 +87,7 @@
                 <th rowspan="2" style="color:white; font-size:14;width:70px">SELISIH</th>
             </tr>
             <tr bgcolor="#28a745">
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <th bgcolor="#28a745" style="color:white; font-size:14;width:70px">STOK</th>
                 <th bgcolor="#28a745" style="color:white; font-size:14;width:90px">HARGA</th>
                 <th bgcolor="#28a745" style="color:white; font-size:14;width:120px">JUMLAH</th>
@@ -171,7 +171,7 @@
                 <!-- Saldo Awal -->
                 <td width="70px" align="center">{{ !empty($d->qtysaldoawal) ? desimal($d->qtysaldoawal) : '' }}
                 </td>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <td width="90px" align="right">{{ !empty($d->hargasaldoawal) ? desimal($d->hargasaldoawal) : '' }}</td>
                 <td width="115px" align="right">{{ !empty($d->totalsa) ? desimal($d->totalsa) : '' }}</td>
                 <?php } ?>
@@ -181,7 +181,7 @@
                         echo desimal($d->qtypemasukan);
                     } ?>
                 </td>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <td width="90px" align="right"> <?php if (!empty($hargamasuk) and $hargamasuk != '0') {
                     echo desimal($hargamasuk);
                 } ?></td>
@@ -195,7 +195,7 @@
                     echo desimal($d->qtypengeluaran);
                 } ?>
                 </td>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <td width="90px" align="right"><?php if (!empty($hargakeluar) and $hargakeluar != '0' and !empty($d->qtypengeluaran)) {
                     echo desimal($hargakeluar);
                 } ?></td>
@@ -206,7 +206,7 @@
                 <?php } ?>
                 <!-- Stok Akhir -->
                 <td width="70px" align="center">{{ !empty($stokakhir) ? desimal($stokakhir) : '' }}</td>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <td width="90px" align="right">{{ !empty($hargakeluar) ? desimal($hargakeluar) : '' }}</td>
                 <td width="120px" align="right">{{ !empty($jmlstokakhir) ? desimal($jmlstokakhir) : '' }}</td>
                 <?php } ?>
@@ -227,9 +227,9 @@
                 <th style="color:white; font-size:14;" colspan="4">TOTAL</th>
                 <th align="center"><?php echo desimal($totqtysaldoawal); ?>
                 </th>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <th align="center"></th>
-                <th align="center"><?php if (!empty($totalsaldoawal) and $totalsaldoawal != '0' and $kode_kategori == 'K001') {
+                <th align="center"><?php if (!empty($totalsaldoawal) and $totalsaldoawal != '0' and $kode_kategori == 'Z001') {
                     echo desimal($totalsaldoawal);
                 } ?>
                 </th>
@@ -237,18 +237,18 @@
                 <th align="center"><?php if (!empty($totqtymasuk) and $totqtymasuk != '0') {
                     echo desimal($totqtymasuk);
                 } ?></th>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <th></th>
-                <th align="center"><?php if (!empty($totalpemasukan) and $totalpemasukan != '0' and $kode_kategori == 'K001') {
+                <th align="center"><?php if (!empty($totalpemasukan) and $totalpemasukan != '0' and $kode_kategori == 'Z001') {
                     echo desimal($totalpemasukan);
                 } ?></th>
                 <?php } ?>
                 <th align="center"><?php if (!empty($totqtykeluar) and $totqtykeluar != '0') {
                     echo desimal($totqtykeluar);
                 } ?></th>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <th></th>
-                <th align="center"><?php if (!empty($totalpengeluaran) and $totalpengeluaran != '0' and $kode_kategori == 'K001') {
+                <th align="center"><?php if (!empty($totalpengeluaran) and $totalpengeluaran != '0' and $kode_kategori == 'Z001') {
                     echo desimal($totalpengeluaran);
                 } ?>
                 </th>
@@ -257,9 +257,9 @@
                     echo desimal($totqtystokakhir);
                 } ?>
                 </th>
-                <?php if ($kategori == "K001") { ?>
+                <?php if ($kategori == "Z001") { ?>
                 <th></th>
-                <th bgcolor="green" align="center"><?php if (!empty($totstokakhir) and $totstokakhir != '0' and $kode_kategori == 'K001') {
+                <th bgcolor="green" align="center"><?php if (!empty($totstokakhir) and $totstokakhir != '0' and $kode_kategori == 'Z001') {
                     echo desimal($totstokakhir);
                 } ?>
                 </th>

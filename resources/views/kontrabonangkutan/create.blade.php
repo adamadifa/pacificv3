@@ -36,8 +36,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <x-inputtext field="tgl_kontrabon" label="Tanggal Kontrabon"
-                                            icon="feather icon-calendar" datepicker />
+                                        <x-inputtext field="tgl_kontrabon" label="Tanggal Kontrabon" icon="feather icon-calendar" datepicker />
                                     </div>
                                 </div>
                                 <div class="row">
