@@ -72,7 +72,12 @@
                     @foreach ($barang as $d)
                         @php
                             $kode_produk = strtolower($d->kode_produk);
-                            ${"s$kode_produk"} = ROUND($r->{"saldo_$kode_produk"} / ${"isipcs_$d->kode_produk"}, 2);
+                            ${"s$kode_produk"} =
+                                $r->{"mg_$kode_produk"} +
+                                ROUND($r->{"saldo_$kode_produk"} / ${"isipcs_$d->kode_produk"}, 2) +
+                                ROUND($r->{"mutasi_$kode_produk"} / ${"isipcs_$d->kode_produk"}, 2) -
+                                $r->{"ambil_$kode_produk"} +
+                                $r->{"kembali_$kode_produk"};
                             if (${"s$kode_produk"} <= $r->{"buffer_$d->kode_produk"}) {
                                 ${"color$kode_produk"} = 'bg-danger';
                             } elseif (${"s$kode_produk"} >= $r->{"maxstok_$d->kode_produk"}) {
