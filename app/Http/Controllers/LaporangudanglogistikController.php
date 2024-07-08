@@ -232,7 +232,7 @@ class LaporangudanglogistikController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Persediaan.xls");
         }
-        return view('gudanglogistik.laporan.cetak_persediaan', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
+        return view('gudanglogistik.laporan.cetak_persediaan_gl', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
     }
 
     public function persediaanopname()
