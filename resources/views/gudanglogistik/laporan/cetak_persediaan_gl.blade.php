@@ -54,8 +54,6 @@
     <br>
     <table class="datatable3" id="table-1" <?php if ($kategori == 'Z001') {
         echo "style='width: 100%'";
-    } else {
-        echo "style='width: 100%'";
     } ?> border="1">
         <thead>
             <tr bgcolor="#024a75">
