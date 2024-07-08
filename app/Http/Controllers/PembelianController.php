@@ -499,7 +499,7 @@ class PembelianController extends Controller
                     'kode_akun'         => $d->kode_akun,
                     'no_urut'           => $no,
                     'kode_cabang'       => $d->kode_cabang,
-                    'kode_costratio'           => $kode_cr,
+                    'kode_cr'           => $kode_cr,
                     'nobukti_bukubesar' => $nobukti_bukubesar_detail
                 );
 
