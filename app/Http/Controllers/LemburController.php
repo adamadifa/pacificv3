@@ -389,6 +389,7 @@ class LemburController extends Controller
             'spv maintenance',
             'manager produksi',
             'manager ga',
+            'kepala gudang'
         ];
 
         $level_hrd = ["manager hrd", "spv presensi"];
