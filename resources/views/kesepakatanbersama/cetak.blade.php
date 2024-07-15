@@ -72,8 +72,7 @@
         <table style="width: 100%">
             <tr>
                 <td>
-                    <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt=""
-                        style="width: 80px; height:80px">
+                    <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt="" style="width: 80px; height:80px">
                 </td>
                 <td style="text-align: left">
                     <h3 style="font-family:'Cambria'; line-height:0px">CV MAKMUR PERMATA</h3>
@@ -197,12 +196,7 @@
                         $awalmasakerja = date_create($nextmonth);
                         $akhirmasakerja = date_create($kontrak->sampai); // waktu sekarang
                         $diffmasakerja = date_diff($awalmasakerja, $akhirmasakerja);
-                        echo $diffmasakerja->y .
-                            ' tahun, ' .
-                            $diffmasakerja->m .
-                            ' bulan, ' .
-                            $diffmasakerja->d .
-                            ' Hari';
+                        echo $diffmasakerja->y . ' tahun, ' . $diffmasakerja->m . ' bulan, ' . $diffmasakerja->d . ' Hari';
                     @endphp
                 </th>
             </tr>

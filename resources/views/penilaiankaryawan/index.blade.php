@@ -61,8 +61,7 @@
                                     <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->id_perusahaan }}/list"
                                         class="{{ $kategori_jabatan == $d->id ? 'active' : '' }}">
                                         {{ $d->kategori_jabatan }}
-                                        <span class="badge bg-danger badge-pill"
-                                            style="margin-left:2px;">{{ $d->jml }}</span>
+                                        <span class="badge bg-danger badge-pill" style="margin-left:2px;">{{ $d->jml }}</span>
                                     </a>
                                 </li>
                             @endforeach
@@ -81,13 +80,12 @@
                             <form action="{{ url()->current() }}">
                                 <div class="row">
                                     <div class="col-lg-6 col-sm-12">
-                                        <x-inputtext label="Dari" field="dari_search" value="{{ Request('dari_search') }}"
-                                            icon="feather icon-calendar" datepicker />
+                                        <x-inputtext label="Dari" field="dari_search" value="{{ Request('dari_search') }}" icon="feather icon-calendar"
+                                            datepicker />
                                     </div>
                                     <div class="col-lg-6 col-sm-12">
-                                        <x-inputtext label="Sampai" field="sampai_search"
-                                            value="{{ Request('sampai_search') }}" icon="feather icon-calendar"
-                                            datepicker />
+                                        <x-inputtext label="Sampai" field="sampai_search" value="{{ Request('sampai_search') }}"
+                                            icon="feather icon-calendar" datepicker />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -108,8 +106,8 @@
                                         </select>
                                     </div>
                                     <div class="col-lg-4 col-sm-12">
-                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i
-                                                class="fa fa-search mr-2"></i> Search</button>
+                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i>
+                                            Search</button>
                                     </div>
                                 </div>
 
@@ -177,40 +175,18 @@
                                                     @endphp
                                                     <td>
                                                         @php
-                                                            if (
-                                                                $i == 0 &&
-                                                                $d->status == 2 &&
-                                                                !empty($d->$level) &&
-                                                                empty($d->$nextlevel)
-                                                            ) {
+                                                            if ($i == 0 && $d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
                                                                 //Jika Index 0 dan Stataus ==2 dan Level Tidak Kosong dan Level Selanjutnya Kosong Maka X
                                                                 echo "<i class='fa fa-close danger'></i>";
-                                                            } elseif (
-                                                                $i == 0 &&
-                                                                $d->status == 2 &&
-                                                                !empty($d->$level) &&
-                                                                !empty($d->$nextlevel)
-                                                            ) {
+                                                            } elseif ($i == 0 && $d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
                                                                 // Jika Index 0 dan Status == 2 dan LEvel Tidak Kosong dan Level Berikutnya Tidak Kosong Maka V
                                                                 echo "<i class='fa fa-check success'></i>";
-                                                            } elseif (
-                                                                $d->status == 2 &&
-                                                                !empty($d->$level) &&
-                                                                $level == 'dirut'
-                                                            ) {
+                                                            } elseif ($d->status == 2 && !empty($d->$level) && $level == 'dirut') {
                                                                 //Jika Status == 2 Level Tidak Kosong  dan Level == "DIRUT" maka X
                                                                 echo "<i class='fa fa-close danger'></i>";
-                                                            } elseif (
-                                                                $d->status == 2 &&
-                                                                !empty($d->$level) &&
-                                                                empty($d->$nextlevel)
-                                                            ) {
+                                                            } elseif ($d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
                                                                 echo "<i class='fa fa-close danger'></i>";
-                                                            } elseif (
-                                                                $d->status == 2 &&
-                                                                !empty($d->$level) &&
-                                                                !empty($d->$nextlevel)
-                                                            ) {
+                                                            } elseif ($d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
                                                                 echo "<i class='fa fa-check success'></i>";
                                                             } elseif ($d->status == null && empty($d->$level)) {
                                                                 echo "<i class='fa fa-history warning'></i>";
@@ -228,8 +204,7 @@
                                                     @if ($d->pemutihan == 1)
                                                         @if (!empty($d->dirut))
                                                             @if (!empty($d->no_kb))
-                                                                <a href="/kesepakatanbersama/{{ Crypt::encrypt($d->no_kb) }}/cetak"
-                                                                    target="_blank">
+                                                                <a href="/kesepakatanbersama/{{ Crypt::encrypt($d->no_kb) }}/cetak" target="_blank">
                                                                     <i class="feather icon-printer primary"></i>
                                                                 </a>
                                                             @else
@@ -245,8 +220,8 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group">
-                                                        <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak"
-                                                            target="_blank" class="info mr-1">
+                                                        <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" target="_blank"
+                                                            class="info mr-1">
                                                             <i class="feather icon-printer"></i>
                                                         </a>
 
@@ -260,9 +235,7 @@
                                                             @endif
                                                         @endif
 
-                                                        @if (array_search(strtolower($kat_jab_user), $approve) == 0 ||
-                                                                Auth::user()->level == 'manager hrd' ||
-                                                                Auth::user()->level == 'spv recruitment')
+                                                        @if (array_search(strtolower($kat_jab_user), $approve) == 0 || Auth::user()->level == 'manager hrd' || Auth::user()->level == 'spv recruitment')
                                                             @if (empty($d->$field_kategori))
                                                                 <form method="POST" name="deleteform" class="deleteform"
                                                                     action="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/delete">
@@ -279,16 +252,12 @@
                                                             @if ($cekindex < count($approve) - 1)
                                                                 @php
                                                                     $nextindex = $cekindex + 1;
-                                                                    $ceklevel = strtolower(
-                                                                        $inisial[$approve[$nextindex]],
-                                                                    );
+                                                                    $ceklevel = strtolower($inisial[$approve[$nextindex]]);
                                                                 @endphp
                                                             @else
                                                                 @php
                                                                     $nextindex = $cekindex;
-                                                                    $ceklevel = strtolower(
-                                                                        $inisial[$approve[$nextindex]],
-                                                                    );
+                                                                    $ceklevel = strtolower($inisial[$approve[$nextindex]]);
                                                                 @endphp
                                                             @endif
 
@@ -304,9 +273,7 @@
                                                             @php
                                                                 $lastindex = $cekindex - 1;
                                                             @endphp
-                                                            @if (
-                                                                ($d->kode_dept == 'HRD' && Auth::user()->level == 'manager hrd') ||
-                                                                    ($d->kode_dept == 'HRD' && Auth::user()->level == 'spv recruitment'))
+                                                            @if (($d->kode_dept == 'HRD' && Auth::user()->level == 'manager hrd') || ($d->kode_dept == 'HRD' && Auth::user()->level == 'spv recruitment'))
                                                                 @php
                                                                     $field_kategori = 'm';
                                                                 @endphp
@@ -332,9 +299,7 @@
                                                                     </a>
                                                                 @else
                                                                     @php
-                                                                        $ceklevel = strtolower(
-                                                                            $inisial[$approve[$lastindex]],
-                                                                        );
+                                                                        $ceklevel = strtolower($inisial[$approve[$lastindex]]);
                                                                     @endphp
                                                                     @if (!empty($d->$ceklevel))
                                                                         <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
@@ -359,19 +324,19 @@
                                                                     <span class="danger">Tidak Diperpanjang</span>
                                                                 @else
                                                                     <a href="#" nik="{{ $d->nik }}"
-                                                                        kode_penilaian="{{ $d->kode_penilaian }}"
-                                                                        class="danger buatkontrak">Buat Kontrak</a>
+                                                                        kode_penilaian="{{ $d->kode_penilaian }}" class="danger buatkontrak">Buat
+                                                                        Kontrak</a>
                                                                 @endif
                                                             @else
-                                                                <a href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak"
-                                                                    target="_blank" class="success">
+                                                                <a href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank"
+                                                                    class="success">
                                                                     <i class="feather icon-printer"></i>
                                                                 </a>
                                                             @endif
                                                         @else
                                                             @if (!empty($d->no_kontrak))
-                                                                <a href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak"
-                                                                    target="_blank" class="success">
+                                                                <a href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank"
+                                                                    class="success">
                                                                     <i class="feather icon-printer"></i>
                                                                 </a>
                                                             @endif
@@ -396,8 +361,7 @@
         </div>
     </div>
     <!-- Detail Salesman -->
-    <div class="modal fade text-left" id="mdlbuatpenilaian" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlbuatpenilaian" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -430,8 +394,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext label="No. Kontrak" field="no_kontrak" icon="feather icon-credit-card"
-                                    readonly />
+                                <x-inputtext label="No. Kontrak" field="no_kontrak" icon="feather icon-credit-card" readonly />
                             </div>
                         </div>
                         <div class="row">
@@ -439,15 +402,14 @@
                                 <x-inputtext label="Periode Dari" field="dari" icon="feather icon-calendar" readonly />
                             </div>
                             <div class="col-6">
-                                <x-inputtext label="Periode Sampai" field="sampai" icon="feather icon-calendar"
-                                    readonly />
+                                <x-inputtext label="Periode Sampai" field="sampai" icon="feather icon-calendar" readonly />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-block" type="submit"><i
-                                            class="feather icon-send mr-1"></i> Buat Penialian</button>
+                                    <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i> Buat
+                                        Penialian</button>
                                 </div>
                             </div>
                         </div>
@@ -457,8 +419,7 @@
         </div>
     </div>
 
-    <div class="modal fade text-left" id="mdlbuatkb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdlbuatkb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -475,8 +436,7 @@
                         <div class="row">
 
                             <div class="col-12">
-                                <x-inputtext label="Tanggal Kesepakatan Bersama" field="tanggal"
-                                    icon="feather icon-calendar" datepicker />
+                                <x-inputtext label="Tanggal Kesepakatan Bersama" field="tanggal" icon="feather icon-calendar" datepicker />
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -489,8 +449,8 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-block" type="submit"><i
-                                            class="feather icon-send mr-1"></i> Buat Kesepakatan Bersama</button>
+                                    <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i> Buat Kesepakatan
+                                        Bersama</button>
                                 </div>
                             </div>
                         </div>
@@ -501,8 +461,7 @@
     </div>
 
     {{-- Buat Kontrak --}}
-    <div class="modal fade text-left" id="mdlbuatkontrak" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlbuatkontrak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

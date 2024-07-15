@@ -86,8 +86,7 @@
             <table style="width: 100%">
                 <tr>
                     <td style="width: 20%; text-align:center">
-                        <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt=""
-                            style="width: 80px; height:80px">
+                        <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt="" style="width: 80px; height:80px">
                     </td>
                     <td style="text-align: left">
                         <h3 style="font-family:'Cambria'; line-height:0px">CV MAKMUR PERMATA</h3>
@@ -173,7 +172,7 @@
             @else
                 {{ $cabang->nama_pt }}
             @endif
-            berkedudukan di {{$cabang->kode_cabang !="PST" ?  $cabang->nama_cabang : "Tasikmalaya"  }} selanjutnya disebut <b>pihak kesatu.</b>
+            berkedudukan di {{ $cabang->kode_cabang != 'PST' ? $cabang->nama_cabang : 'Tasikmalaya' }} selanjutnya disebut <b>pihak kesatu.</b>
         </p>
 
         <p>
@@ -267,7 +266,7 @@
                 @else
                     Perusahaan dengan Jabatan sebagai {{ $kontrak->nama_jabatan }}
                 @endif
-                yang berlokasi di {{ $cabang->kode_cabang != "PST" ?  $cabang->nama_cabang : "Tasikmalaya" }}
+                yang berlokasi di {{ $cabang->kode_cabang != 'PST' ? $cabang->nama_cabang : 'Tasikmalaya' }}
                 serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
             </li>
             <li>
@@ -275,12 +274,7 @@
                     Pihak kedua setuju menerima upah dengan rincian terlampir:
                 @else
                     @php
-                        $totalupah =
-                            $kontrak->gaji_pokok +
-                            $kontrak->t_jabatan +
-                            $kontrak->t_tanggungjawab +
-                            $kontrak->t_makan +
-                            $kontrak->t_skill;
+                        $totalupah = $kontrak->gaji_pokok + $kontrak->t_jabatan + $kontrak->t_tanggungjawab + $kontrak->t_makan + $kontrak->t_skill;
                     @endphp
                     Pihak kedua setuju menerima upah Sebesar <b>{{ rupiah($totalupah) }}</b> dengan rincian berikut:
                     <table>
