@@ -69,11 +69,9 @@
             <tr>
                 <td style="width: 10%">
                     @if ($penilaian->id_perusahaan == 'MP')
-                        <img src="{{ asset('app-assets/images/logo/mp.png') }}" width="80" height="80"
-                            alt="">
+                        <img src="{{ asset('app-assets/images/logo/mp.png') }}" width="80" height="80" alt="">
                     @else
-                        <img src="{{ asset('app-assets/images/logo/pcf.png') }}" width="80" height="80"
-                            alt="">
+                        <img src="{{ asset('app-assets/images/logo/pcf.png') }}" width="80" height="80" alt="">
                     @endif
                 </td>
                 <td style="font-weight: bold; text-align:center; width:55%">
@@ -270,11 +268,9 @@
                         <tr>
                             <td style="height: 120px; vertical-align:top; text-align:center">
                                 <div style="display: flex; justify-content:space-between">
-                                    <div
-                                        style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
+                                    <div style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
                                         Y <?php echo $y; ?></div>
-                                    <div
-                                        style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
+                                    <div style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
                                         T <?php echo $t; ?> </div>
                                 </div>
                                 <br>

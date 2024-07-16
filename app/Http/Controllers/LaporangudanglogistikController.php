@@ -7,6 +7,7 @@ use App\Models\Cabang;
 use App\Models\Detailpemasukangudanglogistik;
 use App\Models\Detailpengeluarangudanglogistik;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LaporangudanglogistikController extends Controller
@@ -232,7 +233,12 @@ class LaporangudanglogistikController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Persediaan.xls");
         }
-        return view('gudanglogistik.laporan.cetak_persediaan_gl', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
+        if (Auth::user()->level == "admin gudang logistik" || Auth::user()->level == "kepala gudang") {
+
+            return view('gudanglogistik.laporan.cetak_persediaan_gl', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
+        } else {
+            return view('gudanglogistik.laporan.cetak_persediaan', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
+        }
     }
 
     public function persediaanopname()
