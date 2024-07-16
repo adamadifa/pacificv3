@@ -92,7 +92,7 @@ class PelangganController extends Controller
         $query->orderBy('status_pelanggan', 'desc');
         $query->orderBy('nama_pelanggan', 'asc');
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
-        $query->join('klasifikasi_outlet', 'pelanggan.klasifikasi_outlet', '=', 'klasifikasi_outlet.kode');
+        $query->leftjoin('klasifikasi_outlet', 'pelanggan.klasifikasi_outlet', '=', 'klasifikasi_outlet.kode');
         if (isset($request->export)) {
             $pelanggan = $query->get();
         } else {
