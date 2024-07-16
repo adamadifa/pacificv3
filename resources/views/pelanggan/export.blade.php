@@ -39,6 +39,7 @@
             <th>Kepemilikan</th>
             <th>Lama Berjualan</th>
             <th>Status Pelanggan</th>
+            <th>Klasifikasi Outlet</th>
             <th>Status Location</th>
             <th>Tanggal Input</th>
         </tr>
@@ -72,6 +73,7 @@
                         Tidak Aktif
                     @endif
                 </td>
+                <td>{{ $d->klasifikasi }}</td>
                 <td>{{ $d->time_stamps }}</td>
                 <td>{{ $d->status_location }}</td>
             </tr>

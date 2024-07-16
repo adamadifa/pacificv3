@@ -88,10 +88,11 @@ class PelangganController extends Controller
                 $query->where('pelanggan.kode_pelanggan', $request->kode_pelanggan);
             }
         }
-        $query->select('pelanggan.*', 'nama_karyawan');
+        $query->select('pelanggan.*', 'nama_karyawan', 'klasifikasi');
         $query->orderBy('status_pelanggan', 'desc');
         $query->orderBy('nama_pelanggan', 'asc');
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->join('klasifikasi_outlet', 'pelanggan.klasifikasi_outlet', '=', 'klasifikasi_outlet.kode');
         if (isset($request->export)) {
             $pelanggan = $query->get();
         } else {
