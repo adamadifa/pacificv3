@@ -9,8 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
-    </script>
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -327,7 +326,7 @@
                         <td style="text-align: right">
                             <!-- Reward Cashin-->
                             @php
-                                $ratiocashin = 0.05;
+                                $ratiocashin = 0.1;
                                 if ($d->status_komisi == 1) {
                                     $reward_cashin = $d->realisasi_cashin * ($ratiocashin / 100);
                                 } else {
@@ -373,7 +372,14 @@
                         </td>
                         <td style="text-align: right">
                             @php
-                                $totalreward = $reward_qty + $reward_kendaraan + $reward_pelanggantrans + $reward_penjvsavg + $reward_routing + $reward_cashin + $rewardljt;
+                                $totalreward =
+                                    $reward_qty +
+                                    $reward_kendaraan +
+                                    $reward_pelanggantrans +
+                                    $reward_penjvsavg +
+                                    $reward_routing +
+                                    $reward_cashin +
+                                    $rewardljt;
                             @endphp
                             {{ rupiah($totalreward) }}
                         </td>
@@ -400,7 +406,14 @@
                     $reward_cashin_spv = $total_all_reward_cashin / $jmlsales;
                     $reward_routing_spv = $total_all_reward_routing / $jmlsales;
                     $reward_ljt_spv = $total_all_reward_ljt / $jmlsales;
-                    $total_reward_spv = $reward_qty_spv + $rewawrd_kendaraan_spv + $reward_oa_spv + $reward_penjvsavg_spv + $reward_cashin_spv + $reward_routing_spv + $reward_ljt_spv;
+                    $total_reward_spv =
+                        $reward_qty_spv +
+                        $rewawrd_kendaraan_spv +
+                        $reward_oa_spv +
+                        $reward_penjvsavg_spv +
+                        $reward_cashin_spv +
+                        $reward_routing_spv +
+                        $reward_ljt_spv;
 
                     $reward_qty_kp = $reward_qty_spv * 2;
                     $rewawrd_kendaraan_kp = $rewawrd_kendaraan_spv * 2;
@@ -409,7 +422,14 @@
                     $reward_cashin_kp = $reward_cashin_spv * 2;
                     $reward_routing_kp = $reward_routing_spv * 2;
                     $reward_ljt_kp = $reward_ljt_spv * 2;
-                    $total_reward_kp = $reward_qty_kp + $rewawrd_kendaraan_kp + $reward_oa_kp + $reward_penjvsavg_kp + $reward_cashin_kp + $reward_routing_kp + $reward_ljt_kp;
+                    $total_reward_kp =
+                        $reward_qty_kp +
+                        $rewawrd_kendaraan_kp +
+                        $reward_oa_kp +
+                        $reward_penjvsavg_kp +
+                        $reward_cashin_kp +
+                        $reward_routing_kp +
+                        $reward_ljt_kp;
                 @endphp
                 @if ($cbg->kode_cabang == 'BDG')
                     <tr>
@@ -419,11 +439,15 @@
                         @endphp
                         @foreach ($kategori_komisi as $k)
                             @php
-                                ${"total_ratio_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"} : 0;
+                                ${"total_ratio_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"})
+                                    ? ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}
+                                    : 0;
                                 if (${"total_ratio_$k->kode_kategori"} > 1) {
                                     ${"total_hasilpoin_$k->kode_kategori"} = $k->poin;
                                 } else {
-                                    ${"total_hasilpoin_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin : 0;
+                                    ${"total_hasilpoin_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"})
+                                        ? (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin
+                                        : 0;
                                 }
 
                                 $total_all_hasilpoin += ${"total_hasilpoin_$k->kode_kategori"};
@@ -459,11 +483,15 @@
                     @endphp
                     @foreach ($kategori_komisi as $k)
                         @php
-                            ${"total_ratio_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"} : 0;
+                            ${"total_ratio_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"})
+                                ? ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}
+                                : 0;
                             if (${"total_ratio_$k->kode_kategori"} > 1) {
                                 ${"total_hasilpoin_$k->kode_kategori"} = $k->poin;
                             } else {
-                                ${"total_hasilpoin_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin : 0;
+                                ${"total_hasilpoin_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"})
+                                    ? (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin
+                                    : 0;
                             }
 
                             $total_all_hasilpoin += ${"total_hasilpoin_$k->kode_kategori"};
