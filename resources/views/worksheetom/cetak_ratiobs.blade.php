@@ -84,7 +84,7 @@
                             $total = ROUND($jmlreject, 2) * $harga;
                             $totalharga += $total;
                         @endphp
-                        <td align="center">{{ $jmlreject > 0 ? ROUND($jmlreject, 2) : '' }} - {{ $d->{"retur_$p->kode_produk"} }}</td>
+                        <td align="center">{{ $jmlreject > 0 ? ROUND($jmlreject, 2) : '' }}</td>
                         <td align="right">{{ $harga > 0 ? rupiah($harga) : '' }}</td>
                         <td align="right">{{ $total > 0 ? rupiah($total) : '' }}</td>
                     @endforeach
