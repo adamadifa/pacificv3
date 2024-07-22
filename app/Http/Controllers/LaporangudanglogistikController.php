@@ -336,6 +336,11 @@ class LaporangudanglogistikController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Opname.xls");
         }
-        return view('gudanglogistik.laporan.cetak_persediaanopname', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
+
+        if (Auth::user()->level == "admin gudang logistik" || Auth::user()->level == "kepala gudang") {
+            return view('gudanglogistik.laporan.cetak_persediaanopname_gj', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
+        } else {
+            return view('gudanglogistik.laporan.cetak_persediaanopname', compact('persediaan', 'kategori', 'bulan', 'tahun', 'namabulan', 'kategori', 'kat'));
+        }
     }
 }
