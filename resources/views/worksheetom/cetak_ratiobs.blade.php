@@ -81,10 +81,10 @@
                      $totalharga += $total;
                   @endphp
                   <td align="center">{{ $jmlreject > 0 ? ROUND($jmlreject, 2) : '' }}</td>
-                  <td align="right">{{ $harga > 0 ? rupiah($harga) : '' }} - {{ $d->{"totalretur_$p->kode_produk"} }} - {{ $d->{"retur_$p->kode_produk"} }}</td>
+                  <td align="right">{{ $harga > 0 ? rupiah($harga) : '' }}</td>
                   <td align="right">{{ $total > 0 ? rupiah($total) : '' }}</td>
                @endforeach
-               <td align="right">{{ rupiah($totalharga) }} </td>
+               <td align="right">{{ rupiah($totalharga) }}</td>
             </tr>
          @endforeach
       </tbody>
