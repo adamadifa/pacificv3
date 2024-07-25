@@ -759,9 +759,6 @@ class DashboardController extends Controller
     {
         $bulanini = date("m");
         $tahunini = date("Y");
-
-
-
         $bulandepan = date("m") + 1 > 12 ? (date("m") + 1) - 12 : date("m") + 1;
         $tahun2 = date("m") + 1 > 12 ? $tahunini + 1 : $tahunini;
         $duabulan = date("m") + 2 > 12 ? (date("m") + 2) - 12 : date("m") + 2;
