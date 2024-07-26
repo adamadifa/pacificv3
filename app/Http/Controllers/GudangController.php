@@ -235,6 +235,6 @@ class GudangController extends Controller
 
 
 
-        return view('gudang.dashboard.rekapdpb', compact('rekapdpb', 'barang', 'rekapgudang'));
+        return view('gudang.dashboard.rekapdpb5', compact('rekapdpb', 'barang', 'rekapgudang'));
     }
 }

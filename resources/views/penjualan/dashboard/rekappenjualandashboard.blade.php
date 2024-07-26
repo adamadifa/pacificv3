@@ -78,8 +78,8 @@
     ?>
     <tr style="font-size:12">
         <?php
-            $totalnettotsm = $rekappenjualantsm != null ? $rekappenjualantsm->totalbruto - $rekappenjualantsm->totalretur - $rekappenjualantsm->totalpenyharga - $rekappenjualantsm->totalpotongan - $rekappenjualantsm->totalpotistimewa : 0;
-            $totalnettopendingtsm  = $rekappenjualantsm != null ? $rekappenjualantsm->totalbrutopending - $rekappenjualantsm->totalreturpending - $rekappenjualantsm->totalpenyhargapending - $rekappenjualantsm->totalpotonganpending - $rekappenjualantsm->totalpotistimewapending : 0;
+        $totalnettotsm = $rekappenjualantsm != null ? $rekappenjualantsm->totalbruto - $rekappenjualantsm->totalretur - $rekappenjualantsm->totalpenyharga - $rekappenjualantsm->totalpotongan - $rekappenjualantsm->totalpotistimewa : 0;
+        $totalnettopendingtsm = $rekappenjualantsm != null ? $rekappenjualantsm->totalbrutopending - $rekappenjualantsm->totalreturpending - $rekappenjualantsm->totalpenyhargapending - $rekappenjualantsm->totalpotonganpending - $rekappenjualantsm->totalpotistimewapending : 0;
         ?>
         <td class="cabang" style="font-weight:bold"><?php echo strtoUpper($rekappenjualantsm->nama_cabang); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalbruto); ?></td>
@@ -96,15 +96,15 @@
                 <input type="hidden" name="sampai" value="{{ $sampai }}">
                 <input type="hidden" name="jenislaporan" value="standar">
                 <input type="hidden" name="status" value="pending">
-                <a href="#" class="warning showpending">{{ rupiah($totalnettopendingtsm ) }}</a>
+                <a href="#" class="warning showpending">{{ rupiah($totalnettopendingtsm) }}</a>
             </form>
         </td>
-        <td style="text-align:right; font-weight:bold">{{ rupiah($totalnettotsm - $totalnettopendingtsm ) }}</td>
+        <td style="text-align:right; font-weight:bold">{{ rupiah($totalnettotsm - $totalnettopendingtsm) }}</td>
     </tr>
     <tr style="font-size:12">
         <?php
-            $totalnettogrt = $rekappenjualangrt->totalbruto - $rekappenjualangrt->totalretur - $rekappenjualangrt->totalpenyharga - $rekappenjualangrt->totalpotongan - $rekappenjualangrt->totalpotistimewa;
-            $totalnettopendinggrt  = $rekappenjualangrt->totalbrutopending - $rekappenjualangrt->totalreturpending - $rekappenjualangrt->totalpenyhargapending - $rekappenjualangrt->totalpotonganpending - $rekappenjualangrt->totalpotistimewapending;
+        $totalnettogrt = $rekappenjualangrt->totalbruto - $rekappenjualangrt->totalretur - $rekappenjualangrt->totalpenyharga - $rekappenjualangrt->totalpotongan - $rekappenjualangrt->totalpotistimewa;
+        $totalnettopendinggrt = $rekappenjualangrt->totalbrutopending - $rekappenjualangrt->totalreturpending - $rekappenjualangrt->totalpenyhargapending - $rekappenjualangrt->totalpotonganpending - $rekappenjualangrt->totalpotistimewapending;
         ?>
         <td class="cabang" style="font-weight:bold"><?php echo strtoUpper($rekappenjualantsm->nama_cabang); ?> (GRT)</td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalbruto); ?></td>
@@ -121,10 +121,10 @@
                 <input type="hidden" name="sampai" value="{{ $sampai }}">
                 <input type="hidden" name="jenislaporan" value="standar">
                 <input type="hidden" name="status" value="pending">
-                <a href="#" class="warning showpending">{{ rupiah($totalnettopendinggrt ) }}</a>
+                <a href="#" class="warning showpending">{{ rupiah($totalnettopendinggrt) }}</a>
             </form>
         </td>
-        <td style="text-align:right; font-weight:bold">{{ rupiah($totalnettogrt - $totalnettopendinggrt ) }}</td>
+        <td style="text-align:right; font-weight:bold">{{ rupiah($totalnettogrt - $totalnettopendinggrt) }}</td>
     </tr>
     <?php } ?>
     </tbody>
@@ -136,12 +136,12 @@
             <th style="font-weight:bold">TOTAL</th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalbruto + $rekappenjualantsm->totalbruto + $rekappenjualangrt->totalbruto); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalretur + $rekappenjualantsm->totalretur + $rekappenjualangrt->totalretur); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharga + $rekappenjualantsm->totalpenyharga + $rekappenjualangrt->totalpenyharga ); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharga + $rekappenjualantsm->totalpenyharga + $rekappenjualangrt->totalpenyharga); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotongan + $rekappenjualantsm->totalpotongan + $rekappenjualangrt->totalpotongan); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotistimewa + $rekappenjualantsm->totalpotistimewa + $rekappenjualangrt->totalpotistimewa); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto + $totalnettotsm + $totalnettogrt); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnettopending + $totalnettopendingtsm + $totalnettopendinggrt); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandnetto + $totalnettotsm + $totalnettogrt) - ($grandnettopending + $totalnettopendingtsm + $totalnettopendinggrt)); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto + $totalnettotsm + $totalnettogrt - ($grandnettopending + $totalnettopendingtsm + $totalnettopendinggrt)); ?></th>
         </tr>
     </tfoot>
     <?php }else{ ?>
@@ -150,14 +150,14 @@
             <th style="font-weight:bold">TOTAL</th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalbruto); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalretur); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharga ); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharga); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotongan); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotistimewa); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalppn); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandwithppn); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnettopending); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandwithppn) - ($grandnettopending)); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandwithppn - $grandnettopending); ?></th>
         </tr>
     </tfoot>
     <?php } ?>
@@ -170,5 +170,4 @@
             form.submit();
         });
     });
-
 </script>
