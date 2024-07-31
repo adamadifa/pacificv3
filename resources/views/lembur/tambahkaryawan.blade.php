@@ -59,10 +59,7 @@
                                             <th>Jumlah Jam</th>
                                             <td>
                                                 @php
-                                                    $jmljam = hitungjamdesimal(
-                                                        $lembur->tanggal_dari,
-                                                        $lembur->tanggal_sampai,
-                                                    );
+                                                    $jmljam = hitungjamdesimal($lembur->tanggal_dari, $lembur->tanggal_sampai);
                                                     $jmljam = $jmljam > 7 ? 7 : $jmljam - $istirahat;
                                                 @endphp
                                                 {{ $jmljam }} Jam
@@ -119,8 +116,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade text-left" id="mdltambahkaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdltambahkaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document" style="max-width: 960px !important">
             <div class="modal-content">
                 <div class="modal-header">

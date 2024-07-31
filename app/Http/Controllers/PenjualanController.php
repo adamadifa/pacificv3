@@ -3243,7 +3243,8 @@ class PenjualanController extends Controller
             $cbg = "";
         }
 
-        $statusdpp = $request->status_dpp;
+        $statusdpp = $request->statusdppp;
+        //dd($statusdpp);
         $query = Barang::query();
         $query->select(
             'master_barang.kode_produk',
@@ -3284,7 +3285,7 @@ class PenjualanController extends Controller
         );
 
 
-        if ($statusdpp = "2") {
+        if ($statusdpp == "2") {
             $query->leftJoin(
                 DB::raw("(
                 SELECT b.kode_produk,SUM(jumlah) as realisasi_bulanini_tahunlalu

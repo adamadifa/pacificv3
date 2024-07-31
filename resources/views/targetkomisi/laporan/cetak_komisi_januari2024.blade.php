@@ -233,19 +233,19 @@
                             @if ($d->status_komisi == 1)
                                 @if ($totalpoin > 70 && $totalpoin <= 75)
                                     @php
-                                        $reward_qty = 600000;
+                                        $reward_qty = 1000000;
                                     @endphp
                                 @elseif ($totalpoin > 75 && $totalpoin <= 80)
                                     @php
-                                        $reward_qty = 1200000;
+                                        $reward_qty = 1500000;
                                     @endphp
                                 @elseif ($totalpoin > 80 && $totalpoin <= 85)
                                     @php
-                                        $reward_qty = 1800000;
+                                        $reward_qty = 2000000;
                                     @endphp
                                 @elseif ($totalpoin > 85 && $totalpoin <= 90)
                                     @php
-                                        $reward_qty = 2400000;
+                                        $reward_qty = 2500000;
                                     @endphp
                                 @elseif ($totalpoin > 90 && $totalpoin <= 95)
                                     @php
@@ -253,7 +253,7 @@
                                     @endphp
                                 @elseif ($totalpoin > 95)
                                     @php
-                                        $reward_qty = 3600000;
+                                        $reward_qty = 3500000;
                                     @endphp
                                 @else
                                     @php

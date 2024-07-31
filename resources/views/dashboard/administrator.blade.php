@@ -476,14 +476,15 @@
 @push('myscript')
     <script>
         $(function() {
-
-            $("#tanggal_aup").change(function(e) {
-                var tanggal_aup = $(this).val();
-                if (tanggal_aup < 'startyear()-01-01') {
-                    $("#tanggal_aup").val("startyear()-01-01");
-                    alert("Periode Laporan Tersebut Tidak Ditemukan");
-                }
-            });
+            const startyear = "{{ startyear() }}";
+            // $("#tanggal_aup").change(function(e) {
+            //     const start_date = `${startyear}-01-01`;
+            //     var tanggal_aup = $(this).val();
+            //     if (tanggal_aup < start_date) {
+            //         $("#tanggal_aup").val("startyear()-01-01");
+            //         alert("Periode Laporan Tersebut Tidak Ditemukan");
+            //     }
+            // });
 
             function loadrekappenjualan() {
                 var bulan = $("#bulanpenjualan").val();

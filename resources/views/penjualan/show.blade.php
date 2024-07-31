@@ -43,15 +43,12 @@
                                             $path = Storage::url('pelanggan/' . $data->foto);
                                         @endphp
                                         @if (file_exists(url($path)))
-                                            <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image"
-                                                style="height:300px">
+                                            <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image" style="height:300px">
                                         @else
-                                            <img class="card-img img-fluid"
-                                                src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
+                                            <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
                                         @endif
                                     @else
-                                        <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}"
-                                            alt="Card image">
+                                        <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
                                     @endif
                                     <div class="card-img-overlay overflow-hidden overlay-primary overlay-lighten-2">
                                         <h4 class="card-title text-white">{{ $data->no_fak_penj }} -
@@ -105,13 +102,11 @@
                                         </div>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->nik }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->nik }}</span>
                                                 NIK
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->no_kk }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->no_kk }}</span>
                                                 No. KK
                                             </li>
                                             <li class="list-group-item">
@@ -120,33 +115,27 @@
                                                 Tanggal Lahir
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->no_hp }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->no_hp }}</span>
                                                 No. HP
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->pasar }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->pasar }}</span>
                                                 Pasar
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->hari }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->hari }}</span>
                                                 Hari
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->latitude }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->latitude }}</span>
                                                 Latitude
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->longitude }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->longitude }}</span>
                                                 Longitude
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->jatuhtempo }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->jatuhtempo }}
                                                     Hari</span>
                                                 Jatuh Tempo Pembayaran
                                             </li>
@@ -189,8 +178,7 @@
                                                 Jenis Outlet
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->lama_usaha }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->lama_usaha }}
                                                 </span>
                                                 Lama Usaha
                                             </li>
@@ -207,8 +195,7 @@
                                                 Jaminan
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->lama_langganan }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->lama_langganan }}
                                                 </span>
                                                 Lama Berlangganan
                                             </li>
@@ -225,20 +212,17 @@
                                                 Jaminan
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ rupiah($data->omset_toko) }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ rupiah($data->omset_toko) }}
                                                 </span>
                                                 Omset Toko
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ rupiah($data->limitpel) }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ rupiah($data->limitpel) }}
                                                 </span>
                                                 Limit Pelanggan
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->keterangan }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->keterangan }}
                                                 </span>
                                                 Keterangan
                                             </li>
@@ -266,14 +250,12 @@
                                 @include('layouts.notification')
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="penjualan-tab" data-toggle="tab"
-                                            href="#penjualan" aria-controls="penjualan" role="tab"
-                                            aria-selected="true">Data Penjualan</a>
+                                        <a class="nav-link active" id="penjualan-tab" data-toggle="tab" href="#penjualan" aria-controls="penjualan"
+                                            role="tab" aria-selected="true">Data Penjualan</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab"
-                                        role="tabpanel">
+                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
                                                 <thead>
@@ -341,10 +323,7 @@
                                                         <td class="text-right">
                                                             @php
                                                                 $totalnonppn =
-                                                                    $data->subtotal -
-                                                                    $data->potongan -
-                                                                    $data->potistimewa -
-                                                                    $data->penyharga;
+                                                                    $data->subtotal - $data->potongan - $data->potistimewa - $data->penyharga;
                                                             @endphp
                                                             {{ rupiah($totalnonppn) }}
                                                         </td>
@@ -373,8 +352,7 @@
                                                         <td colspan="7">Sisa Bayar</td>
                                                         <td class="text-right">
                                                             @php
-                                                                $sisabayar =
-                                                                    $data->total - $data->totalretur - $data->jmlbayar;
+                                                                $sisabayar = $data->total - $data->totalretur - $data->jmlbayar;
                                                             @endphp
                                                             {{ rupiah($sisabayar) }}
                                                         </td>
@@ -397,13 +375,12 @@
                                 </div>
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="retur-tab" data-toggle="tab" href="#retur"
-                                            aria-controls="retur" role="tab" aria-selected="true">Data Retur</a>
+                                        <a class="nav-link active" id="retur-tab" data-toggle="tab" href="#retur" aria-controls="retur"
+                                            role="tab" aria-selected="true">Data Retur</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab"
-                                        role="tabpanel">
+                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
                                                 <thead>
@@ -491,17 +468,16 @@
                                 </div>
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="bayar-tab" data-toggle="tab" href="#bayar"
-                                            aria-controls="bayar" role="tab" aria-selected="true">Histori
+                                        <a class="nav-link active" id="bayar-tab" data-toggle="tab" href="#bayar" aria-controls="bayar"
+                                            role="tab" aria-selected="true">Histori
                                             Pembayaran</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab"
-                                        role="tabpanel">
+                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
                                         @if ($data->status_lunas != 1)
-                                            <a href="#" id="inputpembayaran" class="btn btn-primary mb-2"
-                                                class="href"><i class="feather icon-plus"></i></a>
+                                            <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i
+                                                    class="feather icon-plus"></i></a>
                                         @endif
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
@@ -529,37 +505,29 @@
                                                                         {{ $d->no_giro }}</span>
                                                                 @elseif($d->status_bayar == 'voucher')
                                                                     @if ($d->ket_voucher == 1)
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Penghapusan Piutang</span>
                                                                     @elseif($d->ket_voucher == 2)
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Diskon Program</span>
                                                                     @elseif($d->ket_voucher == 3)
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Penyelesaian Piutang Oleh Salesman</span>
                                                                     @elseif($d->ket_voucher == 4)
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Voucher Pengalihan Piutang Dgng Jd Piutang Kary
                                                                         </span>
                                                                     @elseif($d->ket_voucher == 7)
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Voucher PPN KPBPB </span>
                                                                     @elseif($d->ket_voucher == 8)
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Voucher PPN WAPU </span>
                                                                     @elseif($d->ket_voucher == 9)
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Voucher PPH PASAL 22 </span>
                                                                     @else
-                                                                        <span
-                                                                            class="badge bg-success">{{ $d->status_bayar }}
+                                                                        <span class="badge bg-success">{{ $d->status_bayar }}
                                                                             Lainnya </span>
                                                                     @endif
                                                                 @endif
@@ -573,21 +541,17 @@
                                                             </td>
                                                             <td>
                                                                 @if ($d->jenisbayar == 'titipan' || $d->status_bayar == 'voucher')
-                                                                    <div class="btn-group" role="group"
-                                                                        aria-label="Basic example">
-                                                                        <a class="ml-1 editbayar" href="#"
-                                                                            nobukti="{{ $d->nobukti }}"
+                                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                                        <a class="ml-1 editbayar" href="#" nobukti="{{ $d->nobukti }}"
                                                                             kode_cabang="{{ $data->kode_cabang }}"
-                                                                            no_fak_penj="{{ $data->no_fak_penj }}"
-                                                                            sisabayar="{{ $sisabayar }}"><i
+                                                                            no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar }}"><i
                                                                                 class="feather icon-edit success"></i></a>
 
                                                                         <form method="POST" class="deleteform"
                                                                             action="/pembayaran/{{ Crypt::encrypt($d->nobukti) }}/delete">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <a href=" #"
-                                                                                tanggal="{{ $d->tglbayar }}"
+                                                                            <a href=" #" tanggal="{{ $d->tglbayar }}"
                                                                                 class="delete-confirm ml-1">
                                                                                 <i class="feather icon-trash danger"></i>
                                                                             </a>
@@ -605,17 +569,16 @@
                                 </div>
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro"
-                                            aria-controls="giro" role="tab" aria-selected="true">Histori Pembayaran
+                                        <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro" aria-controls="giro"
+                                            role="tab" aria-selected="true">Histori Pembayaran
                                             Giro</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="giro" aria-labelledby="giro-tab"
-                                        role="tabpanel">
+                                    <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
                                         @if ($data->status_lunas != 1 && $data->jenisbayar != 'transfer')
-                                            <a href="#" id="inputgiro" class="btn btn-primary mb-2"
-                                                class="href"><i class="feather icon-plus"></i></a>
+                                            <a href="#" id="inputgiro" class="btn btn-primary mb-2" class="href"><i
+                                                    class="feather icon-plus"></i></a>
                                         @endif
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
@@ -648,36 +611,29 @@
                                                             </td>
                                                             <td>
                                                                 @if ($d->status == 0)
-                                                                    <span class="badge bg-warning"> <i
-                                                                            class="fa fa-history"></i> Pending </span>
+                                                                    <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                                 @elseif($d->status == 1)
-                                                                    <span class="badge bg-success"> <i
-                                                                            class="fa fa-check"></i> Diterima
+                                                                    <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima
                                                                         {{ date('d-m-Y', strtotime($d->tglbayar)) }}
                                                                     </span>
                                                                 @elseif($d->status == 2)
-                                                                    <span class="badge bg-danger"> <i
-                                                                            class="fa fa-close"></i> Ditolak</span>
+                                                                    <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                                 @endif
                                                             </td>
                                                             <td>{{ $d->ket }}</td>
                                                             <td>{{ $d->nama_karyawan }}</td>
                                                             <td>
                                                                 @if ($d->status === 0)
-                                                                    <div class="btn-group" role="group"
-                                                                        aria-label="Basic example">
-                                                                        <a class="ml-1 editgiro" href="#"
-                                                                            id_giro="{{ $d->id_giro }}"
-                                                                            kode_cabang="{{ $data->kode_cabang }}"
-                                                                            sisabayar="{{ $sisabayar }}"><i
+                                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                                        <a class="ml-1 editgiro" href="#" id_giro="{{ $d->id_giro }}"
+                                                                            kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar }}"><i
                                                                                 class="feather icon-edit success"></i></a>
                                                                         {{-- @if (in_array($level, $harga_hapus)) --}}
                                                                         <form method="POST" class="deleteform"
                                                                             action="/pembayaran/{{ Crypt::encrypt($d->id_giro) }}/deletegiro">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <a href=" #"
-                                                                                tanggal="{{ $d->tgl_giro }}"
+                                                                            <a href=" #" tanggal="{{ $d->tgl_giro }}"
                                                                                 class="delete-confirm ml-1">
                                                                                 <i class="feather icon-trash danger"></i>
                                                                             </a>
@@ -697,17 +653,16 @@
                                 </div>
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="transfer-tab" data-toggle="tab" href="#transfer"
-                                            aria-controls="transfer" role="tab" aria-selected="true">Histori
+                                        <a class="nav-link active" id="transfer-tab" data-toggle="tab" href="#transfer" aria-controls="transfer"
+                                            role="tab" aria-selected="true">Histori
                                             Pembayaran Transfer</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="transfer" aria-labelledby="transfer-tab"
-                                        role="tabpanel">
+                                    <div class="tab-pane active" id="transfer" aria-labelledby="transfer-tab" role="tabpanel">
                                         @if ($data->status_lunas != 1)
-                                            <a href="#" id="inputtransfer" class="btn btn-primary mb-2"
-                                                class="href"><i class="feather icon-plus"></i></a>
+                                            <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i
+                                                    class="feather icon-plus"></i></a>
                                         @endif
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
@@ -738,24 +693,20 @@
                                                             </td>
                                                             <td>
                                                                 @if ($d->status == 0)
-                                                                    <span class="badge bg-warning"> <i
-                                                                            class="fa fa-history"></i> Pending </span>
+                                                                    <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                                 @elseif($d->status == 1)
-                                                                    <span class="badge bg-success"> <i
-                                                                            class="fa fa-check"></i> Diterima
+                                                                    <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima
                                                                         {{ date('d-m-Y', strtotime($d->tglbayar)) }}
                                                                     </span>
                                                                 @elseif($d->status == 2)
-                                                                    <span class="badge bg-danger"> <i
-                                                                            class="fa fa-close"></i> Ditolak</span>
+                                                                    <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                                 @endif
                                                             </td>
                                                             <td>{{ $d->ket }}</td>
                                                             <td>{{ $d->nama_karyawan }}</td>
                                                             <td>
                                                                 @if ($d->status === 0)
-                                                                    <div class="btn-group" role="group"
-                                                                        aria-label="Basic example">
+                                                                    <div class="btn-group" role="group" aria-label="Basic example">
                                                                         <a class="ml-1 edittransfer" href="#"
                                                                             id_transfer="{{ $d->id_transfer }}"
                                                                             kode_cabang="{{ $data->kode_cabang }}"
@@ -766,8 +717,7 @@
                                                                             action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
                                                                             @csrf
                                                                             @method('DELETE')
-                                                                            <a href=" #"
-                                                                                tanggal="{{ $d->tgl_transfer }}"
+                                                                            <a href=" #" tanggal="{{ $d->tgl_transfer }}"
                                                                                 class="delete-confirm ml-1">
                                                                                 <i class="feather icon-trash danger"></i>
                                                                             </a>
@@ -795,8 +745,7 @@
     </div>
     <input type="hidden" id="cektutuplaporan">
     <!-- Input Pembayaran -->
-    <div class="modal fade text-left" id="mdlinputpembayaran" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputpembayaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -808,21 +757,18 @@
                 <div class="modal-body">
                     <form action="/pembayaran/store" id="frmBayar" method="POST">
                         <input type="hidden" name="no_fak_penj" value="{{ $data->no_fak_penj }}">
-                        <input type="hidden" name="jenistransaksi" id="jenistransaksi"
-                            value="{{ $data->jenistransaksi }}">
+                        <input type="hidden" name="jenistransaksi" id="jenistransaksi" value="{{ $data->jenistransaksi }}">
                         <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $data->kode_cabang }}">
                         @csrf
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Tanggal Bayar" field="tglbayar" icon="feather icon-calendar"
-                                        datepicker />
+                                    <x-inputtext label="Tanggal Bayar" field="tglbayar" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Jumlah Bayar" field="bayar" icon="feather icon-shopping-cart"
-                                        right />
+                                    <x-inputtext label="Jumlah Bayar" field="bayar" icon="feather icon-shopping-cart" right />
                                 </div>
                             </div>
                             @if ($data->jenistransaksi == 'kredit')
@@ -915,8 +861,7 @@
     </div>
 
     <!-- Input Pembayaran -->
-    <div class="modal fade text-left" id="mdleditpembayaran" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditpembayaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -935,8 +880,7 @@
 
     <!--Input Bayar Giro-->
 
-    <div class="modal fade text-left" id="mdlinputgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -952,8 +896,7 @@
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Tanggal Pencatatan Giro" field="tgl_giro"
-                                        icon="feather icon-calendar" datepicker />
+                                    <x-inputtext label="Tanggal Pencatatan Giro" field="tgl_giro" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
@@ -980,8 +923,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Jatuh Tempo" field="tglcair" icon="feather icon-calendar"
-                                        datepicker />
+                                    <x-inputtext label="Jatuh Tempo" field="tglcair" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
@@ -1006,8 +948,7 @@
 
     <!-- Edit Giro -->
 
-    <div class="modal fade text-left" id="mdleditgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1026,8 +967,7 @@
 
     <!-- Edit Giro -->
 
-    <div class="modal fade text-left" id="mdledittransfer" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdledittransfer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1046,8 +986,7 @@
 
     <!--Input Bayar Transfer-->
 
-    <div class="modal fade text-left" id="mdlinputtransfer" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputtransfer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1064,8 +1003,7 @@
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Tanggal Pencatatan Transfer" field="tgl_transfer"
-                                        icon="feather icon-calendar" datepicker />
+                                    <x-inputtext label="Tanggal Pencatatan Transfer" field="tgl_transfer" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
@@ -1088,8 +1026,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Jatuh Tempo" field="tglcair_transfer"
-                                        icon="feather icon-calendar" datepicker />
+                                    <x-inputtext label="Jatuh Tempo" field="tglcair_transfer" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
