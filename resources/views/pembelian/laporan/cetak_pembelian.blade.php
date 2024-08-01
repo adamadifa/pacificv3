@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Pembelian {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Pembelian {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -32,32 +33,32 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         LAPORAN PEMBELIAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($departemen != null)
-        DEPARTEMEN : {{ strtoupper($departemen->nama_dept) }}
+            DEPARTEMEN : {{ strtoupper($departemen->nama_dept) }}
         @else
-        ALL DEPARTEMEN
+            ALL DEPARTEMEN
         @endif
         <br>
         @if ($supplier != null)
-        SUPPLIER : {{ $supplier->nama_supplier }}
+            SUPPLIER : {{ $supplier->nama_supplier }}
         @else
-        ALL SUPPLIER
+            ALL SUPPLIER
         @endif
         <br>
-        @if ($ppn!="-")
-        @if ($ppn==1)
-        PPN
-        @else
-        NON PPN
-        @endif
+        @if ($ppn != '-')
+            @if ($ppn == 1)
+                PPN
+            @else
+                NON PPN
+            @endif
         @endif
     </b>
     <br>
@@ -140,7 +141,7 @@
             ?>
             <tr style="background-color:<?php echo $bgcolor; ?>; font-size:10px">
                 <td><?php echo $no; ?></td>
-                <td><?php echo date("d-m-Y",strtotime($d->tgl_pembelian))?></td>
+                <td><?php echo date('d-m-Y', strtotime($d->tgl_pembelian)); ?></td>
                 <td><?php echo $d->nobukti_pembelian; ?></td>
                 <td><?php echo $d->nama_supplier; ?></td>
                 <td><?php echo $namabarang; ?></td>
@@ -148,13 +149,13 @@
                 <td><?php echo strtoupper($d->jenistransaksi); ?></td>
                 <td>
                     <?php
-                    if (substr($d->kode_akun, 0, 1) == "6" and !empty($d->kode_cabang) or substr($d->kode_akun, 0, 1) == "5" and !empty($d->kode_cabang)) {
-                        echo  $d->kode_cabang;
+                    if (substr($d->kode_akun, 0, 1) == '6' and !empty($d->kode_cabang) or substr($d->kode_akun, 0, 1) == '5' and !empty($d->kode_cabang)) {
+                        echo $d->kode_cabang;
                     } else {
-                        echo  $d->kode_cabang;
+                        echo $d->kode_cabang;
                     } ?>
                 </td>
-                <td align="center" class="str"><?php echo "'".$d->kode_akun; ?></td>
+                <td align="center" class="str"><?php echo "'" . $d->kode_akun; ?></td>
                 <td><?php echo $d->nama_akun; ?></td>
                 <td align="center"><?php echo $cekppn; ?></td>
                 <td align="center"><?php echo desimal($d->qty); ?></td>
@@ -174,36 +175,46 @@
                 <?php } ?>
             </tr>
             <?php
-                $subtotal = $subtotal + $grandtotal;
-                if ($nobukti != $d->nobukti_pembelian) {
-                    echo '
-                        <tr bgcolor="#a7efe4" style="color:black; font-weight:bold">
-                            <td></td>
-                            <td></td>
-                            <td>' . $d->nobukti_pembelian . '</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td>' . strtoupper($d->jenistransaksi) . '</td>
-                            <td></td>
-                            <td align=center>' . $akun . '</td>
-                            <td>' . $namaakun . '</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td align=right>' . desimal($subtotal) . '</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>';
-                            $subtotal = 0;
-                        }
-
-                        ?>
+            $subtotal = $subtotal + $grandtotal;
+            if ($nobukti != $d->nobukti_pembelian) {
+                echo '
+                                    <tr bgcolor="#a7efe4" style="color:black; font-weight:bold">
+                                        <td></td>
+                                        <td></td>
+                                        <td>' .
+                    $d->nobukti_pembelian .
+                    '</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>' .
+                    strtoupper($d->jenistransaksi) .
+                    '</td>
+                                        <td></td>
+                                        <td align=center>' .
+                    $akun .
+                    '</td>
+                                        <td>' .
+                    $namaakun .
+                    '</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td align=right>' .
+                    desimal($subtotal) .
+                    '</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                    </tr>';
+                $subtotal = 0;
+            }
+            
+            ?>
             <?php
                 $no++;
                 }
@@ -220,4 +231,5 @@
         </tr>
     </table>
 </body>
+
 </html>

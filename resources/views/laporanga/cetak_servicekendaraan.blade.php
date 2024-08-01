@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Tunai Kredit {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Tunai Kredit {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,27 +32,27 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         REKAP SERVICE KENDARAAN
         <br>
         @if ($kendaraan != null)
-        NO. POLISI : {{ $kendaraan->no_polisi }}
-        <br>
-        KENDARAAN : {{ $kendaraan->merk }} {{ $kendaraan->tipe_kendaraan }} {{ $kendaraan->tipe }}
+            NO. POLISI : {{ $kendaraan->no_polisi }}
+            <br>
+            KENDARAAN : {{ $kendaraan->merk }} {{ $kendaraan->tipe_kendaraan }} {{ $kendaraan->tipe }}
         @endif
         <br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
@@ -59,12 +60,13 @@
     <br>
 
     <?php
-        $arr = array();
-       foreach($service as $row){
-            $arr[$row->no_invoice][] = $row;
-        }
-
-        //dd($arr);
+    $arr = [];
+    foreach ($service as $row) {
+        $arr[$row->no_invoice][] = $row;
+    }
+    
+    //dd($arr);
+    
     ?>
     <table class="datatable3">
         <thead>
@@ -84,35 +86,35 @@
         </thead>
         <tbody>
             @php
-            $grandtotal = 0;
+                $grandtotal = 0;
             @endphp
             @foreach ($arr as $key => $val)
-            @foreach ($val as $k => $d)
-            <tr>
-                @if ($k==0)
-                <td rowspan="{{ count($val) }}">{{ $d->no_invoice }}</td>
-                <td rowspan="{{ count($val) }}">{{ DateToIndo2($d->tgl_service) }}</td>
-                <td rowspan="{{ count($val) }}">{{ $d->no_polisi }}</td>
-                <td rowspan="{{ count($val) }}">{{ $d->merk }} {{ $d->tipe_kendaraan }} {{ $d->tipe }}</td>
-                <td rowspan="{{ count($val) }}">{{ $d->nama_bengkel }}</td>
-                <td rowspan="{{ count($val) }}">{{ $d->kode_cabang }}</td>
-                @endif
-                @php
-                $subtotal = $d->qty * $d->harga;
+                @foreach ($val as $k => $d)
+                    <tr>
+                        @if ($k == 0)
+                            <td rowspan="{{ count($val) }}">{{ $d->no_invoice }}</td>
+                            <td rowspan="{{ count($val) }}">{{ DateToIndo2($d->tgl_service) }}</td>
+                            <td rowspan="{{ count($val) }}">{{ $d->no_polisi }}</td>
+                            <td rowspan="{{ count($val) }}">{{ $d->merk }} {{ $d->tipe_kendaraan }} {{ $d->tipe }}</td>
+                            <td rowspan="{{ count($val) }}">{{ $d->nama_bengkel }}</td>
+                            <td rowspan="{{ count($val) }}">{{ $d->kode_cabang }}</td>
+                        @endif
+                        @php
+                            $subtotal = $d->qty * $d->harga;
 
-                @endphp
-                <td>{{ $d->nama_item }}</td>
-                <td style="text-align: center">{{ $d->qty }}</td>
-                <td style="text-align: right">{{ rupiah($d->harga) }}</td>
-                <td style="text-align: right">{{ rupiah($subtotal) }}</td>
-                @if ($k==0)
-                @php
-                $grandtotal += $d->total;
-                @endphp
-                <td rowspan="{{ count($val) }}" style="text-align:right">{{ rupiah($d->total) }}</td>
-                @endif
-            </tr>
-            @endforeach
+                        @endphp
+                        <td>{{ $d->nama_item }}</td>
+                        <td style="text-align: center">{{ $d->qty }}</td>
+                        <td style="text-align: right">{{ rupiah($d->harga) }}</td>
+                        <td style="text-align: right">{{ rupiah($subtotal) }}</td>
+                        @if ($k == 0)
+                            @php
+                                $grandtotal += $d->total;
+                            @endphp
+                            <td rowspan="{{ count($val) }}" style="text-align:right">{{ rupiah($d->total) }}</td>
+                        @endif
+                    </tr>
+                @endforeach
             @endforeach
             <tr>
                 <th colspan="10">TOTAL</th>
@@ -121,4 +123,5 @@
         </tbody>
     </table>
 </body>
+
 </html>

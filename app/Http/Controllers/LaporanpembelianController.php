@@ -128,7 +128,8 @@ class LaporanpembelianController extends Controller
         $supplier = DB::table('supplier')->where('kode_supplier', $kode_supplier)->first();
         $departemen = DB::table('departemen')->where('kode_dept', $kode_dept)->first();
         $query = Detailpembelian::query();
-        $query->selectRaw("detail_pembelian.nobukti_pembelian,tgl_pembelian,pembelian.kode_supplier,nama_supplier,
+        $query->selectRaw("detail_pembelian.nobukti_pembelian,
+        tgl_pembelian,pembelian.kode_supplier,nama_supplier,
         detail_pembelian.kode_barang,nama_barang,pembelian.kode_dept,nama_dept,detail_pembelian.keterangan,detail_pembelian.ket_penjualan,
         detail_pembelian.kode_akun,nama_akun,ppn,qty,harga,penyesuaian,detail_pembelian.status,detail_pembelian.kode_cabang,jenistransaksi,
         kategori_transaksi,

@@ -70,7 +70,7 @@ class LemburController extends Controller
                 $query->orderBy('head');
             } else if ($level == "emf") {
                 $query->where('head', 1);
-                $query->whereIn('kode_dept', ['GAF', 'PRD', 'MTC', 'PDQ']);
+                $query->whereIn('kode_dept', ['GAF', 'PRD', 'MTC', 'PDQ', 'GDG']);
                 $query->orderBy('gm');
             } else {
                 $query->where('id_kantor', 'PST');
