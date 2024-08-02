@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Pembayaran Pembelian {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Pembayaran Pembelian {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,18 +32,18 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAP BAHAN KEMASAN<br>
         NAMA BARANG : <span style="color:red">{{ strtoupper($barang->nama_barang) }}</span>
         <br>
         @if ($supplier != null)
-        SUPPLIER : {{ $supplier->nama_supplier }}
+            SUPPLIER : {{ $supplier->nama_supplier }}
         @else
-        ALL SUPPLIER
+            ALL SUPPLIER
         @endif
         <br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
@@ -102,25 +103,33 @@
                 <td align="right"><?php echo desimal($d->harga * $d->qty); ?></td>
                 <td align="right"><?php echo desimal($d->penyesuaian); ?></td>
                 <td align="right"><?php echo desimal($d->jml_jk); ?></td>
-                <td align="right"><?php echo desimal(($d->harga * $d->qty) + $d->penyesuaian - $d->jml_jk); ?></td>
+                <td align="right"><?php echo desimal($d->harga * $d->qty + $d->penyesuaian - $d->jml_jk); ?></td>
             </tr>
             <?php
             if ($supplier != $d->kode_supplier) {
-            echo '
-                <tr bgcolor="#199291" style="color:white; font-weight:bold">
-                    <td colspan="7">TOTAL</td>
-                    <td align="right">' . desimal($totalqtysub) . '</td>
-                    <td></td>
-                    <td align="right">' . desimal($totalsubtotalsub) . '</td>
-                    <td align="right">' . desimal($totalpenyesuaiansub) . '</td>
-                    <td align="right">' . desimal($grandtotalsub) . '</td>
-                </tr>';
-                $totalqtysub    = 0;
-                $totalsubtotalsub    = 0;
-                $totalpenyesuaiansub  = 0;
+                echo '
+                            <tr bgcolor="#199291" style="color:white; font-weight:bold">
+                                <td colspan="7">TOTAL</td>
+                                <td align="right">' .
+                    desimal($totalqtysub) .
+                    '</td>
+                                <td></td>
+                                <td align="right">' .
+                    desimal($totalsubtotalsub) .
+                    '</td>
+                                <td align="right">' .
+                    desimal($totalpenyesuaiansub) .
+                    '</td>
+                                <td align="right">' .
+                    desimal($grandtotalsub) .
+                    '</td>
+                            </tr>';
+                $totalqtysub = 0;
+                $totalsubtotalsub = 0;
+                $totalpenyesuaiansub = 0;
                 $grandtotalsub = 0;
             }
-
+            
             ?>
             <?php $no++;
             }
@@ -138,4 +147,5 @@
         </tfooter>
     </table>
 </body>
+
 </html>

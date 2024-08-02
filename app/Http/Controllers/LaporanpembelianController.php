@@ -216,7 +216,7 @@ class LaporanpembelianController extends Controller
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
             // Mendefinisikan nama file ekspor "hasil-export.xls"
-            header("Content-Disposition: attachment; filename=Laporan Penjualan Pembayaran $dari-$sampai.xls");
+            header("Content-Disposition: attachment; filename=Laporan Pembayaran $dari-$sampai.xls");
         }
         return view('pembelian.laporan.cetak_pembayaran', compact('dari', 'sampai', 'supplier', 'pmb'));
     }
