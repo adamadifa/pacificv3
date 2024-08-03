@@ -113,10 +113,6 @@ class PenjualanController extends Controller
                         move_faktur
                         INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
                     WHERE id IN (SELECT MAX(id) FROM move_faktur GROUP BY no_fak_penj)
-                    GROUP BY
-                        no_fak_penj,
-                        move_faktur.id_karyawan,
-                        karyawan.kode_cabang
                     ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj)
                 ) pjmove"),
                 function ($join) {
