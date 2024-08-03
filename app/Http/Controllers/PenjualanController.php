@@ -151,6 +151,7 @@ class PenjualanController extends Controller
             $penjualan = $query->get();
             return view('penjualan.laporan.cetaksuratjalantanggal', compact('penjualan', 'pelangganmp'));
         } else {
+            dd('test');
             $dari = !empty($request->dari) ? $request->dari : date("Y-m-d");
             $sampai = !empty($request->sampai) ? $request->sampai : date("Y-m-d");
             $pelanggan = '"' . $request->nama_pelanggan . '"';
@@ -163,7 +164,7 @@ class PenjualanController extends Controller
             $query->leftJoin(
                 DB::raw("(
                     SELECT
-                        pj.no_fak_penjd,
+                        pj.no_fak_penj,
                         IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,
                         karyawan.nama_karyawan AS nama_sales,
                         IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
