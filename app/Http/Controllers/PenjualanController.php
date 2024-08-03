@@ -151,7 +151,7 @@ class PenjualanController extends Controller
             $penjualan = $query->get();
             return view('penjualan.laporan.cetaksuratjalantanggal', compact('penjualan', 'pelangganmp'));
         } else {
-            dd('test');
+            //dd('test');
             $dari = !empty($request->dari) ? $request->dari : date("Y-m-d");
             $sampai = !empty($request->sampai) ? $request->sampai : date("Y-m-d");
             $pelanggan = '"' . $request->nama_pelanggan . '"';
