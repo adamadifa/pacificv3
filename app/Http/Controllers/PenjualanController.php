@@ -163,7 +163,7 @@ class PenjualanController extends Controller
             $query->leftJoin(
                 DB::raw("(
                     SELECT
-                        pj.no_fak_penj,
+                        pj.no_fak_penjd,
                         IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,
                         karyawan.nama_karyawan AS nama_sales,
                         IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
