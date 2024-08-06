@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Pembayaran Pembelian {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Pembayaran Pembelian {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,18 +32,18 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         LAPORAN PEMBAYRAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($supplier != null)
-        SUPPLIER : {{ $supplier->nama_supplier }}
+            SUPPLIER : {{ $supplier->nama_supplier }}
         @else
-        ALL SUPPLIER
+            ALL SUPPLIER
         @endif
         <br>
     </b>
@@ -115,49 +116,49 @@
                 <td><?php echo $d->nama_supplier; ?></td>
                 <td><?php echo $d->no_kontrabon; ?></td>
                 <td align="right"><?php if (!empty($d->cash)) {
-                                            echo desimal($d->cash);
-                                        } ?></td>
+                    echo desimal($d->cash);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->bca)) {
-                                            echo desimal($d->bca);
-                                        } ?></td>
+                    echo desimal($d->bca);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->bca_cv)) {
-                                            echo desimal($d->bca_cv);
-                                        } ?></td>
+                    echo desimal($d->bca_cv);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->bca_new)) {
-                                            echo desimal($d->bca_new);
-                                        } ?></td>
+                    echo desimal($d->bca_new);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->permata)) {
-                                            echo desimal($d->permata);
-                                        } ?></td>
+                    echo desimal($d->permata);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->bni)) {
-                                            echo desimal($d->bni);
-                                        } ?></td>
+                    echo desimal($d->bni);
+                } ?></td>
 
                 <td align="right"><?php if (!empty($d->bni_mp)) {
-                                            echo desimal($d->bni_mp);
-                                        } ?></td>
+                    echo desimal($d->bni_mp);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->bca_mp)) {
-                                            echo desimal($d->bca_mp);
-                                        } ?></td>
+                    echo desimal($d->bca_mp);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->kasbesar)) {
-                                            echo desimal($d->kasbesar);
-                                        } ?></td>
+                    echo desimal($d->kasbesar);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->kaskecil)) {
-                                            echo desimal($d->kaskecil);
-                                        } ?></td>
+                    echo desimal($d->kaskecil);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->bni_indo_pangan)) {
-                                            echo desimal($d->bni_indo_pangan);
-                                        } ?></td>
+                    echo desimal($d->bni_indo_pangan);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->bni_indo_vallas)) {
-                                            echo desimal($d->bni_indo_vallas);
-                                        } ?></td>
+                    echo desimal($d->bni_indo_vallas);
+                } ?></td>
 
                 <td align="right"><?php if (!empty($d->lainlain)) {
-                                            echo desimal($d->lainlain) . " (" . $d->via . ")";
-                                        } ?></td>
+                    echo desimal($d->lainlain) . ' (' . $d->via . ')';
+                } ?></td>
                 <td align="right"><?php if (!empty($d->totalbayar)) {
-                                            echo desimal($d->totalbayar);
-                                        } ?></td>
+                    echo desimal($d->totalbayar);
+                } ?></td>
                 <td><?php echo $d->log; ?></td>
                 <td><?php echo $d->date_updated; ?></td>
             </tr>
@@ -166,48 +167,48 @@
             <tr>
                 <td colspan="5"><b>TOTAL</b></td>
                 <td align="right"><b><?php if (!empty($cash)) {
-                                            echo desimal($cash);
-                                        } ?></b></td>
+                    echo desimal($cash);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bca)) {
-                                            echo desimal($bca);
-                                        } ?></b></td>
+                    echo desimal($bca);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bca_cv)) {
-                                            echo desimal($bca_cv);
-                                        } ?></b></td>
+                    echo desimal($bca_cv);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bca_new)) {
-                                            echo desimal($bca_new);
-                                        } ?></b></td>
+                    echo desimal($bca_new);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($permata)) {
-                                            echo desimal($permata);
-                                        } ?></b></td>
+                    echo desimal($permata);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bni)) {
-                                            echo desimal($bni);
-                                        } ?></b></td>
+                    echo desimal($bni);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bni_mp)) {
-                                            echo desimal($bni_mp);
-                                        } ?></b></td>
+                    echo desimal($bni_mp);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bca_mp)) {
-                                            echo desimal($bca_mp);
-                                        } ?></b></td>
+                    echo desimal($bca_mp);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($kas)) {
-                                            echo desimal($kas);
-                                        } ?></b></td>
+                    echo desimal($kas);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($kaskecil)) {
-                                            echo desimal($kaskecil);
-                                        } ?></b></td>
+                    echo desimal($kaskecil);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bni_indo_pangan)) {
-                                            echo desimal($bni_indo_pangan);
-                                        } ?></b></td>
+                    echo desimal($bni_indo_pangan);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($bni_indo_vallas)) {
-                                            echo desimal($bni_indo_vallas);
-                                        } ?></b></td>
+                    echo desimal($bni_indo_vallas);
+                } ?></b></td>
 
                 <td align="right"><b><?php if (!empty($lainlain)) {
-                                            echo desimal($lainlain);
-                                        } ?></b></td>
+                    echo desimal($lainlain);
+                } ?></b></td>
                 <td align="right"><b><?php if (!empty($totalbayar)) {
-                                            echo desimal($totalbayar);
-                                        } ?></b></td>
+                    echo desimal($totalbayar);
+                } ?></b></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -215,4 +216,5 @@
 
     </table>
 </body>
+
 </html>

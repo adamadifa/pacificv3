@@ -178,39 +178,39 @@
             $subtotal = $subtotal + $grandtotal;
             if ($nobukti != $d->nobukti_pembelian) {
                 echo '
-                                    <tr bgcolor="#a7efe4" style="color:black; font-weight:bold">
-                                        <td></td>
-                                        <td></td>
-                                        <td>' .
+                                                <tr bgcolor="#a7efe4" style="color:black; font-weight:bold">
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>' .
                     $d->nobukti_pembelian .
                     '</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td>' .
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td>' .
                     strtoupper($d->jenistransaksi) .
                     '</td>
-                                        <td></td>
-                                        <td align=center>' .
+                                                    <td></td>
+                                                    <td align=center>' .
                     $akun .
                     '</td>
-                                        <td>' .
+                                                    <td>' .
                     $namaakun .
                     '</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td align=right>' .
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td align=right>' .
                     desimal($subtotal) .
                     '</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>';
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                </tr>';
                 $subtotal = 0;
             }
             

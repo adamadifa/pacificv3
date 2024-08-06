@@ -106,17 +106,16 @@ class PenjualanController extends Controller
                     INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
                     LEFT JOIN (
                     SELECT
-                        MAX( id_move ) AS id_move,
                         no_fak_penj,
                         move_faktur.id_karyawan AS salesbaru,
-                        karyawan.kode_cabang AS cabangbaru
+                        karyawan.kode_cabang AS cabangbaru,
+                        move_faktur.id_karyawan_lama AS saleslama,
+                        karyawanlama.kode_cabang as cabanglama
                     FROM
                         move_faktur
                         INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
-                    GROUP BY
-                        no_fak_penj,
-                        move_faktur.id_karyawan,
-                        karyawan.kode_cabang
+                        INNER JOIN karyawan karyawanlama ON move_faktur.id_karyawan_lama = karyawanlama.id_karyawan
+                    WHERE id_move IN (SELECT MAX(id_move) as id_move FROM move_faktur GROUP BY no_fak_penj)
                     ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj)
                 ) pjmove"),
                 function ($join) {
@@ -152,6 +151,7 @@ class PenjualanController extends Controller
             $penjualan = $query->get();
             return view('penjualan.laporan.cetaksuratjalantanggal', compact('penjualan', 'pelangganmp'));
         } else {
+            //dd('test');
             $dari = !empty($request->dari) ? $request->dari : date("Y-m-d");
             $sampai = !empty($request->sampai) ? $request->sampai : date("Y-m-d");
             $pelanggan = '"' . $request->nama_pelanggan . '"';
@@ -173,17 +173,16 @@ class PenjualanController extends Controller
                     INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
                     LEFT JOIN (
                     SELECT
-                        MAX( id_move ) AS id_move,
                         no_fak_penj,
                         move_faktur.id_karyawan AS salesbaru,
-                        karyawan.kode_cabang AS cabangbaru
+                        karyawan.kode_cabang AS cabangbaru,
+                        move_faktur.id_karyawan_lama AS saleslama,
+                        karyawanlama.kode_cabang as cabanglama
                     FROM
                         move_faktur
                         INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
-                    GROUP BY
-                        no_fak_penj,
-                        move_faktur.id_karyawan,
-                        karyawan.kode_cabang
+                        INNER JOIN karyawan karyawanlama ON move_faktur.id_karyawan_lama = karyawanlama.id_karyawan
+                    WHERE id_move IN (SELECT MAX(id_move) as id_move FROM move_faktur GROUP BY no_fak_penj)
                     ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj)
                 ) pjmove"),
                 function ($join) {
