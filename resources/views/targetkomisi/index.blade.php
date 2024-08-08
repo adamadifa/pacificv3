@@ -118,7 +118,7 @@
                                             <td>
 
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    @if ($d->bulan == 7 && $d->tahun == 2024)
+                                                    @if ($d->bulan == 8 && $d->tahun == 2024)
                                                         @if (in_array($level, $targetkomisiinput))
                                                             <a href="#" class="ml-1 btn btn-primary btn-sm settarget"
                                                                 kodetarget="{{ $d->kode_target }}"><i class="feather icon-settings"></i> Input Qty</a>

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Ledger Bank {{ $bank !=null ? $bank->nama_bank : 'All Ledger' }} {{ date("d-m-y") }}</title>
+    <title>Cetak Ledger Bank {{ $bank != null ? $bank->nama_bank : 'All Ledger' }} {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,12 +32,12 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        LEDGER {{ $bank !=null ? $bank->nama_bank : 'All Ledger' }}
+        LEDGER {{ $bank != null ? $bank->nama_bank : 'All Ledger' }}
         <br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
     </b>
@@ -67,70 +68,70 @@
         </thead>
         <tbody>
             @php
-            $totaldebet = 0;
-            $totalkredit = 0;
-            $saldo = $saldoawal;
+                $totaldebet = 0;
+                $totalkredit = 0;
+                $saldo = $saldoawal;
             @endphp
             @foreach ($ledger as $d)
-            @php
-            if ($d->status_dk == 'K') {
-            $kredit = $d->jumlah;
-            $debet = 0;
-            $jumlah = $d->jumlah;
-            } else {
-            $debet = $d->jumlah;
-            $kredit = 0;
-            $jumlah = -$d->jumlah;
-            }
-            $saldo = $saldo + $jumlah;
-            $totaldebet = $totaldebet + $debet;
-            $totalkredit = $totalkredit + $kredit;
-            @endphp
-            <tr>
-                <td style="text-align:center">{{ $loop->iteration }}</td>
-                <td style="text-align:center">{{ date("d-m-Y",strtotime($d->tgl_ledger)) }}</td>
-                <td style="text-align:center">{{ $d->no_bukti }}</td>
-                <td style="text-align:center">{{ $d->no_ref }}</td>
-                <td style="text-align:center">{{ !empty($d->tgl_penerimaan) ? date("d-m-Y",strtotime($d->tgl_penerimaan)) : '' }}</td>
-                <td>
-                    @if ($level == "manager accounting")
-                    {{ ucwords(strtolower($d->pelanggan)) }}
-                    @else
-                    @if (!in_array($d->id_jabatan,$management))
-                    {{ ucwords(strtolower($d->pelanggan)) }}
-                    @endif
-                    @endif
-                </td>
-                <td>
+                @php
+                    if ($d->status_dk == 'K') {
+                        $kredit = $d->jumlah;
+                        $debet = 0;
+                        $jumlah = $d->jumlah;
+                    } else {
+                        $debet = $d->jumlah;
+                        $kredit = 0;
+                        $jumlah = -$d->jumlah;
+                    }
+                    $saldo = $saldo + $jumlah;
+                    $totaldebet = $totaldebet + $debet;
+                    $totalkredit = $totalkredit + $kredit;
+                @endphp
+                <tr>
+                    <td style="text-align:center">{{ $loop->iteration }}</td>
+                    <td style="text-align:center">{{ date('d-m-Y', strtotime($d->tgl_ledger)) }}</td>
+                    <td style="text-align:center">{{ $d->no_bukti }}</td>
+                    <td style="text-align:center">{{ $d->no_ref }}</td>
+                    <td style="text-align:center">{{ !empty($d->tgl_penerimaan) ? date('d-m-Y', strtotime($d->tgl_penerimaan)) : '' }}</td>
+                    <td>
+                        @if ($level == 'manager accounting')
+                            {{ ucwords(strtolower($d->pelanggan)) }}
+                        @else
+                            @if (!in_array($d->id_jabatan, $management))
+                                {{ ucwords(strtolower($d->pelanggan)) }}
+                            @endif
+                        @endif
+                    </td>
+                    <td>
 
-                    @if ($level == "manager accounting")
-                    {{ ucwords(strtoupper($d->keterangan)) }}
-                    @else
-                    @if (!in_array($d->id_jabatan,$management))
-                    {{ ucwords(strtoupper($d->keterangan)) }}
-                    @else
-                    PIUTANG KARYAWAN
-                    @endif
-                    @endif
+                        @if ($level == 'manager accounting')
+                            {{ ucwords(strtoupper($d->keterangan)) }}
+                        @else
+                            @if (!in_array($d->id_jabatan, $management))
+                                {{ ucwords(strtoupper($d->keterangan)) }}
+                            @else
+                                PIUTANG KARYAWAN
+                            @endif
+                        @endif
 
 
-                </td>
-                <td>
-                    @if ($d->peruntukan =="PC")
-                    PACIFIC {{ $d->ket_peruntukan }}
-                    @else
-                    {{ $d->peruntukan }}
-                    @endif
-                </td>
-                <td>{{ "'".$d->kode_akun }}</td>
-                <td>{{ $d->nama_akun }}</td>
-                <td style="text-align:right">{{ !empty($debet) ? desimal($debet) : '' }}</td>
-                <td style="text-align:right">{{ !empty($kredit) ? desimal($kredit) : '' }}</td>
-                <td style="text-align:right">{{ !empty($saldo) ? desimal($saldo) : '' }}</td>
-                <td>{{ $d->nama_bank }}</td>
-                <td>{{ date("d-m-Y H:i:s",strtotime($d->date_created)) }}</td>
-                <td>{{ !empty($d->date_updated) ?  date("d-m-Y H:i:s",strtotime($d->date_updated)) : '' }}</td>
-            </tr>
+                    </td>
+                    <td>
+                        @if ($d->peruntukan == 'PC')
+                            PACIFIC {{ $d->ket_peruntukan }}
+                        @else
+                            {{ $d->peruntukan }}
+                        @endif
+                    </td>
+                    <td>{{ "'" . $d->kode_akun }}</td>
+                    <td>{{ $d->nama_akun }}</td>
+                    <td style="text-align:right">{{ !empty($debet) ? desimal($debet) : '' }}</td>
+                    <td style="text-align:right">{{ !empty($kredit) ? desimal($kredit) : '' }}</td>
+                    <td style="text-align:right">{{ !empty($saldo) ? desimal($saldo) : '' }}</td>
+                    <td>{{ $d->nama_bank }}</td>
+                    <td>{{ date('d-m-Y H:i:s', strtotime($d->date_created)) }}</td>
+                    <td>{{ !empty($d->date_updated) ? date('d-m-Y H:i:s', strtotime($d->date_updated)) : '' }}</td>
+                </tr>
             @endforeach
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th colspan="10">TOTAL</th>
@@ -143,4 +144,5 @@
         </tbody>
 
 </body>
+
 </html>
