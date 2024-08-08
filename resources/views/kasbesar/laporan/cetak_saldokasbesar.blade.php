@@ -87,7 +87,8 @@
                 <th>
                     @php
                         if ($saldokasbesar != null) {
-                            $saldoawal_kasbesar = $saldokasbesar->uang_kertas + $saldokasbesar->uang_logam + $saldokasbesar->giro + $saldokasbesar->transfer;
+                            $saldoawal_kasbesar =
+                                $saldokasbesar->uang_kertas + $saldokasbesar->uang_logam + $saldokasbesar->giro + $saldokasbesar->transfer;
                         } else {
                             $saldoawal_kasbesar = 0;
                         }

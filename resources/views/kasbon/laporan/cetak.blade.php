@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Kas Kecil {{ date("d-m-y") }}</title>
+    <title>Cetak Kas Kecil {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,18 +36,18 @@
         .text-right: {
             text-align: right !important;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         @if ($kantor != null)
-        @if ($kantor->kode_cabang=="PST")
-        PACIFIC PUSAT
-        @else
-        PACIFIC CABANG {{ strtoupper($kantor->nama_cabang) }}
-        @endif
-        <br>
+            @if ($kantor->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($kantor->nama_cabang) }}
+            @endif
+            <br>
         @endif
 
         LAPORAN PINJAMAN<br>
@@ -73,43 +74,43 @@
 
         <tbody>
             @php
-            $totalkasbon = 0;
-            $totalpembayaran = 0;
-            $totaltagihan = 0;
+                $totalkasbon = 0;
+                $totalpembayaran = 0;
+                $totaltagihan = 0;
             @endphp
             @foreach ($kasbon as $d)
-            @php
-            $totalkasbon += $d->jumlah_kasbon;
-            $totalpembayaran += $d->totalpembayaran;
+                @php
+                    $totalkasbon += $d->jumlah_kasbon;
+                    $totalpembayaran += $d->totalpembayaran;
 
-            @endphp
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $d->no_kasbon }}</td>
-                <td>{{ DateToIndo2($d->tgl_kasbon) }}</td>
-                <td>{{ "'".$d->nik }}</td>
-                <td>{{ $d->nama_karyawan }}</td>
-                <td>{{ $d->nama_jabatan }}</td>
-                <td>{{ $d->nama_dept }}</td>
-                <td style="text-align: right">{{ rupiah($d->jumlah_kasbon)  }}</td>
-                <td style="text-align: right">{{ rupiah($d->totalpembayaran) }}</td>
-                <td style="text-align: right">
-                    @php
-                    $sisatagihan = $d->jumlah_kasbon - $d->totalpembayaran;
-                    $totaltagihan += $sisatagihan;
-                    @endphp
-                    {{ rupiah($sisatagihan) }}
-                </td>
-                <td style="color:{{ $d->jumlah_kasbon - $d->totalpembayaran != 0 ? 'red' : 'green' }}">{!! $d->jumlah_kasbon - $d->totalpembayaran == 0 ? 'Lunas' : 'Belum Lunas' !!}</td>
-                {{-- <td style="color:{{ $d->status==0 ? 'orange' : 'green' }}">
-                @if ($d->status==0)
+                @endphp
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $d->no_kasbon }}</td>
+                    <td>{{ DateToIndo2($d->tgl_kasbon) }}</td>
+                    <td>{{ "'" . $d->nik }}</td>
+                    <td>{{ $d->nama_karyawan }}</td>
+                    <td>{{ $d->nama_jabatan }}</td>
+                    <td>{{ $d->nama_dept }}</td>
+                    <td style="text-align: right">{{ rupiah($d->jumlah_kasbon) }}</td>
+                    <td style="text-align: right">{{ rupiah($d->totalpembayaran) }}</td>
+                    <td style="text-align: right">
+                        @php
+                            $sisatagihan = $d->jumlah_kasbon - $d->totalpembayaran;
+                            $totaltagihan += $sisatagihan;
+                        @endphp
+                        {{ rupiah($sisatagihan) }}
+                    </td>
+                    <td style="color:{{ $d->jumlah_kasbon - $d->totalpembayaran != 0 ? 'red' : 'green' }}">{!! $d->jumlah_kasbon - $d->totalpembayaran == 0 ? 'Lunas' : 'Belum Lunas' !!}</td>
+                    {{-- <td style="color:{{ $d->status==0 ? 'orange' : 'green' }}">
+                @if ($d->status == 0)
                 Belum di Proses
                 @else
                 Sudah di Proses
                 @endif
                 </td> --}}
 
-            </tr>
+                </tr>
             @endforeach
             <tr>
                 <th colspan="7">TOTAL</th>

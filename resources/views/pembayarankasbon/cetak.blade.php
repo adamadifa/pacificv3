@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Pembayaran Pinjaman {{ date("d-m-y") }}</title>
+    <title>Cetak Pembayaran Pinjaman {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,9 +36,9 @@
         .text-right: {
             text-align: right !important;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         LAPORAN PEMBAYARAN KASBON<br>
@@ -59,22 +60,22 @@
         </thead>
         <tbody>
             @php
-            $total = 0;
+                $total = 0;
             @endphp
             @foreach ($historibayar as $d)
-            @php
-            $total+= $d->jumlah;
-            @endphp
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $d->no_bukti }}</td>
-                <td>{{ $d->no_kasbon }}</td>
-                <td>{{ "'".$d->nik }}</td>
-                <td>{{ $d->nama_karyawan }}</td>
-                <td>{{ $d->nama_jabatan }}</td>
-                <td>{{ $d->nama_dept }}</td>
-                <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
-            </tr>
+                @php
+                    $total += $d->jumlah;
+                @endphp
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $d->no_bukti }}</td>
+                    <td>{{ $d->no_kasbon }}</td>
+                    <td>{{ "'" . $d->nik }}</td>
+                    <td>{{ $d->nama_karyawan }}</td>
+                    <td>{{ $d->nama_jabatan }}</td>
+                    <td>{{ $d->nama_dept }}</td>
+                    <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
+                </tr>
             @endforeach
             <tr>
                 <th colspan="7">TOTAL</th>
