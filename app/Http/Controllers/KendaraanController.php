@@ -310,6 +310,7 @@ class KendaraanController extends Controller
             )
             ->whereBetween('tgl_pengambilan', [$dari, $sampai])
             ->where('dpb.no_kendaraan', $request->no_polisi)
+            ->where('dpb.kode_cabang', $request->kode_cabang)
             ->groupByRaw('kode_produk,dpb.no_kendaraan,isipcsdus,jmlpenjualan,jmlgantibarang,jmlplhk,jmlpromosi,jmlttr')
             ->get();
         if (isset($_POST['export'])) {
