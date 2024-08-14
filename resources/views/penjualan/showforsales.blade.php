@@ -47,11 +47,10 @@
                                         @php
                                             $path = Storage::url('pelanggan/' . $data->foto);
                                         @endphp
-                                        <img class="card-img img-fluid" style="height: 200px; object-fit:cover"
-                                            src="{{ url($path) }}" alt="Card image">
-                                    @else
-                                        <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}"
+                                        <img class="card-img img-fluid" style="height: 200px; object-fit:cover" src="{{ url($path) }}"
                                             alt="Card image">
+                                    @else
+                                        <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
                                     @endif
                                     <div class="card-img-overlay overflow-hidden overlay-primary overlay-lighten-2">
                                         <h4 class="card-title text-white">{{ $data->no_fak_penj }} -
@@ -82,8 +81,7 @@
                             <i class="feather icon-printer mr-1"></i>
                             Cetak Faktur
                         </a> --}}
-                                    <a href="#"
-                                        onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
+                                    <a href="#" onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
                                         class="btn btn-info btn-block">
                                         <i class="feather icon-printer mr-1"></i>
                                         Cetak Faktur
@@ -96,23 +94,20 @@
                                 <div class="row mb-1">
                                     <div class="col">
                                         <div class="btn-group w-100">
-                                            <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2"
-                                                class="btn  btn-success">
+                                            <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn  btn-success">
                                                 <i class="feather icon-edit"></i>
                                             </a>
                                             {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
                             <i class="feather icon-printer mr-1"></i>
                             Cetak Faktur
                         </a> --}}
-                                            <a href="#"
-                                                onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
+                                            <a href="#" onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
                                                 class="btn btn-info btn-block">
                                                 <i class="feather icon-printer"></i>
                                                 Cetak Faktur
                                             </a>
 
-                                            <a href="#" class="btn btn-warning ubahfakturbatal"
-                                                no_fak_penj = "{{ $data->no_fak_penj }}"><i
+                                            <a href="#" class="btn btn-warning ubahfakturbatal" no_fak_penj = "{{ $data->no_fak_penj }}"><i
                                                     class="feather icon-x-circle"></i></a>
                                             {{-- <form method="POST" class="deleteform"
                                         action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
@@ -147,8 +142,7 @@
                                             action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/deletesignature">
                                             @csrf
                                             @method('DELETE')
-                                            <a href=" #" tanggal="{{ $data->tgltransaksi }}"
-                                                class="btn btn-danger btn-block  delete-confirm">
+                                            <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger btn-block  delete-confirm">
                                                 <i class="feather icon-trash"></i>
                                             </a>
                                         </form>
@@ -158,8 +152,8 @@
                                         $image = base64_encode($path);
                                     @endphp
                                     <div class="col-10">
-                                        <a href="#" onclick="return sendUrlToPrint('{{ url($path) }}');"
-                                            class="btn btn-info btn-block"><i class="feather icon-printer mr-1"></i>Cetak
+                                        <a href="#" onclick="return sendUrlToPrint('{{ url($path) }}');" class="btn btn-info btn-block"><i
+                                                class="feather icon-printer mr-1"></i>Cetak
                                             Tanda Tangan</a>
                                     </div>
                                 </div>
@@ -206,13 +200,11 @@
                                         </div>
                                         <ul class="list-group list-group-flush">
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->nik }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->nik }}</span>
                                                 NIK
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->no_kk }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->no_kk }}</span>
                                                 No. KK
                                             </li>
                                             <li class="list-group-item">
@@ -221,33 +213,27 @@
                                                 Tanggal Lahir
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->no_hp }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->no_hp }}</span>
                                                 No. HP
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->pasar }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->pasar }}</span>
                                                 Pasar
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->hari }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->hari }}</span>
                                                 Hari
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->latitude }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->latitude }}</span>
                                                 Latitude
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->longitude }}</span>
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->longitude }}</span>
                                                 Longitude
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->jatuhtempo }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->jatuhtempo }}
                                                     Hari</span>
                                                 Jatuh Tempo Pembayaran
                                             </li>
@@ -290,8 +276,7 @@
                                                 Jenis Outlet
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->lama_usaha }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->lama_usaha }}
                                                 </span>
                                                 Lama Usaha
                                             </li>
@@ -308,8 +293,7 @@
                                                 Jaminan
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ $data->lama_langganan }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ $data->lama_langganan }}
                                                 </span>
                                                 Lama Berlangganan
                                             </li>
@@ -326,14 +310,12 @@
                                                 Jaminan
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ rupiah($data->omset_toko) }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ rupiah($data->omset_toko) }}
                                                 </span>
                                                 Omset Toko
                                             </li>
                                             <li class="list-group-item">
-                                                <span
-                                                    class="badge badge-pill bg-primary float-right">{{ rupiah($data->limitpel) }}
+                                                <span class="badge badge-pill bg-primary float-right">{{ rupiah($data->limitpel) }}
                                                 </span>
                                                 Limit Pelanggan
                                             </li>
@@ -361,14 +343,12 @@
                                 @include('layouts.notification')
                                 <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="penjualan-tab" data-toggle="tab"
-                                            href="#penjualan" aria-controls="penjualan" role="tab"
-                                            aria-selected="true">Data Penjualan</a>
+                                        <a class="nav-link active" id="penjualan-tab" data-toggle="tab" href="#penjualan" aria-controls="penjualan"
+                                            role="tab" aria-selected="true">Data Penjualan</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab"
-                                        role="tabpanel">
+                                    <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
                                         <table class="table table-bordered">
                                             <tbody>
                                                 @php
@@ -442,11 +422,7 @@
                                                     <td colspan="7">Total</td>
                                                     <td class="text-right">
                                                         @php
-                                                            $totalnonppn =
-                                                                $data->subtotal -
-                                                                $data->potongan -
-                                                                $data->potistimewa -
-                                                                $data->penyharga;
+                                                            $totalnonppn = $data->subtotal - $data->potongan - $data->potistimewa - $data->penyharga;
                                                         @endphp
                                                         {{ rupiah($totalnonppn) }}
                                                     </td>
@@ -471,8 +447,7 @@
                                                     <td colspan="7">Sisa Bayar</td>
                                                     <td class="text-right">
                                                         @php
-                                                            $sisabayar =
-                                                                $data->total - $data->totalretur - $data->jmlbayar;
+                                                            $sisabayar = $data->total - $data->totalretur - $data->jmlbayar;
                                                         @endphp
                                                         {{ rupiah($sisabayar) }}
                                                     </td>
@@ -499,16 +474,14 @@
                         <div class="col-12">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="bayar-tab" data-toggle="tab" href="#bayar"
-                                        aria-controls="bayar" role="tab" aria-selected="true">Histori Pembayaran</a>
+                                    <a class="nav-link active" id="bayar-tab" data-toggle="tab" href="#bayar" aria-controls="bayar" role="tab"
+                                        aria-selected="true">Histori Pembayaran</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab"
-                                    role="tabpanel">
+                                <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
                                     @if ($data->status_lunas != 1)
-                                        <a href="#" id="inputpembayaran" class="btn btn-md btn-primary mb-2"
-                                            class="href">
+                                        <a href="#" id="inputpembayaran" class="btn btn-md btn-primary mb-2" class="href">
                                             <i class="feather icon-plus mr-1"></i>
                                             Input Pembayaran
                                         </a>
@@ -537,15 +510,12 @@
                                                         </div>
                                                         <div class="btn-group dropup float-left">
                                                             <i class="feather icon-more-vertical dropdown-toggle mr-2 mt-1 primary"
-                                                                data-toggle="dropdown" aria-haspopup="true"
-                                                                aria-expanded="false"></i>
+                                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                             <div class="dropdown-menu" x-placement="top-start"
                                                                 style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
 
-                                                                <a class="ml-1 editbayar dropdown-item" href="#"
-                                                                    nobukti="{{ $d->nobukti }}"
-                                                                    kode_cabang="{{ $data->kode_cabang }}"
-                                                                    no_fak_penj="{{ $data->no_fak_penj }}"
+                                                                <a class="ml-1 editbayar dropdown-item" href="#" nobukti="{{ $d->nobukti }}"
+                                                                    kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}"
                                                                     sisabayar="{{ $sisabayar - $d->bayar }}">
                                                                     <i class="feather icon-edit success mr-1"></i>
                                                                     Edit
@@ -577,16 +547,16 @@
                         <div class="col-12">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro"
-                                        aria-controls="giro" role="tab" aria-selected="true">Histori Pembayaran
+                                    <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro" aria-controls="giro" role="tab"
+                                        aria-selected="true">Histori Pembayaran
                                         Giro</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
                                     @if ($data->status_lunas != 1 && $data->jenisbayar != 'transfer')
-                                        <a href="#" id="inputgiro" class="btn btn-md btn-primary mb-2"
-                                            class="href"><i class="feather icon-plus mr-1"></i> Input Giro</a>
+                                        <a href="#" id="inputgiro" class="btn btn-md btn-primary mb-2" class="href"><i
+                                                class="feather icon-plus mr-1"></i> Input Giro</a>
                                     @endif
                                 </div>
                             </div>
@@ -602,20 +572,16 @@
                                                 <div class="card-body" style="padding:8px 10px 8px 8px !important">
                                                     <div class="card-text d-flex justify-content-between">
                                                         <div class="ml-1">
-                                                            <b>{{ $d->no_giro }}</b> - <span
-                                                                class="badge bg-info">{{ $d->namabank }}</span> <br>
+                                                            <b>{{ $d->no_giro }}</b> - <span class="badge bg-info">{{ $d->namabank }}</span> <br>
                                                             {{ !empty($d->tgl_giro) ? DateToIndo2($d->tgl_giro) : '' }}
                                                         </div>
                                                         <div>
-                                                            <span
-                                                                style="font-weight: bold">{{ rupiah($d->jumlah) }}</span>
+                                                            <span style="font-weight: bold">{{ rupiah($d->jumlah) }}</span>
                                                             <br>
                                                             @if ($d->status == 0)
-                                                                <span class="badge bg-warning"> <i
-                                                                        class="fa fa-history"></i> Pending </span>
+                                                                <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                             @elseif($d->status == 1)
-                                                                <span class="badge bg-success"> <i
-                                                                        class="fa fa-check"></i> Diterima
+                                                                <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima
                                                                     {{ date('d-m-Y', strtotime($d->tglbayar)) }} </span>
                                                             @elseif($d->status == 2)
                                                                 <span class="badge bg-danger"> <i class="fa fa-close"></i>
@@ -625,14 +591,12 @@
                                                         @if ($d->status === 0)
                                                             <div class="btn-group dropup float-left">
                                                                 <i class="feather icon-more-vertical dropdown-toggle mr-2 mt-1 primary"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false"></i>
+                                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                                 <div class="dropdown-menu" x-placement="top-start"
                                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
 
                                                                     <a class="ml-1 editgiro dropdown-item" href="#"
-                                                                        id_giro="{{ $d->id_giro }}"
-                                                                        kode_cabang="{{ $data->kode_cabang }}"
+                                                                        id_giro="{{ $d->id_giro }}" kode_cabang="{{ $data->kode_cabang }}"
                                                                         sisabayar="{{ $sisabayar - $d->jumlah }}"><i
                                                                             class="feather icon-edit success mr-1"></i>Edit</a>
                                                                     {{-- @if (in_array($level, $harga_hapus)) --}}
@@ -668,16 +632,16 @@
                         <div class="col-12">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro"
-                                        aria-controls="giro" role="tab" aria-selected="true">Histori Pembayaran
+                                    <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro" aria-controls="giro" role="tab"
+                                        aria-selected="true">Histori Pembayaran
                                         Transfer</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
                                     @if ($data->status_lunas != 1)
-                                        <a href="#" id="inputtransfer" class="btn btn-primary mb-2"
-                                            class="href"><i class="feather icon-plus mr-1"></i>Input Transfer</a>
+                                        <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i
+                                                class="feather icon-plus mr-1"></i>Input Transfer</a>
                                     @endif
                                 </div>
                             </div>
@@ -697,15 +661,12 @@
                                                             {{ !empty($d->tgl_transfer) ? DateToIndo2($d->tgl_transfer) : '' }}
                                                         </div>
                                                         <div>
-                                                            <span
-                                                                style="font-weight: bold">{{ rupiah($d->jumlah) }}</span>
+                                                            <span style="font-weight: bold">{{ rupiah($d->jumlah) }}</span>
                                                             <br>
                                                             @if ($d->status == 0)
-                                                                <span class="badge bg-warning"> <i
-                                                                        class="fa fa-history"></i> Pending </span>
+                                                                <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                             @elseif($d->status == 1)
-                                                                <span class="badge bg-success"> <i
-                                                                        class="fa fa-check"></i> Diterima
+                                                                <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima
                                                                     {{ date('d-m-Y', strtotime($d->tglbayar)) }} </span>
                                                             @elseif($d->status == 2)
                                                                 <span class="badge bg-danger"> <i class="fa fa-close"></i>
@@ -715,15 +676,12 @@
                                                         @if ($d->status === 0)
                                                             <div class="btn-group dropup float-left">
                                                                 <i class="feather icon-more-vertical dropdown-toggle mr-2 mt-1 primary"
-                                                                    data-toggle="dropdown" aria-haspopup="true"
-                                                                    aria-expanded="false"></i>
+                                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
                                                                 <div class="dropdown-menu" x-placement="top-start"
                                                                     style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
 
-                                                                    <a class="ml-1 edittransfer dropdown-item"
-                                                                        href="#"
-                                                                        id_transfer="{{ $d->id_transfer }}"
-                                                                        kode_cabang="{{ $data->kode_cabang }}"
+                                                                    <a class="ml-1 edittransfer dropdown-item" href="#"
+                                                                        id_transfer="{{ $d->id_transfer }}" kode_cabang="{{ $data->kode_cabang }}"
                                                                         sisabayar="{{ $sisabayar - $d->jumlah }}"><i
                                                                             class="feather icon-edit success mr-1"></i>Edit</a>
 
@@ -731,8 +689,7 @@
                                                                         action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
                                                                         @csrf
                                                                         @method('DELETE')
-                                                                        <a href=" #"
-                                                                            tanggal="{{ $d->tgl_transfer }}"
+                                                                        <a href=" #" tanggal="{{ $d->tgl_transfer }}"
                                                                             class="delete-confirm ml-1 dropdown-item">
                                                                             <i class="feather icon-trash danger mr-1"></i>
                                                                             Hapus
@@ -762,8 +719,7 @@
     </div>
     <input type="hidden" id="cektutuplaporan">
     <!-- Input Pembayaran -->
-    <div class="modal fade text-left" id="mdlinputpembayaran" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputpembayaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -775,21 +731,19 @@
                 <div class="modal-body">
                     <form action="/pembayaran/store" id="frmBayar" method="POST">
                         <input type="hidden" name="no_fak_penj" value="{{ $data->no_fak_penj }}">
-                        <input type="hidden" name="jenistransaksi" id="jenistransaksi"
-                            value="{{ $data->jenistransaksi }}">
+                        <input type="hidden" name="jenistransaksi" id="jenistransaksi" value="{{ $data->jenistransaksi }}">
                         <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $data->kode_cabang }}">
                         @csrf
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Tanggal Bayar" value="{{ date('Y-m-d') }}" field="tglbayar"
-                                        icon="feather icon-calendar" datepicker />
+                                    <x-inputtext label="Tanggal Bayar" value="{{ date('Y-m-d') }}" field="tglbayar" icon="feather icon-calendar"
+                                        datepicker />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Jumlah Bayar" field="bayar" icon="feather icon-shopping-cart"
-                                        right />
+                                    <x-inputtext label="Jumlah Bayar" field="bayar" icon="feather icon-shopping-cart" right />
                                 </div>
                             </div>
                             @if ($data->jenistransaksi == 'kredit')
@@ -801,8 +755,7 @@
                                 <div class="col-12">
                                     <div class="form-group">
                                         @if (Auth::user()->level == 'salesman')
-                                            <input type="hidden" id="id_karyawan" name="id_karyawan"
-                                                value="{{ Auth::user()->id_salesman }}">
+                                            <input type="hidden" id="id_karyawan" name="id_karyawan" value="{{ Auth::user()->id_salesman }}">
                                         @else
                                             <select name="id_karyawan" id="id_karyawan" class="form-control">
                                                 <option value="">Salesman Penagih</option>
@@ -875,8 +828,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <button class="btn btn-primary btn-block" id="btnsimpanbayar"><i
-                                                class="feather icon-send"></i> Simpan</button>
+                                        <button class="btn btn-primary btn-block" id="btnsimpanbayar"><i class="feather icon-send"></i> Simpan</button>
                                     </div>
                                 </div>
                             </div>
@@ -888,8 +840,7 @@
     </div>
 
     <!-- Input Pembayaran -->
-    <div class="modal fade text-left" id="mdleditpembayaran" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditpembayaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -908,8 +859,7 @@
 
     <!--Input Bayar Giro-->
 
-    <div class="modal fade text-left" id="mdlinputgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -925,16 +875,15 @@
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Tanggal Pencatatan Giro" value="{{ date('Y-m-d') }}"
-                                        field="tgl_giro" icon="feather icon-calendar" datepicker />
+                                    <x-inputtext label="Tanggal Pencatatan Giro" value="{{ date('Y-m-d') }}" field="tgl_giro"
+                                        icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         @if (Auth::user()->level == 'salesman')
-                                            <input type="hidden" id="id_karyawan" name="id_karyawan"
-                                                value="{{ Auth::user()->id_salesman }}">
+                                            <input type="hidden" id="id_karyawan" name="id_karyawan" value="{{ Auth::user()->id_salesman }}">
                                         @else
                                             <select name="id_karyawan" id="id_karyawan_giro" class="form-control">
                                                 <option value="">Salesman</option>
@@ -959,8 +908,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Jatuh Tempo" field="tglcair" icon="feather icon-calendar"
-                                        datepicker />
+                                    <x-inputtext label="Jatuh Tempo" field="tglcair" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
@@ -971,8 +919,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <button class="btn btn-primary btn-block" id="btnsimpangiro"><i
-                                                class="feather icon-send"></i> Simpan</button>
+                                        <button class="btn btn-primary btn-block" id="btnsimpangiro"><i class="feather icon-send"></i> Simpan</button>
                                     </div>
                                 </div>
                             </div>
@@ -985,8 +932,7 @@
 
     <!-- Edit Giro -->
 
-    <div class="modal fade text-left" id="mdleditgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1005,8 +951,7 @@
 
     <!-- Edit Giro -->
 
-    <div class="modal fade text-left" id="mdledittransfer" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdledittransfer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1025,8 +970,7 @@
 
     <!--Input Bayar Transfer-->
 
-    <div class="modal fade text-left" id="mdlinputtransfer" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputtransfer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1043,16 +987,15 @@
                         <div class="form-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Tanggal Pencatatan Transfer" value="{{ date('Y-m-d') }}"
-                                        field="tgl_transfer" icon="feather icon-calendar" datepicker />
+                                    <x-inputtext label="Tanggal Pencatatan Transfer" value="{{ date('Y-m-d') }}" field="tgl_transfer"
+                                        icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         @if (Auth::user()->level == 'salesman')
-                                            <input type="hidden" id="id_karyawan" name="id_karyawan"
-                                                value="{{ Auth::user()->id_salesman }}">
+                                            <input type="hidden" id="id_karyawan" name="id_karyawan" value="{{ Auth::user()->id_salesman }}">
                                         @else
                                             <select name="id_karyawan" id="id_karyawan_giro" class="form-control">
                                                 <option value="">Salesman</option>
@@ -1073,8 +1016,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext label="Jatuh Tempo" field="tglcair_transfer" readonly
-                                        icon="feather icon-calendar" readonly />
+                                    <x-inputtext label="Jatuh Tempo" field="tglcair_transfer" readonly icon="feather icon-calendar" readonly />
                                 </div>
                             </div>
                             <div class="row">
@@ -1090,8 +1032,8 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <button class="btn btn-primary btn-block" id="btnsimpantransfer"><i
-                                                class="feather icon-send"></i> Simpan</button>
+                                        <button class="btn btn-primary btn-block" id="btnsimpantransfer"><i class="feather icon-send"></i>
+                                            Simpan</button>
                                     </div>
                                 </div>
                             </div>
@@ -1102,8 +1044,7 @@
         </div>
     </div>
 
-    <div class="modal fade text-left" id="mdlcetakfaktur" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlcetakfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1121,8 +1062,7 @@
         </div>
     </div>
 
-    <div class="modal fade text-left" id="mdlfakturbatal" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdlfakturbatal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -1144,8 +1084,7 @@
 
                         <div class="col-12">
                             <div class="form-group">
-                                <textarea name="keterangan" placeholder="Keterangan" id="keterangan" cols="30" rows="10"
-                                    class="form-control"></textarea>
+                                <textarea name="keterangan" placeholder="Keterangan" id="keterangan" cols="30" rows="10" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="col-12">
