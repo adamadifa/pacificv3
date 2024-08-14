@@ -234,7 +234,9 @@ class PrinterController extends Controller
             $printer->text($faktur->kode_pelanggan . " - " . $faktur->nama_pelanggan . "\n");
             $printer->text(strtolower(ucwords($faktur->alamat_pelanggan)));
             $jatuhtempo = date("Y-m-d", strtotime("+$faktur->jatuhtempo days", strtotime($faktur->tgltransaksi)));
-            $printer->text("Jatuh Tempo : " . date("d-m-Y", strtotime($jatuhtempo)) . "\n");
+            if ($faktur->jenistransaksi == 'kredit') {
+                $printer->text("Jatuh Tempo : " . date("d-m-Y", strtotime($jatuhtempo)) . "\n");
+            }
             $printer->text(new item('', ''));
 
             $printer->setEmphasis(true);
@@ -357,7 +359,9 @@ class PrinterController extends Controller
             $printer->text($faktur->kode_pelanggan . " - " . $faktur->nama_pelanggan . "\n");
             $printer->text(strtolower(ucwords($faktur->alamat_pelanggan)));
             $jatuhtempo = date("Y-m-d", strtotime("+$faktur->jatuhtempo days", strtotime($faktur->tgltransaksi)));
-            $printer->text("Jatuh Tempo : " . date("d-m-Y", strtotime($jatuhtempo)) . "\n");
+            if ($faktur->jenistransaksi == 'kredit') {
+                $printer->text("Jatuh Tempo : " . date("d-m-Y", strtotime($jatuhtempo)) . "\n");
+            }
             $printer->text(new item('', ''));
 
             $printer->setEmphasis(true);
