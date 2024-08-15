@@ -85,7 +85,8 @@ class PrinterController extends Controller
                 'alamat_cabang',
                 'nama_cabang',
                 'nama_pt',
-                'print'
+                'print',
+                'pelanggan.jatuhtempo'
             )
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
@@ -229,8 +230,13 @@ class PrinterController extends Controller
             $pelanggan_salesman = new item($faktur->no_fak_penj, $faktur->nama_karyawan);
             $printer->text($pelanggan_salesman->getAsString(32));
             $printer->text(date("d-m-Y H:i:s", strtotime($faktur->date_created)) . "\n");
+
             $printer->text($faktur->kode_pelanggan . " - " . $faktur->nama_pelanggan . "\n");
             $printer->text(strtolower(ucwords($faktur->alamat_pelanggan)));
+            $jatuhtempo = date("Y-m-d", strtotime("+$faktur->jatuhtempo days", strtotime($faktur->tgltransaksi)));
+            if ($faktur->jenistransaksi == 'kredit') {
+                $printer->text("Jatuh Tempo : " . date("d-m-Y", strtotime($jatuhtempo)) . "\n");
+            }
             $printer->text(new item('', ''));
 
             $printer->setEmphasis(true);
@@ -352,6 +358,10 @@ class PrinterController extends Controller
             $printer->text(date("d-m-Y H:i:s", strtotime($faktur->date_created)) . "\n");
             $printer->text($faktur->kode_pelanggan . " - " . $faktur->nama_pelanggan . "\n");
             $printer->text(strtolower(ucwords($faktur->alamat_pelanggan)));
+            $jatuhtempo = date("Y-m-d", strtotime("+$faktur->jatuhtempo days", strtotime($faktur->tgltransaksi)));
+            if ($faktur->jenistransaksi == 'kredit') {
+                $printer->text("Jatuh Tempo : " . date("d-m-Y", strtotime($jatuhtempo)) . "\n");
+            }
             $printer->text(new item('', ''));
 
             $printer->setEmphasis(true);

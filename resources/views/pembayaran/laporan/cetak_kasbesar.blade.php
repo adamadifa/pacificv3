@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Kas Besar {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Kas Besar {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,34 +32,34 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN KAS BESAR<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
         @if ($pelanggan != null)
-        PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
+            PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
         @else
-        SEMUA PELANGGAN
+            SEMUA PELANGGAN
         @endif
     </b>
     <br>
@@ -96,13 +97,13 @@
         </thead>
         <tbody>
             @php
-            $saldo = 0;
-            $totaltunai = 0;
-            $totaltitip = 0;
-            $totalother = 0;
-            $totalpelunasan = 0;
-            $totalbayar = 0;
-            $totalljt = 0;
+                $saldo = 0;
+                $totaltunai = 0;
+                $totaltitip = 0;
+                $totalother = 0;
+                $totalpelunasan = 0;
+                $totalbayar = 0;
+                $totalljt = 0;
             @endphp
             <?php
             foreach ($kasbesar as $k) {
@@ -191,17 +192,27 @@
                 <td><?php echo $k->kode_pelanggan; ?></td>
                 <td><?php echo $k->nama_pelanggan; ?></td>
                 <td><?php echo $k->pasar; ?></td>
-                <td style="text-align:right"><?php if (!empty($tunai)) {echo number_format($tunai, '0', '', '.'); } ?></td>
-                <td style="text-align:right"><?php if (!empty($titipan)) {echo number_format($titipan, '0', '', '.');} ?></td>
-                <td style="text-align:right"><?php if (!empty($pelunasan)) {echo number_format($pelunasan, '0', '', '.');} ?></td>
+                <td style="text-align:right"><?php if (!empty($tunai)) {
+                    echo number_format($tunai, '0', '', '.');
+                } ?></td>
+                <td style="text-align:right"><?php if (!empty($titipan)) {
+                    echo number_format($titipan, '0', '', '.');
+                } ?></td>
+                <td style="text-align:right"><?php if (!empty($pelunasan)) {
+                    echo number_format($pelunasan, '0', '', '.');
+                } ?></td>
                 <td><?php echo $k->materai; ?></td>
                 <td><?php echo $cekbg; ?></td>
                 <td><?php echo $bank; ?></td>
                 <td><?php echo $tglcair; ?></td>
-                <td style="text-align:right"><?php if (!empty($other)) {echo number_format($other, '0', '', '.');} ?></td>
+                <td style="text-align:right"><?php if (!empty($other)) {
+                    echo number_format($other, '0', '', '.');
+                } ?></td>
                 <td style="text-align:right"><?php echo number_format($bayar, '0', '', '.'); ?></td>
                 <td style="text-align:right"><?php echo number_format($saldo, '0', '', '.'); ?></td>
-                <td><?php if ($k->girotocash == "1") {echo "Penggantian Giro Ke Cash";} ?>
+                <td><?php if ($k->girotocash == '1') {
+                    echo 'Penggantian Giro Ke Cash';
+                } ?>
                 </td>
                 <td><?php echo $k->date_created; ?></td>
                 <td><?php echo $k->date_updated; ?></td>
@@ -215,13 +226,13 @@
         </tbody>
         <tr bgcolor="#024a75" style="color:white; font-size:12;">
             <td colspan="10">TOTAL</td>
-            <td style="text-align: right"><?php echo number_format($totaltunai, '0', '', '.');  ?></td>
-            <td style="text-align: right"><?php echo number_format($totaltitip, '0', '', '.');  ?></td>
-            <td style="text-align: right"><?php echo number_format($totalpelunasan, '0', '', '.');  ?></td>
+            <td style="text-align: right"><?php echo number_format($totaltunai, '0', '', '.'); ?></td>
+            <td style="text-align: right"><?php echo number_format($totaltitip, '0', '', '.'); ?></td>
+            <td style="text-align: right"><?php echo number_format($totalpelunasan, '0', '', '.'); ?></td>
             <td colspan="4"></td>
-            <td style="text-align: right"><?php echo number_format($totalother, '0', '', '.');  ?></td>
-            <td style="text-align: right"><?php echo number_format($totalbayar, '0', '', '.');  ?></td>
-            <td style="text-align: right"><?php echo number_format($totalbayar, '0', '', '.');  ?></td>
+            <td style="text-align: right"><?php echo number_format($totalother, '0', '', '.'); ?></td>
+            <td style="text-align: right"><?php echo number_format($totalbayar, '0', '', '.'); ?></td>
+            <td style="text-align: right"><?php echo number_format($totalbayar, '0', '', '.'); ?></td>
             <td></td>
             <td></td>
             <td></td>
@@ -237,7 +248,7 @@
     </table>
     <b style="font-size:14px; font-family:Calibri">
         PEMBAYARAN VOUCHER<br>
-        PERIODE <?php echo DateToIndo2($dari) . " s/d " . DateToIndo2($sampai); ?><br>
+        PERIODE <?php echo DateToIndo2($dari) . ' s/d ' . DateToIndo2($sampai); ?><br>
     </b>
     <table class="datatable3">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
@@ -291,4 +302,5 @@
             </tbody>
     </table>
 </body>
+
 </html>
