@@ -125,67 +125,70 @@
         display: table;
         clear: both;
     }
-
 </style>
 <div class="vertical-timeline vertical-timeline--animate vertical-timeline--one-column">
     @foreach ($kunjungan as $d)
-    @php
+        @php
 
-    $awal = strtotime($d->checkin_time); //waktu awal
-    $akhir = strtotime($d->checkout_time); //waktu akhir
-    $diff = $akhir - $awal;
-    $jam = floor($diff / (60 * 60));
-    $menit = $diff - $jam * (60 * 60) ;
-    $minutes = floor($menit/60);
-    $j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @endphp <div class="vertical-timeline-item vertical-timeline-element">
-        <div>
-            <span class="vertical-timeline-element-icon bounce-in">
-                <span class="badge bg-info">
-                    <i class="feather icon-map-pin"></i>
+            $awal = strtotime($d->checkin_time); //waktu awal
+            $akhir = strtotime($d->checkout_time); //waktu akhir
+            $diff = $akhir - $awal;
+            $jam = floor($diff / (60 * 60));
+            $menit = $diff - $jam * (60 * 60);
+            $minutes = floor($menit / 60);
+            $j = $jam <= 9 ? '0' . $jam : $jam;
+            $m = $minutes <= 9 ? '0' . $minutes : $minutes;
+        @endphp <div class="vertical-timeline-item vertical-timeline-element">
+            <div>
+                <span class="vertical-timeline-element-icon bounce-in">
+                    <span class="badge bg-info">
+                        <i class="feather icon-map-pin"></i>
+                    </span>
+
                 </span>
+                <div class="vertical-timeline-element-content bounce-in">
+                    <div class="card">
+                        <div class="card-body">
+                            <span class="d-flex justify-content-start">
+                                @if (!empty($d->foto))
+                                    @php
+                                        $path = Storage::url('pelanggan/' . $d->foto);
+                                    @endphp
+                                    <img src="{{ url($path) }}" class="rounded mr-75" alt="profile image" height="40" width="40">
+                                @else
+                                    <img src="{{ asset('app-assets/images/slider/04.jpg') }}" class="rounded float-left mr-75" alt="profile image"
+                                        height="50" width="50">
+                                @endif
+                                <span>
+                                    <span class="timeline-title">{{ $d->kode_pelanggan }} {{ $d->nama_pelanggan }}</span>
+                                    <br>
+                                    <span>{{ $d->alamat_pelanggan }}</span>
+                                    <br>
+                                    <span class=" danger">
+                                        <i class="feather icon-log-out danger "></i>
+                                        {{ !empty($d->checkout_time) ? date('H:i', strtotime($d->checkout_time)) : 'Belum Checkout' }}
+                                    </span>
+                                    <span class="primary">
+                                        @if (!empty($d->checkout_time))
+                                            Durasi ({{ $j }} : {{ $m }})
+                                        @else
+                                            Durasi (00:00)
+                                        @endif
 
-            </span>
-            <div class="vertical-timeline-element-content bounce-in">
-                <div class="card">
-                    <div class="card-body">
-                        <span class="d-flex justify-content-start">
-                            @if (!empty($d->foto))
-                            @php
-                            $path = Storage::url('pelanggan/'.$d->foto);
-                            @endphp
-                            <img src="{{ url($path) }}" class="rounded mr-75" alt="profile image" height="40" width="40">
-                            @else
-                            <img src="{{ asset('app-assets/images/slider/04.jpg') }}" class="rounded float-left mr-75" alt="profile image" height="50" width="50">
-                            @endif
-                            <span>
-                                <span class="timeline-title">{{ $d->kode_pelanggan }} {{ $d->nama_pelanggan }}</span>
-                                <br>
-                                <span>{{ $d->alamat_pelanggan }}</span>
-                                <br>
-                                <span class=" danger">
-                                    <i class="feather icon-log-out danger "></i> {{ !empty($d->checkout_time) ? date("H:i",strtotime($d->checkout_time)) : 'Belum Checkout' }}
-                                </span>
-                                <span class="primary">
-                                    @if (!empty($d->checkout_time))
-                                    Durasi ({{ $j }} : {{ $m }})
-                                    @else
-                                    Durasi (00:00)
-                                    @endif
-
-                                </span>
-                                <br>
-                                <span class="info">
-                                    <i class="feather icon-map mr-1"></i>{{ $d->jarak }} meter
+                                    </span>
+                                    <br>
+                                    <span class="info">
+                                        <i class="feather icon-map mr-1"></i>{{ $d->jarak }} meter
+                                    </span>
                                 </span>
                             </span>
-                        </span>
 
+                        </div>
                     </div>
-                </div>
 
-                <span class="vertical-timeline-element-date">{{ date("H:i",strtotime($d->checkin_time)) }} </span>
+                    <span class="vertical-timeline-element-date">{{ date('H:i', strtotime($d->checkin_time)) }} </span>
+                </div>
             </div>
         </div>
+    @endforeach
 </div>
-
-@endforeach </div>
