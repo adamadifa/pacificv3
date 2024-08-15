@@ -38,10 +38,18 @@ function DateToIndo2($date2)
 { // fungsi atau method untuk mengubah tanggal ke format indonesia
     // variabel BulanIndo merupakan variabel array yang menyimpan nama-nama bulan
     $BulanIndo2 = array(
-        "Januari", "Februari", "Maret",
-        "April", "Mei", "Juni",
-        "Juli", "Agustus", "September",
-        "Oktober", "November", "Desember"
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember"
     );
 
     $tahun2 = substr($date2, 0, 4); // memisahkan format tahun menggunakan substring
@@ -523,9 +531,9 @@ function hitungjarak($lat1, $lon1, $lat2, $lon2)
 function lockreport($tanggal)
 {
     $set_tanggal_cabang = [
-        'SKB' => '2018-01-01'
+        'SKB' => '2023-01-01'
     ];
-    if ($tanggal < '2018-01-01' && !empty($tanggal)) {
+    if ($tanggal < '2023-01-01' && !empty($tanggal)) {
         echo "Data Belum Ada / Tidak Ditemukan";
         die;
     } else {
@@ -536,14 +544,14 @@ function lockreport($tanggal)
 
 function startreport()
 {
-    $startreport = "2018-01-01";
+    $startreport = "2023-01-01";
     return $startreport;
 }
 
 
 function startyear()
 {
-    $startyear = 2018;
+    $startyear = 2023;
     return $startyear;
 }
 
