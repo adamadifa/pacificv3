@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,28 +32,28 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN DATA ANALISA TRANSAKSI PELANGGAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
     </b>
@@ -104,39 +105,40 @@
         </thead>
         <tbody>
             @foreach ($analisatransaksi as $d)
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $d->nama_pelanggan }}</td>
-                <td align="right">{{ !empty($d->tunai_1) ? rupiah($d->tunai_1) : '' }}</td>
-                <td align="right">{{ !empty($d->kredit_1) ? rupiah($d->kredit_1) : '' }}</td>
-                <td align="right">{{ !empty($d->cash_1) ? rupiah($d->cash_1) : '' }}</td>
-                <td align="right">{{ !empty($d->transfer_1) ? rupiah($d->transfer_1) : '' }}</td>
-                <td align="right">{{ !empty($d->giro_1) ? rupiah($d->giro_1) : '' }}</td>
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $d->nama_pelanggan }}</td>
+                    <td align="right">{{ !empty($d->tunai_1) ? rupiah($d->tunai_1) : '' }}</td>
+                    <td align="right">{{ !empty($d->kredit_1) ? rupiah($d->kredit_1) : '' }}</td>
+                    <td align="right">{{ !empty($d->cash_1) ? rupiah($d->cash_1) : '' }}</td>
+                    <td align="right">{{ !empty($d->transfer_1) ? rupiah($d->transfer_1) : '' }}</td>
+                    <td align="right">{{ !empty($d->giro_1) ? rupiah($d->giro_1) : '' }}</td>
 
-                <td align="right">{{ !empty($d->tunai_2) ? rupiah($d->tunai_2) : '' }}</td>
-                <td align="right">{{ !empty($d->kredit_2) ? rupiah($d->kredit_2) : '' }}</td>
-                <td align="right">{{ !empty($d->cash_2) ? rupiah($d->cash_2) : '' }}</td>
-                <td align="right">{{ !empty($d->transfer_2) ? rupiah($d->transfer_2) : '' }}</td>
-                <td align="right">{{ !empty($d->giro_2) ? rupiah($d->giro_2) : '' }}</td>
+                    <td align="right">{{ !empty($d->tunai_2) ? rupiah($d->tunai_2) : '' }}</td>
+                    <td align="right">{{ !empty($d->kredit_2) ? rupiah($d->kredit_2) : '' }}</td>
+                    <td align="right">{{ !empty($d->cash_2) ? rupiah($d->cash_2) : '' }}</td>
+                    <td align="right">{{ !empty($d->transfer_2) ? rupiah($d->transfer_2) : '' }}</td>
+                    <td align="right">{{ !empty($d->giro_2) ? rupiah($d->giro_2) : '' }}</td>
 
-                <td align="right">{{ !empty($d->tunai_3) ? rupiah($d->tunai_3) : '' }}</td>
-                <td align="right">{{ !empty($d->kredit_3) ? rupiah($d->kredit_3) : '' }}</td>
-                <td align="right">{{ !empty($d->cash_3) ? rupiah($d->cash_3) : '' }}</td>
-                <td align="right">{{ !empty($d->transfer_3) ? rupiah($d->transfer_3) : '' }}</td>
-                <td align="right">{{ !empty($d->giro_3) ? rupiah($d->giro_3) : '' }}</td>
+                    <td align="right">{{ !empty($d->tunai_3) ? rupiah($d->tunai_3) : '' }}</td>
+                    <td align="right">{{ !empty($d->kredit_3) ? rupiah($d->kredit_3) : '' }}</td>
+                    <td align="right">{{ !empty($d->cash_3) ? rupiah($d->cash_3) : '' }}</td>
+                    <td align="right">{{ !empty($d->transfer_3) ? rupiah($d->transfer_3) : '' }}</td>
+                    <td align="right">{{ !empty($d->giro_3) ? rupiah($d->giro_3) : '' }}</td>
 
-                <td align="right">{{ !empty($d->tunai_4) ? rupiah($d->tunai_4) : '' }}</td>
-                <td align="right">{{ !empty($d->kredit_4) ? rupiah($d->kredit_4) : '' }}</td>
-                <td align="right">{{ !empty($d->cash_4) ? rupiah($d->cash_4) : '' }}</td>
-                <td align="right">{{ !empty($d->transfer_4) ? rupiah($d->transfer_4) : '' }}</td>
-                <td align="right">{{ !empty($d->giro_4) ? rupiah($d->giro_4) : '' }}</td>
-                <td align="right">{{ !empty($d->total) ? rupiah($d->total) : '' }}</td>
-                <td align="right">{{ !empty($d->totalbayar) ? rupiah($d->totalbayar) : '' }}</td>
-                <td align="right">{{ !empty($d->qty /4) ? rupiah($d->qty/4) : '' }}</td>
-            </tr>
+                    <td align="right">{{ !empty($d->tunai_4) ? rupiah($d->tunai_4) : '' }}</td>
+                    <td align="right">{{ !empty($d->kredit_4) ? rupiah($d->kredit_4) : '' }}</td>
+                    <td align="right">{{ !empty($d->cash_4) ? rupiah($d->cash_4) : '' }}</td>
+                    <td align="right">{{ !empty($d->transfer_4) ? rupiah($d->transfer_4) : '' }}</td>
+                    <td align="right">{{ !empty($d->giro_4) ? rupiah($d->giro_4) : '' }}</td>
+                    <td align="right">{{ !empty($d->total) ? rupiah($d->total) : '' }}</td>
+                    <td align="right">{{ !empty($d->totalbayar) ? rupiah($d->totalbayar) : '' }}</td>
+                    <td align="right">{{ !empty($d->qty / 4) ? rupiah($d->qty / 4) : '' }}</td>
+                </tr>
             @endforeach
         </tbody>
 
     </table>
 </body>
+
 </html>
