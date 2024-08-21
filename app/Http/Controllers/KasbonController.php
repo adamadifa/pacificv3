@@ -273,12 +273,14 @@ class KasbonController extends Controller
 
         $tgl = explode("-", $tgl_kasbon);
         $tahun = substr($tgl[0], 2, 2);
+        $bulan = $tgl[1];
         $kasbon = DB::table("kasbon")
             ->whereRaw('YEAR(tgl_kasbon)="' . $tgl[0] . '"')
+            ->whereRaw('MONTH(tgl_kasbon)="' . $tgl[1] . '"')
             ->orderBy("no_kasbon", "desc")
             ->first();
         $last_nokasbon = $kasbon != null ? $kasbon->no_kasbon : '';
-        $no_kasbon  = buatkode($last_nokasbon, "KB" . $tahun, 3);
+        $no_kasbon  = buatkode($last_nokasbon, "KB" . $tahun . $bulan, 3);
 
         $id_user = Auth::user()->id;
         $cekpembayaran = DB::table('kasbon_potongangaji')->where('bulan', $bln_cicilan)->where('tahun', $thn_cicilan)->count();

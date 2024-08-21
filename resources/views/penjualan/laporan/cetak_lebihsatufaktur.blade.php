@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,28 +36,28 @@
         a {
             color: white;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN LEBIH SATU FAKTUR<br>
         PER TANGGAL {{ DateToIndo2($tanggal) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
     </b>
@@ -95,8 +96,7 @@
             ?>
 
             <?php
-
-
+            
             ?>
 
             <tr>
@@ -147,4 +147,5 @@
         </tfoot>
     </table>
 </body>
+
 </html>

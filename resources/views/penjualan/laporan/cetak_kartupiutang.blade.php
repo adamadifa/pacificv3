@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Penjualan {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Penjualan {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,34 +32,34 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN KARTU PIUTANG<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
         @if ($pelanggan != null)
-        PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
+            PELANGGAN {{ strtoupper($pelanggan->nama_pelanggan) }}
         @else
-        SEMUA PELANGGAN
+            SEMUA PELANGGAN
         @endif
     </b>
     <br>
@@ -187,7 +188,7 @@
                 <td><?php echo $no; ?></td>
                 <td><?php echo DateToIndo2($k->tgltransaksi); ?></td>
                 <td>{{ $k->lastpayment != null ? DateToIndo2($k->lastpayment) : '' }}</td>
-                <td><?php echo $k->usiapiutang . " Hari"; ?></td>
+                <td><?php echo $k->usiapiutang . ' Hari'; ?></td>
                 <td><?php echo $kategori; ?></td>
                 <td><?php echo $k->no_fak_penj; ?></td>
                 <td><?php echo $k->kode_pelanggan; ?></td>
@@ -198,7 +199,7 @@
                 <td><?php echo $k->hari; ?></td>
 
                 <td>
-                    <?php echo $k->jatuhtempo . " Hari"; ?>
+                    <?php echo $k->jatuhtempo . ' Hari'; ?>
                 </td>
 
                 <td style="text-align:right"><?php echo number_format($k->totalpiutang, '0', '', '.'); ?></td>
@@ -239,4 +240,5 @@
         </tr>
     </table>
 </body>
+
 </html>
