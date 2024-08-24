@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 <form action="/bpjskesehatan/store" method="POST" id="frmBpjs">
     @csrf
@@ -26,7 +25,7 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">Pilih Karyawan</option>
                     @foreach ($karyawan as $d)
-                    <option value="{{ $d->nik }}"> {{ $d->nik }} - {{ $d->nama_karyawan }}</option>
+                        <option value="{{ $d->nik }}"> {{ $d->nik }} - {{ $d->nama_karyawan }}</option>
                     @endforeach
                 </select>
             </div>
@@ -46,7 +45,7 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $("#nik").selectize();
     $("#iuran").maskMoney();
@@ -57,36 +56,25 @@
         var iuran = $("#iuran").val();
         if (tgl_berlaku == "") {
             swal({
-                title: 'Oops'
-                , text: 'Tanggal Berlaku Harus Diisi !'
-                , icon: 'warning'
-                , showConfirmButton: false
+                title: 'Oops',
+                text: 'Tanggal Berlaku Harus Diisi !',
+                icon: 'warning',
+                showConfirmButton: false
             }).then(function() {
                 $("#tgl_berlaku").focus();
             });
             return false;
         } else if (nik == "") {
             swal({
-                title: 'Oops'
-                , text: 'Nik Harus Diisi !'
-                , icon: 'warning'
-                , showConfirmButton: false
+                title: 'Oops',
+                text: 'Nik Harus Diisi !',
+                icon: 'warning',
+                showConfirmButton: false
             }).then(function() {
                 $("#nik").focus();
-            });
-            return false;
-        } else if (iuran == "" || iuran == 0) {
-            swal({
-                title: 'Oops'
-                , text: 'Jumlah Iuran Harus Diisi !'
-                , icon: 'warning'
-                , showConfirmButton: false
-            }).then(function() {
-                $("#iuran").focus();
             });
             return false;
         }
 
     });
-
 </script>
