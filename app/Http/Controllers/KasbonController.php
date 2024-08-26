@@ -277,6 +277,7 @@ class KasbonController extends Controller
         $kasbon = DB::table("kasbon")
             ->whereRaw('YEAR(tgl_kasbon)="' . $tgl[0] . '"')
             ->whereRaw('MONTH(tgl_kasbon)="' . $tgl[1] . '"')
+            ->whereRaw('LENGTH(no_kasbon)=9')
             ->orderBy("no_kasbon", "desc")
             ->first();
         $last_nokasbon = $kasbon != null ? $kasbon->no_kasbon : '';

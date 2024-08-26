@@ -112,7 +112,24 @@
         }
         $penyharga = $harganet->penyharga;
 
-        $totalqty = $harganet->qty_AB / $isipcs_ab + $harganet->qty_AR / $isipcs_ar + $harganet->qty_AS / $isipcs_as + $harganet->qty_BB / $isipcs_bb + $harganet->qty_BBP / $isipcs_bbp + $harganet->qty_CG / $isipcs_cg + $harganet->qty_CGG / $isipcs_cgg + $harganet->qty_CG5 / $isipcs_cg5 + $harganet->qty_DEP / $isipcs_dep + $harganet->qty_DS / $isipcs_ds + $harganet->qty_SP / $isipcs_sp + $harganet->qty_SPP / $isipcs_sp + $harganet->qty_SC / $isipcs_sp + $harganet->qty_SP8 / $isipcs_sp + $harganet->qty_SP500 / $isipcs_sp500 + $harganet->qty_BR20 / $isipcs_br20 + $harganet->qty_P1000 / $isipcs_p1000;
+        $totalqty =
+            $harganet->qty_AB / $isipcs_ab +
+            $harganet->qty_AR / $isipcs_ar +
+            $harganet->qty_AS / $isipcs_as +
+            $harganet->qty_BB / $isipcs_bb +
+            $harganet->qty_BBP / $isipcs_bbp +
+            $harganet->qty_CG / $isipcs_cg +
+            $harganet->qty_CGG / $isipcs_cgg +
+            $harganet->qty_CG5 / $isipcs_cg5 +
+            $harganet->qty_DEP / $isipcs_dep +
+            $harganet->qty_DS / $isipcs_ds +
+            $harganet->qty_SP / $isipcs_sp +
+            $harganet->qty_SPP / $isipcs_sp +
+            $harganet->qty_SC / $isipcs_sp +
+            $harganet->qty_SP8 / $isipcs_sp +
+            $harganet->qty_SP500 / $isipcs_sp500 +
+            $harganet->qty_BR20 / $isipcs_br20 +
+            $harganet->qty_P1000 / $isipcs_p1000;
 
         $ratiopeny = $totalqty != 0 ? $penyharga / $totalqty : 0;
         $ratiopeny = $ratiopeny >= 1 ? ROUND($ratiopeny) : 0;
@@ -151,67 +168,67 @@
         <tr style="font-size:14px;">
             <?php
             $bruto_AB_tunai = $harganet->bruto_AB_tunai + ($harganet->bruto_AB_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
-            
+
             $bruto_AB_kredit = $harganet->bruto_AB_kredit + ($harganet->bruto_AB_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
-            
+
             $bruto_AB = $bruto_AB_tunai + $bruto_AB_kredit;
-            
+
             $bruto_AR_tunai = $harganet->bruto_AR_tunai + ($harganet->bruto_AR_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_AR_kredit = $harganet->bruto_AR_kredit + ($harganet->bruto_AR_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_AR = $bruto_AR_tunai + $bruto_AR_kredit;
-            
+
             $bruto_AS_tunai = $harganet->bruto_AS_tunai + ($harganet->bruto_AS_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_AS_kredit = $harganet->bruto_AS_kredit + ($harganet->bruto_AS_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_AS = $bruto_AS_tunai + $bruto_AS_kredit;
-            
+
             $bruto_BB_tunai = $harganet->bruto_BB_tunai + ($harganet->bruto_BB_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_BB_kredit = $harganet->bruto_BB_kredit + ($harganet->bruto_BB_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_BB = $bruto_BB_tunai + $bruto_BB_kredit;
-            
+
             $bruto_BBP_tunai = $harganet->bruto_BBP_tunai + ($harganet->bruto_BBP_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_BBP_kredit = $harganet->bruto_BBP_kredit + ($harganet->bruto_BBP_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_BBP = $bruto_BBP_tunai + $bruto_BBP_kredit;
-            
+
             $bruto_CG_tunai = $harganet->bruto_CG_tunai + ($harganet->bruto_CG_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_CG_kredit = $harganet->bruto_CG_kredit + ($harganet->bruto_CG_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_CG = $bruto_CG_tunai + $bruto_CG_kredit;
-            
+
             $bruto_CGG = $harganet->bruto_CGG + ($harganet->bruto_CGG / $harganet->totalbruto) * $harganet->totalppn;
             $bruto_CGG = $harganet->bruto_CGG + ($harganet->bruto_CGG / $harganet->totalbruto) * $harganet->totalppn;
             $bruto_CGG = $harganet->bruto_CGG + ($harganet->bruto_CGG / $harganet->totalbruto) * $harganet->totalppn;
-            
+
             $bruto_CG5_tunai = $harganet->bruto_CG5_tunai + ($harganet->bruto_CG5_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_CG5_kredit = $harganet->bruto_CG5_kredit + ($harganet->bruto_CG5_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_CG5 = $bruto_CG5_tunai + $bruto_CG5_kredit;
-            
+
             $bruto_DEP_tunai = $harganet->bruto_DEP_tunai + ($harganet->bruto_DEP_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_DEP_kredit = $harganet->bruto_DEP_kredit + ($harganet->bruto_DEP_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_DEP = $bruto_DEP_tunai + $bruto_DEP_kredit;
-            
+
             $bruto_DS_tunai = $harganet->bruto_DS_tunai + ($harganet->bruto_DS_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_DS_kredit = $harganet->bruto_DS_kredit + ($harganet->bruto_DS_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_DS = $bruto_DS_tunai + $bruto_DS_kredit;
-            
+
             $bruto_SP_tunai = $harganet->bruto_SP_tunai + ($harganet->bruto_SP_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_SP_kredit = $harganet->bruto_SP_kredit + ($harganet->bruto_SP_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_SP = $bruto_SP_tunai + $bruto_SP_kredit;
-            
+
             $bruto_SC_tunai = $harganet->bruto_SC_tunai + ($harganet->bruto_SC_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_SC_kredit = $harganet->bruto_SC_kredit + ($harganet->bruto_SC_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_SC = $bruto_SC_tunai + $bruto_SC_kredit;
-            
+
             $bruto_SP8_tunai = $harganet->bruto_SP8_tunai + ($harganet->bruto_SP8_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_SP8_kredit = $harganet->bruto_SP8_kredit + ($harganet->bruto_SP8_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_SP8 = $bruto_SP8_tunai + $bruto_SP8_kredit;
-            
+
             $bruto_SP500_tunai = $harganet->bruto_SP500_tunai + ($harganet->bruto_SP500_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_SP500_kredit = $harganet->bruto_SP500_kredit + ($harganet->bruto_SP500_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_SP500 = $bruto_SP500_tunai + $bruto_SP500_kredit;
-            
+
             $bruto_BR20_tunai = $harganet->bruto_BR20_tunai + ($harganet->bruto_BR20_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_BR20_kredit = $harganet->bruto_BR20_kredit + ($harganet->bruto_BR20_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_BR20 = $bruto_BR20_tunai + $bruto_BR20_kredit;
-            
+
             $bruto_P1000_tunai = $harganet->bruto_P1000_tunai + ($harganet->bruto_P1000_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_P1000_kredit = $harganet->bruto_P1000_kredit + ($harganet->bruto_P1000_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_P1000 = $bruto_P1000_tunai + $bruto_P1000_kredit;
@@ -479,13 +496,13 @@
             $netjual_SP = $harganet->qty_SP != 0 ? ($bruto_SP - $harganet->diskon_SP - $peny_SP - $netretur_SP) / ($harganet->qty_SP / $isipcs_sp) : 0;
             $netjual_SC = $harganet->qty_SC != 0 ? ($bruto_SC - $harganet->diskon_SC - $peny_SC - $netretur_SC) / ($harganet->qty_SC / $isipcs_sc) : 0;
             $netjual_SP8 = $harganet->qty_SP8 != 0 ? ($bruto_SP8 - $harganet->diskon_SP8 - $peny_SP8 - $netretur_SP8) / ($harganet->qty_SP8 / $isipcs_sp8) : 0;
-            
+
             $netjual_SP500 = $harganet->qty_SP500 != 0 ? ($bruto_SP500 - $harganet->diskon_SP500 - $peny_SP500 - $netretur_SP500) / ($harganet->qty_SP500 / $isipcs_sp500) : 0;
-            
+
             $netjual_BR20 = $harganet->qty_BR20 != 0 ? ($bruto_BR20 - $harganet->diskon_BR20 - $peny_BR20 - $netretur_BR20) / ($harganet->qty_BR20 / $isipcs_br20) : 0;
             $netjual_P1000 = $harganet->qty_P1000 != 0 ? ($bruto_P1000 - $harganet->diskon_P1000 - $peny_P1000 - $netretur_P1000) / ($harganet->qty_P1000 / $isipcs_p1000) : 0;
             ?>
-            <td>HARGA JUAL NET</td>
+            <td class="left">HARGA JUAL NET</td>
             <td align="right"><?php echo number_format($netjual_AB, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($netjual_AR, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($netjual_AS, '0', '', '.'); ?></td>
@@ -519,13 +536,13 @@
             $exclude_SP = $harganet->qty_SP != 0 ? ($bruto_SP - $peny_SP - $retur->retur_SP) / ($harganet->qty_SP / $isipcs_sp) : 0;
             $exclude_SC = $harganet->qty_SC != 0 ? ($bruto_SC - $peny_SC - $retur->retur_SC) / ($harganet->qty_SC / $isipcs_sc) : 0;
             $exclude_SP8 = $harganet->qty_SP8 != 0 ? ($bruto_SP8 - $peny_SP8 - $retur->retur_SP8) / ($harganet->qty_SP8 / $isipcs_sp8) : 0;
-            
+
             $exclude_SP500 = $harganet->qty_SP500 != 0 ? ($bruto_SP500 - $peny_SP500 - $retur->retur_SP500) / ($harganet->qty_SP500 / $isipcs_sp500) : 0;
-            
+
             $exclude_BR20 = $harganet->qty_BR20 != 0 ? ($bruto_BR20 - $peny_BR20 - $retur->retur_BR20) / ($harganet->qty_BR20 / $isipcs_br20) : 0;
             $exclude_P1000 = $harganet->qty_P1000 != 0 ? ($bruto_P1000 - $peny_P1000 - $retur->retur_P1000) / ($harganet->qty_P1000 / $isipcs_p1000) : 0;
             ?>
-            <td>HARGA NET (EXLUDE DISKON)</td>
+            <td class="left">HARGA NET (EXLUDE DISKON)</td>
             <td align="right"><?php echo number_format($exclude_AB, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_AR, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_AS, '0', '', '.'); ?></td>
@@ -545,7 +562,7 @@
         </tr>
         <tr style="font-size:14px; background-color:black; color:white">
 
-            <td>HARGA NET(INCLUDE DISKON)</td>
+            <td class="left">HARGA NET(INCLUDE DISKON)</td>
             <td align="right"><?php echo number_format($exclude_AB - ($harganet->qty_AB != 0 ? $harganet->diskon_AB / ($harganet->qty_AB / $isipcs_ab) : 0), '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_AR - ($harganet->qty_AR != 0 ? $harganet->diskon_AR / ($harganet->qty_AR / $isipcs_ar) : 0), '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_AS - ($harganet->qty_AS != 0 ? $harganet->diskon_AS / ($harganet->qty_AS / $isipcs_as) : 0), '0', '', '.'); ?></td>

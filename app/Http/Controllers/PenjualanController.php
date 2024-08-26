@@ -6014,6 +6014,8 @@ class PenjualanController extends Controller
             SUM(potaida) as  potonganAIDA,
             SUM(IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) as potonganSWAN,
 
+
+
             SUM(IFNULL(qtydus_AB,0)
             + IFNULL(qtydus_AR,0)
             + IFNULL(qtydus_AS,0)
@@ -6084,15 +6086,15 @@ class PenjualanController extends Controller
             + IFNULL(qtydus_BR20,0)
             )) * qtydus_AR,0)) as diskon_AR,
 
-            SUM(IFNULL((IFNULL(potaida,0) /
+             SUM(IFNULL((IFNULL(potaida,0) /
             (IFNULL(qtydus_AB,0)
             + IFNULL(qtydus_AR,0)
             + IFNULL(qtydus_AS,0)
             + IFNULL(qtydus_CG,0)
             + IFNULL(qtydus_CGG,0)
-            + IFNULL(qtydus_CG5,0)))
+            + IFNULL(qtydus_CG5,0)
             + IFNULL(qtydus_BR20,0)
-            * qtydus_AS,0)) as diskon_AS,
+            )) * qtydus_AS,0)) as diskon_AS,
 
             SUM(IFNULL((IFNULL(potaida,0) /
             (IFNULL(qtydus_AB,0)
