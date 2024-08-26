@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 <form action="/insentif/store" method="POST" id="frmInsentif">
     @csrf
@@ -26,7 +25,7 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">Pilih Karyawan</option>
                     @foreach ($karyawan as $d)
-                    <option value="{{ $d->nik }}"> {{ $d->nik }} - {{ $d->nama_karyawan }}</option>
+                        <option value="{{ $d->nik }}"> {{ $d->nik }} - {{ $d->nama_karyawan }}</option>
                     @endforeach
                 </select>
             </div>
@@ -102,7 +101,14 @@
             <x-inputtext label="Kinerja" field="im_kinerja" icon="feather icon-file" right />
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-4">
+            <label for="" class="form-label">Kendaraan</label>
+        </div>
+        <div class="col-8">
+            <x-inputtext label="Kendaraan" field="im_kendaraan" icon="feather icon-file" right />
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -111,7 +117,7 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $("#nik").selectize();
     $("#iu_masakerja,#iu_lembur,#iu_penempatan,#iu_kpi,#im_ruanglingkup,#im_penempatan,#im_kinerja").maskMoney();
@@ -121,20 +127,20 @@
         var tgl_berlaku = $("#tgl_berlaku").val();
         if (tgl_berlaku == "") {
             swal({
-                title: 'Oops'
-                , text: 'Tanggal Berlaku Harus Diisi !'
-                , icon: 'warning'
-                , showConfirmButton: false
+                title: 'Oops',
+                text: 'Tanggal Berlaku Harus Diisi !',
+                icon: 'warning',
+                showConfirmButton: false
             }).then(function() {
                 $("#tgl_berlaku").focus();
             });
             return false;
         } else if (nik == "") {
             swal({
-                title: 'Oops'
-                , text: 'Nik Harus Diisi !'
-                , icon: 'warning'
-                , showConfirmButton: false
+                title: 'Oops',
+                text: 'Nik Harus Diisi !',
+                icon: 'warning',
+                showConfirmButton: false
             }).then(function() {
                 $("#nik").focus();
             });
@@ -142,5 +148,4 @@
         }
 
     });
-
 </script>

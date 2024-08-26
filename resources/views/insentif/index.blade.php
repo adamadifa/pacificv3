@@ -27,8 +27,7 @@
                         <div class="card">
                             @if (in_array($level, $insentif_tambah))
                                 <div class="card-header">
-                                    <a href="#" id="tambahinsentif" class="btn btn-primary"><i
-                                            class="fa fa-plus mr-1"></i> Tambah Data</a>
+                                    <a href="#" id="tambahinsentif" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                                 </div>
                             @endif
 
@@ -36,8 +35,8 @@
                                 <form action="/insentif">
                                     <div class="row">
                                         <div class="col-lg-10 col-sm-10">
-                                            <x-inputtext label="Nama Karyawan" field="nama_karyawan_search"
-                                                icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
+                                            <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users"
+                                                value="{{ Request('nama_karyawan_search') }}" />
                                         </div>
                                         <div class="col-lg-2 col-sm-12">
                                             <button type="submit" class="btn btn-primary"><i class="fa fa-search mr-1"></i>
@@ -55,7 +54,7 @@
                                                 <th rowspan="2">Nama Karyawan</th>
                                                 <th rowspan="2">Jabatan</th>
                                                 <th colspan="4">Insentif Umum</th>
-                                                <th colspan="3">Insentif Manager</th>
+                                                <th colspan="4">Insentif Manager</th>
                                                 <th rowspan="2">Tgl Berlaku</th>
                                                 <th rowspan="2">Aksi</th>
                                             </tr>
@@ -67,6 +66,7 @@
                                                 <th>Ruang Lingkup</th>
                                                 <th>Penempatan</th>
                                                 <th>Kinerja</th>
+                                                <th>Kendaraan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -85,14 +85,13 @@
                                                     <td class="text-right">{{ rupiah($d->im_ruanglingkup) }}</td>
                                                     <td class="text-right">{{ rupiah($d->im_penempatan) }}</td>
                                                     <td class="text-right">{{ rupiah($d->im_kinerja) }}</td>
+                                                    <td class="text-right">{{ rupiah($d->im_kendaraan) }}</td>
                                                     <td class="text-right">{{ $d->tgl_berlaku }}</td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="Basic example">
                                                             @if (in_array($level, $insentif_edit))
-                                                                <a class="ml-1 edit"
-                                                                    kode_insentif="{{ Crypt::encrypt($d->kode_insentif) }}"
-                                                                    href="#"><i
-                                                                        class="feather icon-edit success"></i></a>
+                                                                <a class="ml-1 edit" kode_insentif="{{ Crypt::encrypt($d->kode_insentif) }}"
+                                                                    href="#"><i class="feather icon-edit success"></i></a>
                                                             @endif
                                                             @if (in_array($level, $insentif_hapus))
                                                                 <form method="POST" class="deleteform"
@@ -126,8 +125,7 @@
 
 
     <!-- Input Gaji -->
-    <div class="modal fade text-left" id="mdlinputinsentif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdlinputinsentif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -143,8 +141,7 @@
         </div>
     </div>
 
-    <div class="modal fade text-left" id="mdleditinsentif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditinsentif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">

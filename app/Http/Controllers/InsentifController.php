@@ -67,6 +67,7 @@ class InsentifController extends Controller
         $im_ruanglingkup = isset($request->im_ruanglingkup) ? str_replace(".", "", $request->im_ruanglingkup) : 0;
         $im_penempatan = isset($request->im_penempatan) ? str_replace(".", "", $request->im_penempatan) : 0;
         $im_kinerja = isset($request->im_kinerja) ? str_replace(".", "", $request->im_kinerja) : 0;
+        $im_kendaraan = isset($request->im_kendaraan) ? str_replace(".", "", $request->im_kendaraan) : 0;
 
         $tgl_berlaku = $request->tgl_berlaku;
 
@@ -90,6 +91,7 @@ class InsentifController extends Controller
             'im_ruanglingkup' => $im_ruanglingkup,
             'im_penempatan' => $im_penempatan,
             'im_kinerja' => $im_kinerja,
+            'im_kendaraan' => $im_kendaraan,
             'tgl_berlaku' => $tgl_berlaku
         ];
         try {
