@@ -314,7 +314,7 @@ class LaporanhrdController extends Controller
                 $field_date
                 master_karyawan.*,nama_group,nama_dept,nama_jabatan,nama_cabang,klasifikasi,no_rekening,
                 iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
-                im_ruanglingkup, im_penempatan,im_kinerja,
+                im_ruanglingkup, im_penempatan,im_kinerja,im_kendaran,
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
                 cicilan_pjp,jml_kasbon,jml_nonpjp,jml_pengurang,jml_penambah,
@@ -361,7 +361,7 @@ class LaporanhrdController extends Controller
         $query->leftJoin(
             DB::raw("(
                     SELECT nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
-                    im_ruanglingkup,im_penempatan,im_kinerja
+                    im_ruanglingkup,im_penempatan,im_kinerja,im_kendaraan
                     FROM hrd_masterinsentif WHERE kode_insentif IN (SELECT MAX(kode_insentif) as kode_insentif FROM hrd_masterinsentif
                     WHERE tgl_berlaku <= '$berlakugaji'  GROUP BY nik)
                 ) hrdinsentif"),
@@ -736,7 +736,7 @@ class LaporanhrdController extends Controller
                 $field_date
                 master_karyawan.*,nama_group,nama_dept,nama_jabatan,nama_cabang,klasifikasi,no_rekening,
                 iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
-                im_ruanglingkup, im_penempatan,im_kinerja,
+                im_ruanglingkup, im_penempatan,im_kinerja,im_kendaraan,
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
                 cicilan_pjp,jml_kasbon,jml_nonpjp,jml_pengurang,jml_penambah,
@@ -783,7 +783,7 @@ class LaporanhrdController extends Controller
         $query->leftJoin(
             DB::raw("(
                     SELECT nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
-                    im_ruanglingkup,im_penempatan,im_kinerja
+                    im_ruanglingkup,im_penempatan,im_kinerja,im_kendaraan
                     FROM hrd_masterinsentif WHERE kode_insentif IN (SELECT MAX(kode_insentif) as kode_insentif FROM hrd_masterinsentif
                     WHERE tgl_berlaku <= '$berlakugaji'  GROUP BY nik)
                 ) hrdinsentif"),

@@ -105,7 +105,7 @@
                     <th rowspan="2">GAJI POKOK</th>
                     <th colspan="6">TUNJANGAN</th>
                     <th colspan="4">INSENTIF UMUM</th>
-                    <th colspan="3">INSENTIF MANAGER</th>
+                    <th colspan="4">INSENTIF MANAGER</th>
                     <th rowspan="2">UPAH</th>
                     <th rowspan="2">JUMLAH<br>INSENTIF</th>
                     <th rowspan="2">Σ JAM KERJA</th>
@@ -154,6 +154,7 @@
                     <th>RUANG<br> LINGKUP</th>
                     <th>PENEMPATAN</th>
                     <th>KINERJA</th>
+                    <th>KENDARAAN</th>
                     <th>JAM</th>
                     <th>JUMLAH</th>
                     <th>JAM</th>
@@ -194,6 +195,7 @@
                     $total_im_ruanglingkup = 0; // Total All IM Ruang Lingkup
                     $total_im_penempatan = 0; // Total All IM Penempatan
                     $total_im_kinerja = 0; // Total All IM Kinerja
+                    $total_im_kendaraan = 0; // Total All IM Kendaraan
 
                     $total_upah = 0; // Total All Upah
                     $total_insentif = 0; // Total All Insentif
@@ -1141,7 +1143,8 @@
                             $d->iu_kpi +
                             $d->im_ruanglingkup +
                             $d->im_penempatan +
-                            $d->im_kinerja;
+                            $d->im_kinerja +
+                            $d->im_kendaraan;
                     @endphp
 
                     @if ($d->nama_jabatan == 'SECURITY')
@@ -1222,6 +1225,7 @@
                         $total_im_ruanglingkup += $d->im_ruanglingkup;
                         $total_im_penempatan += $d->im_penempatan;
                         $total_im_kinerja += $d->im_kinerja;
+                        $total_im_kendaraan += $d->im_kendaraan;
 
                         $total_upah += $upah;
                         $total_insentif += $jmlinsentif;
@@ -1324,6 +1328,7 @@
                         <td align="right">{{ !empty($d->im_ruanglingkup) ? rupiah($d->im_ruanglingkup) : '' }}</td>
                         <td align="right">{{ !empty($d->im_penempatan) ? rupiah($d->im_penempatan) : '' }}</td>
                         <td align="right">{{ !empty($d->im_kinerja) ? rupiah($d->im_kinerja) : '' }}</td>
+                        <td align="right">{{ !empty($d->im_kendaraan) ? rupiah($d->im_kendaraan) : '' }}</td>
                         <td align="right">
                             {{ !empty($upah) ? rupiah($upah) : '' }}
                         </td>
@@ -1415,6 +1420,8 @@
                     <th style="text-align: right">{{ rupiah($total_im_ruanglingkup) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_penempatan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_kinerja) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_kendaraan) }}</th>
+
 
                     <th style="text-align: right">{{ rupiah($total_upah) }}</th>
                     <th style="text-align: right">{{ rupiah($total_insentif) }}</th>
