@@ -533,18 +533,32 @@ function lockreport($tanggal)
     $set_tanggal_cabang = [
         'SKB' => '2023-01-01'
     ];
-    if ($tanggal < '2023-01-01' && !empty($tanggal)) {
-        echo "Data Belum Ada / Tidak Ditemukan";
-        die;
+
+    if (auth()->user()->level == 'manager accounting') {
+        if ($tanggal < '2018-01-01' && !empty($tanggal)) {
+            echo "Data Belum Ada / Tidak Ditemukan";
+            die;
+        } else {
+            return "OK";
+        }
     } else {
-        return "OK";
+        if ($tanggal < '2023-01-01' && !empty($tanggal)) {
+            echo "Data Belum Ada / Tidak Ditemukan";
+            die;
+        } else {
+            return "OK";
+        }
     }
 }
 
 
 function startreport()
 {
-    $startreport = "2023-01-01";
+    if (auth()->user()->level == 'manager accounting') {
+        $startreport = "2018-01-01";
+    } else {
+        $startreport = "2023-01-01";
+    }
     return $startreport;
 }
 
