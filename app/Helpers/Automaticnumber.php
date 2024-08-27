@@ -565,7 +565,12 @@ function startreport()
 
 function startyear()
 {
-    $startyear = 2023;
+    if (auth()->user()->level == 'manager accounting') {
+        $startyear = 2018;
+    } else {
+        $startyear = 2023;
+    }
+    //$startyear = 2023;
     return $startyear;
 }
 
