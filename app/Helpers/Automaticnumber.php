@@ -534,7 +534,7 @@ function lockreport($tanggal)
         'SKB' => '2023-01-01'
     ];
 
-    if (auth()->user()->level == 'manager accounting') {
+    if (auth()->user()->level == 'manager accounting' || auth()->user()->level == 'admin pajak') {
         if ($tanggal < '2018-01-01' && !empty($tanggal)) {
             echo "Data Belum Ada / Tidak Ditemukan";
             die;
@@ -554,7 +554,7 @@ function lockreport($tanggal)
 
 function startreport()
 {
-    if (auth()->user()->level == 'manager accounting') {
+    if (auth()->user()->level == 'manager accounting' || auth()->user()->level == 'admin pajak') {
         $startreport = "2018-01-01";
     } else {
         $startreport = "2023-01-01";
@@ -565,7 +565,7 @@ function startreport()
 
 function startyear()
 {
-    if (auth()->user()->level == 'manager accounting') {
+    if (auth()->user()->level == 'manager accounting' || auth()->user()->level == 'admin pajak') {
         $startyear = 2018;
     } else {
         $startyear = 2023;
