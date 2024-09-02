@@ -1947,7 +1947,7 @@
                     <td style="text-align:right">{{ rupiah($total_im_ruanglingkup_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_penempatan_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_kinerja_administrasi) }}</td>
-                    <td style="text-align:right">{{ rupiah($total_im_kendaraaan_administrasi) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_im_kendaraan_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_upah_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_insentif_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_jamkerja_administrasi) }}</td>
@@ -2582,6 +2582,7 @@
                     <th style="text-align: right">{{ rupiah($total_im_ruanglingkup_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_penempatan_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_kinerja_perusahaan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_kendaraan_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_upah_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_insentif_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_jamkerja_perusahaan) }}</th>
