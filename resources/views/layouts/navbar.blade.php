@@ -99,14 +99,14 @@
                                 </a>
                             </li>
                         @endif
-                        @if (in_array($level, $supplier_view))
+                        {{-- @if (in_array($level, $supplier_view))
                             <li class="{{ request()->is(['supplier', 'supplier/*']) ? 'active' : '' }}">
                                 <a href="/supplier">
                                     <i class="feather icon-users"></i>
                                     <span class="menu-item">Supplier</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $barang_view))
                             <li class="{{ request()->is(['barang', 'barang/*']) ? 'active' : '' }}">
                                 <a href="/barang">
@@ -115,14 +115,14 @@
                                 </a>
                             </li>
                         @endif
-                        @if (in_array($level, $barangpembelian))
+                        {{-- @if (in_array($level, $barangpembelian))
                             <li class="{{ request()->is(['barangpembelian', 'barangpembelian/*']) ? 'active' : '' }}">
                                 <a href="/barangpembelian">
                                     <i class="feather icon-grid"></i>
                                     <span class="menu-item">Barang <small>(Pembelian)</small></span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $harga_view))
                             <li class="{{ request()->is(['harga', 'harga/*']) ? 'active' : '' }}">
                                 <a href="/harga">
@@ -155,7 +155,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if (in_array($level, $karyawan_view))
+                        {{-- @if (in_array($level, $karyawan_view))
                             <li class="{{ request()->is(['karyawan', 'karyawan/*']) ? 'active' : '' }}">
                                 <a href="/karyawan">
                                     <i class="feather icon-users"></i>
@@ -170,8 +170,8 @@
                                     </a>
                                 </li>
                             @endif
-                        @endif
-                        @if (in_array($level, $gaji_menu))
+                        @endif --}}
+                        {{-- @if (in_array($level, $gaji_menu))
                             <li class="{{ request()->is(['gaji', 'gaji/*']) ? 'active' : '' }}">
                                 <a href="/gaji">
                                     <i class="feather icon-dollar-sign"></i>
@@ -201,7 +201,7 @@
                                     <span class="menu-item" data-i18n="Second Level">BPJS Kesehatan</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $bufferlimit))
                             <li class="{{ request()->is(['bufferlimit', 'bufferlimit/*']) ? 'active' : '' }}">
                                 <a href="/bufferlimit">
@@ -257,7 +257,7 @@
                     </a>
                 </li>
             @endif
-            @if (in_array($level, $produksi_menu))
+            {{-- @if (in_array($level, $produksi_menu))
                 <li class=" nav-item">
                     <a href="#"><i class="fa fa-cubes success"></i><span class="menu-title">Produksi</span></a>
                     <ul class="menu-content">
@@ -363,12 +363,12 @@
                         @endif
                     </ul>
                 </li>
-            @endif
+            @endif --}}
             @if (in_array($level, $gudang_menu))
                 <li class=" nav-item">
                     <a href="#"><i class="fa fa-building-o" style="color:rgb(167, 69, 4)"></i><span class="menu-title">Gudang</span></a>
                     <ul class="menu-content">
-                        @if (in_array($level, $gudang_logistik_menu))
+                        {{-- @if (in_array($level, $gudang_logistik_menu))
                             <li>
                                 <a href="/gudanglogistik">
                                     <i class="feather icon-circle"></i>
@@ -412,8 +412,8 @@
 
                                 </ul>
                             </li>
-                        @endif
-                        @if (in_array($level, $gudang_bahan_menu))
+                        @endif --}}
+                        {{-- @if (in_array($level, $gudang_bahan_menu))
                             <li>
                                 <a href="/gudangbahan">
                                     <i class="feather icon-circle"></i>
@@ -456,8 +456,8 @@
 
                                 </ul>
                             </li>
-                        @endif
-                        @if (in_array($level, $gudang_jadi_menu))
+                        @endif --}}
+                        {{-- @if (in_array($level, $gudang_jadi_menu))
                             <li>
                                 <a href="#">
                                     <i class="feather icon-circle"></i>
@@ -535,7 +535,7 @@
 
                                 </ul>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $gudang_cabang_menu))
                             <li>
                                 <a href="#">
@@ -1162,8 +1162,8 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                        <<<<<<< HEAD
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <<<<<<< HEAD
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                dan kasir")
                                     =======
                                     dan kasir")
                                     >>>>>>> 009703521354cbb89cdf1e619f44292366c48666
