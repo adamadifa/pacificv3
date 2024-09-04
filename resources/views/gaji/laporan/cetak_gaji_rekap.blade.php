@@ -97,7 +97,7 @@
                     <th rowspan="2">GAJI POKOK</th>
                     <th colspan="6">TUNJANGAN</th>
                     <th colspan="4">INSENTIF UMUM</th>
-                    <th colspan="3">INSENTIF MANAGER</th>
+                    <th colspan="4">INSENTIF MANAGER</th>
                     <th rowspan="2">UPAH</th>
                     <th rowspan="2">JUMLAH<br>INSENTIF</th>
                     <th rowspan="2">Σ JAM KERJA</th>
@@ -136,6 +136,7 @@
                     <th>RUANG<br> LINGKUP</th>
                     <th>PENEMPATAN</th>
                     <th>KINERJA</th>
+                    <th>KENDARAAN</th>
                     <th>JAM</th>
                     <th>JUMLAH</th>
                     <th>JAM</th>
@@ -278,6 +279,14 @@
                     $total_im_kinerja_tktl = 0;
                     $total_im_kinerja_mp = 0;
                     $total_im_kinerja_pcf = 0;
+
+                    $total_im_kendaraan = 0;
+                    $total_im_kendaraan_administrasi = 0;
+                    $total_im_kendaraan_penjualan = 0;
+                    $total_im_kendaraan_tkl = 0;
+                    $total_im_kendaraan_tktl = 0;
+                    $total_im_kendaraan_mp = 0;
+                    $total_im_kendaraan_pcf = 0;
 
                     //Upah
                     $total_upah = 0;
@@ -749,33 +758,23 @@
 
                                         if ($d->nama_jabatan == 'SPG' || $d->nama_jabatan == 'SPB') {
                                             $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                            $jam_pulang_tanggal = !empty($jam_out_presensi)
-                                                ? $tgl_pulang . ' ' . $jam_pulang
-                                                : '';
+                                            $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
                                         } else {
-                                            $jam_pulang =
-                                                $datapresensi[4] != 'NA'
-                                                    ? date('H:i', strtotime($datapresensi[4]))
-                                                    : '';
-                                            $jam_pulang_tanggal =
-                                                $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                            $jam_pulang = $datapresensi[4] != 'NA' ? date('H:i', strtotime($datapresensi[4])) : '';
+                                            $jam_pulang_tanggal = $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
                                         }
                                     } else {
                                         $jam_masuk = $jam_in_presensi;
                                         $jam_masuk_tanggal = $tgl_presensi . ' ' . $jam_masuk;
                                         $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                        $jam_pulang_tanggal = !empty($jam_out_presensi)
-                                            ? $tgl_pulang . ' ' . $jam_pulang
-                                            : '';
+                                        $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
                                     }
                                 } else {
                                     if (!empty($ceklibur) || !empty($cekliburpenggantiminggu)) {
                                         $jam_masuk = $jam_in_presensi;
                                         $jam_masuk_tanggal = $tgl_presensi . ' ' . $jam_masuk;
                                         $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                        $jam_pulang_tanggal = !empty($jam_out_presensi)
-                                            ? $tgl_pulang . ' ' . $jam_pulang
-                                            : '';
+                                        $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
                                     } else {
                                         if ($d->nama_jabatan == 'SPG' || $d->nama_jabatan == 'SPB' || !empty($cekwfh)) {
                                             $jam_masuk = $jam_in_presensi;
@@ -787,27 +786,19 @@
 
                                         if ($d->nama_jabatan == 'SPG' || $d->nama_jabatan == 'SPB' || !empty($cekwfh)) {
                                             $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : '';
-                                            $jam_pulang_tanggal = !empty($jam_out_presensi)
-                                                ? $tgl_pulang . ' ' . $jam_pulang
-                                                : '';
+                                            $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang . ' ' . $jam_pulang : '';
                                         } else {
-                                            $jam_pulang =
-                                                $datapresensi[4] != 'NA'
-                                                    ? date('H:i', strtotime($datapresensi[4]))
-                                                    : '';
-                                            $jam_pulang_tanggal =
-                                                $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
+                                            $jam_pulang = $datapresensi[4] != 'NA' ? date('H:i', strtotime($datapresensi[4])) : '';
+                                            $jam_pulang_tanggal = $datapresensi[4] != 'NA' ? $tgl_pulang . ' ' . $jam_pulang : '';
                                         }
                                     }
                                 }
 
                                 //Keluar Kantor
                                 $jam_keluar = $datapresensi[9] != 'NA' ? date('H:i', strtotime($datapresensi[9])) : ''; // Jam Keluar Kantor
-                                $jam_masuk_kk =
-                                    $datapresensi[10] != 'NA' ? date('H:i', strtotime($datapresensi[10])) : ''; //Jam masuk Keluar Kantor
+                                $jam_masuk_kk = $datapresensi[10] != 'NA' ? date('H:i', strtotime($datapresensi[10])) : ''; //Jam masuk Keluar Kantor
 
-                                $total_jam =
-                                    $namahari != 'Sabtu' ? ($datapresensi[11] != 'NA' ? $datapresensi[11] : 0) : 5; // Total Jam Kerja Dalam 1 Hari
+                                $total_jam = $namahari != 'Sabtu' ? ($datapresensi[11] != 'NA' ? $datapresensi[11] : 0) : 5; // Total Jam Kerja Dalam 1 Hari
 
                                 //Pengajuan Izin
                                 $sid = $datapresensi[12] != 'NA' ? $datapresensi[12] : ''; //SID
@@ -816,30 +807,21 @@
 
                                 //Jam Istirahat
                                 $jam_istirahat = $datapresensi[14];
-                                $jam_istirahat_presensi =
-                                    $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
-                                $jam_istirahat_presensi_tanggal =
-                                    $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_istirahat_presensi : '';
+                                $jam_istirahat_presensi = $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
+                                $jam_istirahat_presensi_tanggal = $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_istirahat_presensi : '';
 
-                                $jam_awal_istirahat =
-                                    $datapresensi[13] != 'NA' ? date('H:i', strtotime($datapresensi[13])) : '';
-                                $jam_awal_istirahat_tanggal =
-                                    $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_awal_istirahat : '';
+                                $jam_awal_istirahat = $datapresensi[13] != 'NA' ? date('H:i', strtotime($datapresensi[13])) : '';
+                                $jam_awal_istirahat_tanggal = $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_awal_istirahat : '';
 
-                                $jam_akhir_istirahat =
-                                    $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
-                                $jam_akhir_istirahat_tanggal =
-                                    $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_akhir_istirahat : '';
+                                $jam_akhir_istirahat = $datapresensi[14] != 'NA' ? date('H:i', strtotime($datapresensi[14])) : '';
+                                $jam_akhir_istirahat_tanggal = $datapresensi[14] != 'NA' ? $tgl_pulang . ' ' . $jam_akhir_istirahat : '';
 
                                 //Menghitung Jam Keterlambatan
                                 if (!empty($jam_in)) {
                                     if ($jam_in_tanggal > $jam_masuk_tanggal) {
                                         //Hitung Jam Keterlambatan
                                         $j1 = strtotime($jam_masuk_tanggal);
-                                        if (
-                                            $jam_in_tanggal > $jam_awal_istirahat_tanggal &&
-                                            !empty($jam_awal_istirahat_tanggal)
-                                        ) {
+                                        if ($jam_in_tanggal > $jam_awal_istirahat_tanggal && !empty($jam_awal_istirahat_tanggal)) {
                                             $j2 = strtotime($jam_awal_istirahat_tanggal);
                                         } else {
                                             $j2 = strtotime($jam_in_tanggal);
@@ -884,8 +866,7 @@
                                 $jt = !empty($jt) ? $jt : 0;
 
                                 if (!empty($jam_keluar)) {
-                                    $jam_keluar_tanggal =
-                                        $datapresensi[9] != 'NA' ? $tgl_pulang . ' ' . $jam_keluar : '';
+                                    $jam_keluar_tanggal = $datapresensi[9] != 'NA' ? $tgl_pulang . ' ' . $jam_keluar : '';
                                     if (!empty($jam_masuk_kk)) {
                                         $jam_masuk_kk_tanggal = $tgl_pulang . ' ' . $jam_masuk_kk;
                                     } else {
@@ -903,8 +884,7 @@
 
                                     //Tambah 0 di Depan Jika < 10
                                     $jkeluarkantor = $jamkeluarkantor <= 9 ? '0' . $jamkeluarkantor : $jamkeluarkantor;
-                                    $mkeluarkantor =
-                                        $menitkeluarkantor <= 9 ? '0' . $menitkeluarkantor : $menitkeluarkantor;
+                                    $mkeluarkantor = $menitkeluarkantor <= 9 ? '0' . $menitkeluarkantor : $menitkeluarkantor;
 
                                     if (empty($jam_masuk_kk)) {
                                         if ($total_jam == 7) {
@@ -986,10 +966,7 @@
 
                                 //Menghitung total Jam
                                 //Menentukan Jam Absen Pulang
-                                if (
-                                    $jam_out_tanggal > $jam_awal_istirahat_tanggal &&
-                                    $jam_out_tanggal <= $jam_akhir_istirahat_tanggal
-                                ) {
+                                if ($jam_out_tanggal > $jam_awal_istirahat_tanggal && $jam_out_tanggal <= $jam_akhir_istirahat_tanggal) {
                                     $jout = $jam_awal_istirahat_tanggal; //Jika Pulang Lebih dari Jam Awal Istirhat dan Kurang dari Jam AKhir Istirahat
                                 } else {
                                     $jout = $jam_out_tanggal; // Jam Absen Pulang Sesuai Dengan Jam Absen Pulang
@@ -1049,12 +1026,7 @@
                                                 $grandtotaljam = $grandtotaljam / 2;
                                             }
 
-                                            if (
-                                                $jmlsid > 5 &&
-                                                $d->nik == '21.10.460' &&
-                                                $bulan == 9 &&
-                                                ($tahun = 2023)
-                                            ) {
+                                            if ($jmlsid > 5 && $d->nik == '21.10.460' && $bulan == 9 && ($tahun = 2023)) {
                                                 if ($namahari != 'Minggu') {
                                                     if ($namahari == 'Sabtu') {
                                                         $grandtotaljam = $grandtotaljam - 1.25;
@@ -1325,11 +1297,7 @@
                                 $izinsakit = 0;
 
                             @endphp
-                            @if (
-                                !empty($ceklibur) ||
-                                    !empty($cekliburpenggantiminggu) ||
-                                    !empty($cekwfh) ||
-                                    (!empty($cekwfhfull) && $cekmasakerja >= 3))
+                            @if (!empty($ceklibur) || !empty($cekliburpenggantiminggu) || !empty($cekwfh) || (!empty($cekwfhfull) && $cekmasakerja >= 3))
                                 @php
                                     $tidakhadir = 0; // Dihitung Hadir dan Full Jam Kerja
                                 @endphp
@@ -1377,9 +1345,7 @@
 
                                     $jmldirumahkan += 1;
                                     $totaljamdirumahkan =
-                                        $jamdirumahkan +
-                                        $tambahjamdirumahkan -
-                                        (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
+                                        $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
                                     $totaldirumahkan += $totaljamdirumahkan;
                                 @endphp
                             @endif
@@ -1434,14 +1400,7 @@
                         $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_harilibur_shift_3;
 
                         //UPAH
-                        $upah =
-                            $d->gaji_pokok +
-                            $d->t_jabatan +
-                            $d->t_masakerja +
-                            $d->t_tanggungjawab +
-                            $d->t_makan +
-                            $d->t_istri +
-                            $d->t_skill;
+                        $upah = $d->gaji_pokok + $d->t_jabatan + $d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
 
                         //Upah Per Jam
                         $upah_perjam = $upah / 173;
@@ -1454,7 +1413,8 @@
                             $d->iu_kpi +
                             $d->im_ruanglingkup +
                             $d->im_penempatan +
-                            $d->im_kinerja;
+                            $d->im_kinerja +
+                            $d->im_kendaraan;
                     @endphp
 
                     @if ($d->nama_jabatan == 'SECURITY')
@@ -1481,22 +1441,15 @@
                         @php
                             $upah_ot_1 = $upah_perjam * 1.5 * $total_overtime_1;
                             $upah_ot_2 = $upah_perjam * 2 * $total_overtime_2;
-                            $upah_otl_1 = floor(
-                                $upah_perjam * 2 * ($total_overtime_libur_1 + $total_overtime_libur_nasional),
-                            );
+                            $upah_otl_1 = floor($upah_perjam * 2 * ($total_overtime_libur_1 + $total_overtime_libur_nasional));
                             $upah_otl_libur_nasional = 0;
                             $upah_otl_2 = $upah_perjam * 2 * $total_overtime_libur_2;
                         @endphp
                     @endif
 
                     @php
-                        $total_upah_overtime =
-                            $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_libur_nasional + $upah_otl_2; // Total Upah Overtime
-                        $bruto =
-                            $upah_perjam * $totaljamkerja +
-                            $total_upah_overtime +
-                            $totalpremiall_shift_2 +
-                            $totalpremiall_shift_3; // Total Upah Bruto
+                        $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_libur_nasional + $upah_otl_2; // Total Upah Overtime
+                        $bruto = $upah_perjam * $totaljamkerja + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3; // Total Upah Bruto
                         $bpjskesehatan = $d->iuran_kes; // BPJS Kesehatan
                         $bpjstenagakerja = $d->iuran_tk; // BPJS Tenaga Kerja
                     @endphp
@@ -1563,8 +1516,7 @@
                         $total_t_masakerja_pcf += $d->id_perusahaan == 'PCF' ? $d->t_masakerja : 0;
 
                         $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;
-                        $total_t_tanggungjawab_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $d->t_tanggungjawab : 0;
+                        $total_t_tanggungjawab_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_tanggungjawab : 0;
                         $total_t_tanggungjawab_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_tanggungjawab : 0;
                         $total_t_tanggungjawab_tkl += $d->klasifikasi == 'TKL' ? $d->t_tanggungjawab : 0;
                         $total_t_tanggungjawab_tktl += $d->klasifikasi == 'TKTL' ? $d->t_tanggungjawab : 0;
@@ -1629,8 +1581,7 @@
                         $total_i_kpi_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_kpi : 0;
 
                         $total_im_ruanglingkup += $d->im_ruanglingkup;
-                        $total_im_ruanglingkup_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $d->im_ruanglingkup : 0;
+                        $total_im_ruanglingkup_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_ruanglingkup : 0;
                         $total_im_ruanglingkup_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_ruanglingkup : 0;
                         $total_im_ruanglingkup_tkl += $d->klasifikasi == 'TKL' ? $d->im_ruanglingkup : 0;
                         $total_im_ruanglingkup_tktl += $d->klasifikasi == 'TKTL' ? $d->im_ruanglingkup : 0;
@@ -1652,6 +1603,14 @@
                         $total_im_kinerja_tktl += $d->klasifikasi == 'TKTL' ? $d->im_kinerja : 0;
                         $total_im_kinerja_mp += $d->id_perusahaan == 'MP' ? $d->im_kinerja : 0;
                         $total_im_kinerja_pcf += $d->id_perusahaan == 'PCF' ? $d->im_kinerja : 0;
+
+                        $total_im_kendaraan += $d->im_kendaraan;
+                        $total_im_kendaraan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_kendaraan : 0;
+                        $total_im_kendaraan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_kendaraan : 0;
+                        $total_im_kendaraan_tkl += $d->klasifikasi == 'TKL' ? $d->im_kendaraan : 0;
+                        $total_im_kendaraan_tktl += $d->klasifikasi == 'TKTL' ? $d->im_kendaraan : 0;
+                        $total_im_kendaraan_mp += $d->id_perusahaan == 'MP' ? $d->im_kendaraan : 0;
+                        $total_im_kendaraan_pcf += $d->id_perusahaan == 'PCF' ? $d->im_kendaraan : 0;
 
                         $total_upah += $upah;
                         $total_upah_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah : 0;
@@ -1719,39 +1678,24 @@
 
                         $total_all_overtime_libur += $total_overtime_libur_1 + $total_overtime_libur_nasional;
                         $total_overtime_libur_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI'
-                                ? $total_overtime_libur_1 + $total_overtime_libur_nasional
-                                : 0;
+                            $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
                         $total_overtime_libur_penjualan +=
-                            $d->klasifikasi == 'PENJUALAN'
-                                ? $total_overtime_libur_1 + $total_overtime_libur_nasional
-                                : 0;
-                        $total_overtime_libur_tkl +=
-                            $d->klasifikasi == 'TKL' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
-                        $total_overtime_libur_tktl +=
-                            $d->klasifikasi == 'TKTL' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
-                        $total_overtime_libur_mp +=
-                            $d->id_perusahaan == 'MP' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
-                        $total_overtime_libur_pcf +=
-                            $d->id_perusahaan == 'PCF' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                            $d->klasifikasi == 'PENJUALAN' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
 
                         $total_all_upah_overtime_libur += $upah_otl_1 + $upah_otl_libur_nasional;
-                        $total_upah_overtime_libur_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
-                        $total_upah_overtime_libur_penjualan +=
-                            $d->klasifikasi == 'PENJUALAN' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
-                        $total_upah_overtime_libur_tkl +=
-                            $d->klasifikasi == 'TKL' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
-                        $total_upah_overtime_libur_tktl +=
-                            $d->klasifikasi == 'TKTL' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
-                        $total_upah_overtime_libur_mp +=
-                            $d->id_perusahaan == 'MP' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
-                        $total_upah_overtime_libur_mp +=
-                            $d->id_perusahaan == 'PCF' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'PCF' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
 
                         $total_all_upah_overtime += $total_upah_overtime;
-                        $total_all_upah_otl_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $total_upah_overtime : 0;
+                        $total_all_upah_otl_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_upah_overtime : 0;
                         $total_all_upah_otl_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_upah_overtime : 0;
                         $total_all_upah_otl_tkl += $d->klasifikasi == 'TKL' ? $total_upah_overtime : 0;
                         $total_all_upah_otl_tktl += $d->klasifikasi == 'TKTL' ? $total_upah_overtime : 0;
@@ -1759,8 +1703,7 @@
                         $total_all_upah_otl_pcf += $d->id_perusahaan == 'PCF' ? $total_upah_overtime : 0;
 
                         $total_all_hari_shift_2 += $totalhariall_shift_2;
-                        $total_all_hari_shift_2_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_2 : 0;
+                        $total_all_hari_shift_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_2 : 0;
                         $total_all_hari_shift_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalhariall_shift_2 : 0;
                         $total_all_hari_shift_2_tkl += $d->klasifikasi == 'TKL' ? $totalhariall_shift_2 : 0;
                         $total_all_hari_shift_2_tktl += $d->klasifikasi == 'TKTL' ? $totalhariall_shift_2 : 0;
@@ -1768,18 +1711,15 @@
                         $total_all_hari_shift_2_pcf += $d->id_perusahaan == 'PCF' ? $totalhariall_shift_2 : 0;
 
                         $total_all_premi_shift_2 += $totalpremiall_shift_2;
-                        $total_all_premi_shift_2_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_2 : 0;
-                        $total_all_premi_shift_2_penjualan +=
-                            $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_2 : 0;
+                        $total_all_premi_shift_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_2 : 0;
+                        $total_all_premi_shift_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_2 : 0;
                         $total_all_premi_shift_2_tkl += $d->klasifikasi == 'TKL' ? $totalpremiall_shift_2 : 0;
                         $total_all_premi_shift_2_tktl += $d->klasifikasi == 'TKTL' ? $totalpremiall_shift_2 : 0;
                         $total_all_premi_shift_2_mp += $d->id_perusahaan == 'MP' ? $totalpremiall_shift_2 : 0;
                         $total_all_premi_shift_2_pcf += $d->id_perusahaan == 'PCF' ? $totalpremiall_shift_2 : 0;
 
                         $total_all_hari_shift_3 += $totalhariall_shift_3;
-                        $total_all_hari_shift_3_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_3 : 0;
+                        $total_all_hari_shift_3_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_3 : 0;
                         $total_all_hari_shift_3_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalhariall_shift_3 : 0;
                         $total_all_hari_shift_3_tkl += $d->klasifikasi == 'TKL' ? $totalhariall_shift_3 : 0;
                         $total_all_hari_shift_3_tktl += $d->klasifikasi == 'TKTL' ? $totalhariall_shift_3 : 0;
@@ -1787,10 +1727,8 @@
                         $total_all_hari_shift_3_pcf += $d->id_perusahaan == 'PCF' ? $totalhariall_shift_3 : 0;
 
                         $total_all_premi_shift_3 += $totalpremiall_shift_3;
-                        $total_all_premi_shift_3_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_3 : 0;
-                        $total_all_premi_shift_3_penjualan +=
-                            $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_3 : 0;
+                        $total_all_premi_shift_3_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_3 : 0;
+                        $total_all_premi_shift_3_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_3 : 0;
                         $total_all_premi_shift_3_tkl += $d->klasifikasi == 'TKL' ? $totalpremiall_shift_3 : 0;
                         $total_all_premi_shift_3_tktl += $d->klasifikasi == 'TKTL' ? $totalpremiall_shift_3 : 0;
                         $total_all_premi_shift_3_mp += $d->id_perusahaan == 'MP' ? $totalpremiall_shift_3 : 0;
@@ -1805,8 +1743,7 @@
                         $total_all_bruto_pcf += $d->id_perusahaan == 'PCF' ? $bruto : 0;
 
                         $total_all_potongan_jam += $totalpotonganjam;
-                        $total_all_potonganjam_administrasi +=
-                            $d->klasifikasi == 'ADMINISTRASI' ? $totalpotonganjam : 0;
+                        $total_all_potonganjam_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpotonganjam : 0;
                         $total_all_potonganjam_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpotonganjam : 0;
                         $total_all_potonganjam_tkl += $d->klasifikasi == 'TKL' ? $totalpotonganjam : 0;
                         $total_all_potonganjam_tktl += $d->klasifikasi == 'TKTL' ? $totalpotonganjam : 0;
@@ -2010,6 +1947,7 @@
                     <td style="text-align:right">{{ rupiah($total_im_ruanglingkup_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_penempatan_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_kinerja_administrasi) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_im_kendaraan_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_upah_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_insentif_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_jamkerja_administrasi) }}</td>
@@ -2056,6 +1994,7 @@
                     <td style="text-align:right">{{ rupiah($total_im_ruanglingkup_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_penempatan_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_kinerja_penjualan) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_im_kendaraan_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_upah_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_insentif_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_jamkerja_penjualan) }}</td>
@@ -2102,6 +2041,7 @@
                     <td style="text-align:right">{{ rupiah($total_im_ruanglingkup_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_penempatan_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_kinerja_tkl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_im_kendaraan_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_upah_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_insentif_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_jamkerja_tkl) }}</td>
@@ -2148,6 +2088,7 @@
                     <td style="text-align:right">{{ rupiah($total_im_ruanglingkup_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_penempatan_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_kinerja_tktl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_im_kendaraan_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_upah_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_insentif_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_jamkerja_tktl) }}</td>
@@ -2182,22 +2123,13 @@
                     <th>TOTAL</th>
                     @php
                         $total_gajipokok_rekap =
-                            $total_gajipokok_administrasi +
-                            $total_gajipokok_penjualan +
-                            $total_gajipokok_tkl +
-                            $total_gajipokok_tktl;
+                            $total_gajipokok_administrasi + $total_gajipokok_penjualan + $total_gajipokok_tkl + $total_gajipokok_tktl;
 
                         $total_t_jabatan_rekap =
-                            $total_t_jabatan_administrasi +
-                            $total_t_jabatan_penjualan +
-                            $total_t_jabatan_tkl +
-                            $total_t_jabatan_tktl;
+                            $total_t_jabatan_administrasi + $total_t_jabatan_penjualan + $total_t_jabatan_tkl + $total_t_jabatan_tktl;
 
                         $total_t_masakerja_rekap =
-                            $total_t_masakerja_administrasi +
-                            $total_t_masakerja_penjualan +
-                            $total_t_masakerja_tkl +
-                            $total_t_masakerja_tktl;
+                            $total_t_masakerja_administrasi + $total_t_masakerja_penjualan + $total_t_masakerja_tkl + $total_t_masakerja_tktl;
 
                         $total_t_tanggungjawab_rekap =
                             $total_t_tanggungjawab_administrasi +
@@ -2205,44 +2137,22 @@
                             $total_t_tanggungjawab_tkl +
                             $total_t_tanggungjawab_tktl;
 
-                        $total_t_makan_rekap =
-                            $total_t_makan_administrasi +
-                            $total_t_makan_penjualan +
-                            $total_t_makan_tkl +
-                            $total_t_makan_tktl;
+                        $total_t_makan_rekap = $total_t_makan_administrasi + $total_t_makan_penjualan + $total_t_makan_tkl + $total_t_makan_tktl;
 
-                        $total_t_istri_rekap =
-                            $total_t_istri_administrasi +
-                            $total_t_istri_penjualan +
-                            $total_t_istri_tkl +
-                            $total_t_istri_tktl;
+                        $total_t_istri_rekap = $total_t_istri_administrasi + $total_t_istri_penjualan + $total_t_istri_tkl + $total_t_istri_tktl;
 
                         $total_t_skillkhusus_rekap =
-                            $total_t_skillkhusus_administrasi +
-                            $total_t_skillkhusus_penjualan +
-                            $total_t_skillkhusus_tkl +
-                            $total_t_skillkhusus_tktl;
+                            $total_t_skillkhusus_administrasi + $total_t_skillkhusus_penjualan + $total_t_skillkhusus_tkl + $total_t_skillkhusus_tktl;
 
                         $total_i_masakerja_rekap =
-                            $total_i_masakerja_administrasi +
-                            $total_i_masakerja_penjualan +
-                            $total_i_masakerja_tkl +
-                            $total_i_masakerja_tktl;
+                            $total_i_masakerja_administrasi + $total_i_masakerja_penjualan + $total_i_masakerja_tkl + $total_i_masakerja_tktl;
 
-                        $total_i_lembur_rekap =
-                            $total_i_lembur_administrasi +
-                            $total_i_lembur_penjualan +
-                            $total_i_lembur_tkl +
-                            $total_i_lembur_tktl;
+                        $total_i_lembur_rekap = $total_i_lembur_administrasi + $total_i_lembur_penjualan + $total_i_lembur_tkl + $total_i_lembur_tktl;
 
                         $total_i_penempatan_rekap =
-                            $total_i_penempatan_administrasi +
-                            $total_i_penempatan_penjualan +
-                            $total_i_penempatan_tkl +
-                            $total_i_penempatan_tktl;
+                            $total_i_penempatan_administrasi + $total_i_penempatan_penjualan + $total_i_penempatan_tkl + $total_i_penempatan_tktl;
 
-                        $total_i_kpi_rekap =
-                            $total_i_kpi_administrasi + $total_i_kpi_penjualan + $total_i_kpi_tkl + $total_i_kpi_tktl;
+                        $total_i_kpi_rekap = $total_i_kpi_administrasi + $total_i_kpi_penjualan + $total_i_kpi_tkl + $total_i_kpi_tktl;
 
                         $total_im_ruanglingkup_rekap =
                             $total_im_ruanglingkup_administrasi +
@@ -2251,61 +2161,34 @@
                             $total_im_ruanglingkup_tktl;
 
                         $total_im_penempatan_rekap =
-                            $total_im_penempatan_administrasi +
-                            $total_im_penempatan_penjualan +
-                            $total_im_penempatan_tkl +
-                            $total_im_penempatan_tktl;
+                            $total_im_penempatan_administrasi + $total_im_penempatan_penjualan + $total_im_penempatan_tkl + $total_im_penempatan_tktl;
 
                         $total_im_kinerja_rekap =
-                            $total_im_kinerja_administrasi +
-                            $total_im_kinerja_penjualan +
-                            $total_im_kinerja_tkl +
-                            $total_im_kinerja_tktl;
+                            $total_im_kinerja_administrasi + $total_im_kinerja_penjualan + $total_im_kinerja_tkl + $total_im_kinerja_tktl;
 
-                        $total_upah_rekap =
-                            $total_upah_administrasi + $total_upah_penjualan + $total_upah_tkl + $total_upah_tktl;
+                        $total_im_kendaraan_rekap =
+                            $total_im_kendaraan_administrasi + $total_im_kendaraan_penjualan + $total_im_kendaraan_tkl + $total_im_kendaraan_tktl;
 
-                        $total_insentif_rekap =
-                            $total_insentif_administrasi +
-                            $total_insentif_penjualan +
-                            $total_insentif_tkl +
-                            $total_insentif_tktl;
+                        $total_upah_rekap = $total_upah_administrasi + $total_upah_penjualan + $total_upah_tkl + $total_upah_tktl;
 
-                        $total_jamkerja_rekap =
-                            $total_jamkerja_administrasi +
-                            $total_jamkerja_penjualan +
-                            $total_jamkerja_tkl +
-                            $total_jamkerja_tktl;
+                        $total_insentif_rekap = $total_insentif_administrasi + $total_insentif_penjualan + $total_insentif_tkl + $total_insentif_tktl;
+
+                        $total_jamkerja_rekap = $total_jamkerja_administrasi + $total_jamkerja_penjualan + $total_jamkerja_tkl + $total_jamkerja_tktl;
 
                         $total_upahperjam_rekap =
-                            $total_upahperjam_administrasi +
-                            $total_upahperjam_penjualan +
-                            $total_upahperjam_tkl +
-                            $total_upahperjam_tktl;
+                            $total_upahperjam_administrasi + $total_upahperjam_penjualan + $total_upahperjam_tkl + $total_upahperjam_tktl;
 
                         $total_overtime_1_rekap =
-                            $total_overtime_1_administrasi +
-                            $total_overtime_1_penjualan +
-                            $total_overtime_1_tkl +
-                            $total_overtime_1_tktl;
+                            $total_overtime_1_administrasi + $total_overtime_1_penjualan + $total_overtime_1_tkl + $total_overtime_1_tktl;
 
                         $total_upah_ot_1_rekap =
-                            $total_upah_ot_1_administrasi +
-                            $total_upah_ot_1_penjualan +
-                            $total_upah_ot_1_tkl +
-                            $total_upah_ot_1_tktl;
+                            $total_upah_ot_1_administrasi + $total_upah_ot_1_penjualan + $total_upah_ot_1_tkl + $total_upah_ot_1_tktl;
 
                         $total_overtime_2_rekap =
-                            $total_overtime_2_administrasi +
-                            $total_overtime_2_penjualan +
-                            $total_overtime_2_tkl +
-                            $total_overtime_2_tktl;
+                            $total_overtime_2_administrasi + $total_overtime_2_penjualan + $total_overtime_2_tkl + $total_overtime_2_tktl;
 
                         $total_upah_ot_2_rekap =
-                            $total_upah_ot_2_administrasi +
-                            $total_upah_ot_2_penjualan +
-                            $total_upah_ot_2_tkl +
-                            $total_upah_ot_2_tktl;
+                            $total_upah_ot_2_administrasi + $total_upah_ot_2_penjualan + $total_upah_ot_2_tkl + $total_upah_ot_2_tktl;
 
                         $total_overtime_libur_rekap =
                             $total_overtime_libur_administrasi +
@@ -2320,10 +2203,7 @@
                             $total_upah_overtime_libur_tktl;
 
                         $total_all_upah_otl_rekap =
-                            $total_all_upah_otl_administrasi +
-                            $total_all_upah_otl_penjualan +
-                            $total_all_upah_otl_tkl +
-                            $total_all_upah_otl_tktl;
+                            $total_all_upah_otl_administrasi + $total_all_upah_otl_penjualan + $total_all_upah_otl_tkl + $total_all_upah_otl_tktl;
 
                         $total_all_hari_shift_2_rekap =
                             $total_all_hari_shift_2_administrasi +
@@ -2350,10 +2230,7 @@
                             $total_all_premi_shift_3_tktl;
 
                         $total_all_bruto_rekap =
-                            $total_all_bruto_administrasi +
-                            $total_all_bruto_penjualan +
-                            $total_all_bruto_tkl +
-                            $total_all_bruto_tktl;
+                            $total_all_bruto_administrasi + $total_all_bruto_penjualan + $total_all_bruto_tkl + $total_all_bruto_tktl;
 
                         $total_all_potonganjam_rekap =
                             $total_all_potonganjam_administrasi +
@@ -2368,64 +2245,32 @@
                             $total_all_bpjskesehatan_tktl;
 
                         $total_all_bpjstk_rekap =
-                            $total_all_bpjstk_administrasi +
-                            $total_all_bpjstk_penjualan +
-                            $total_all_bpjstk_tkl +
-                            $total_all_bpjstk_tktl;
+                            $total_all_bpjstk_administrasi + $total_all_bpjstk_penjualan + $total_all_bpjstk_tkl + $total_all_bpjstk_tktl;
 
                         $total_all_denda_rekap =
-                            $total_all_denda_administrasi +
-                            $total_all_denda_penjualan +
-                            $total_all_denda_tkl +
-                            $total_all_denda_tktl;
+                            $total_all_denda_administrasi + $total_all_denda_penjualan + $total_all_denda_tkl + $total_all_denda_tktl;
 
-                        $total_all_pjp_rekap =
-                            $total_all_pjp_administrasi +
-                            $total_all_pjp_penjualan +
-                            $total_all_pjp_tkl +
-                            $total_all_pjp_tktl;
+                        $total_all_pjp_rekap = $total_all_pjp_administrasi + $total_all_pjp_penjualan + $total_all_pjp_tkl + $total_all_pjp_tktl;
 
                         $total_all_kasbon_rekap =
-                            $total_all_kasbon_administrasi +
-                            $total_all_kasbon_penjualan +
-                            $total_all_kasbon_tkl +
-                            $total_all_kasbon_tktl;
+                            $total_all_kasbon_administrasi + $total_all_kasbon_penjualan + $total_all_kasbon_tkl + $total_all_kasbon_tktl;
 
                         $total_all_nonpjp_rekap =
-                            $total_all_nonpjp_administrasi +
-                            $total_all_nonpjp_penjualan +
-                            $total_all_nonpjp_tkl +
-                            $total_all_nonpjp_tktl;
+                            $total_all_nonpjp_administrasi + $total_all_nonpjp_penjualan + $total_all_nonpjp_tkl + $total_all_nonpjp_tktl;
 
-                        $total_all_spip_rekap =
-                            $total_all_spip_administrasi +
-                            $total_all_spip_penjualan +
-                            $total_all_spip_tkl +
-                            $total_all_spip_tktl;
+                        $total_all_spip_rekap = $total_all_spip_administrasi + $total_all_spip_penjualan + $total_all_spip_tkl + $total_all_spip_tktl;
 
                         $total_all_pengurang_rekap =
-                            $total_all_pengurang_administrasi +
-                            $total_all_pengurang_penjualan +
-                            $total_all_pengurang_tkl +
-                            $total_all_pengurang_tktl;
+                            $total_all_pengurang_administrasi + $total_all_pengurang_penjualan + $total_all_pengurang_tkl + $total_all_pengurang_tktl;
 
                         $total_all_penambah_rekap =
-                            $total_all_penambah_administrasi +
-                            $total_all_penambah_penjualan +
-                            $total_all_penambah_tkl +
-                            $total_all_penambah_tktl;
+                            $total_all_penambah_administrasi + $total_all_penambah_penjualan + $total_all_penambah_tkl + $total_all_penambah_tktl;
 
                         $total_all_potongan_rekap =
-                            $total_all_potongan_administrasi +
-                            $total_all_potongan_penjualan +
-                            $total_all_potongan_tkl +
-                            $total_all_potongan_tktl;
+                            $total_all_potongan_administrasi + $total_all_potongan_penjualan + $total_all_potongan_tkl + $total_all_potongan_tktl;
 
                         $total_all_bersih_rekap =
-                            $total_all_bersih_administrasi +
-                            $total_all_bersih_penjualan +
-                            $total_all_bersih_tkl +
-                            $total_all_bersih_tktl;
+                            $total_all_bersih_administrasi + $total_all_bersih_penjualan + $total_all_bersih_tkl + $total_all_bersih_tktl;
                     @endphp
                     <th style="text-align: right">{{ rupiah($total_gajipokok_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_t_jabatan_rekap) }}</th>
@@ -2441,6 +2286,7 @@
                     <th style="text-align: right">{{ rupiah($total_im_ruanglingkup_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_penempatan_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_kinerja_rekap) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_kendaraan_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_upah_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_insentif_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_jamkerja_rekap) }}</th>
@@ -2482,7 +2328,7 @@
                     <th rowspan="2">GAJI POKOK</th>
                     <th colspan="6">TUNJANGAN</th>
                     <th colspan="4">INSENTIF UMUM</th>
-                    <th colspan="3">INSENTIF MANAGER</th>
+                    <th colspan="4">INSENTIF MANAGER</th>
                     <th rowspan="2">UPAH</th>
                     <th rowspan="2">JUMLAH<br>INSENTIF</th>
                     <th rowspan="2">Σ JAM KERJA</th>
@@ -2521,6 +2367,7 @@
                     <th>RUANG<br> LINGKUP</th>
                     <th>PENEMPATAN</th>
                     <th>KINERJA</th>
+                    <th>KENDARAAN</th>
                     <th>JAM</th>
                     <th>JUMLAH</th>
                     <th>JAM</th>
@@ -2553,6 +2400,7 @@
                     <td style="text-align:right">{{ rupiah($total_im_ruanglingkup_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_penempatan_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_kinerja_mp) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_im_kendaraan_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_upah_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_insentif_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_jamkerja_mp) }}</td>
@@ -2598,7 +2446,7 @@
                     <td style="text-align:right">{{ rupiah($total_i_kpi_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_ruanglingkup_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_im_penempatan_pcf) }}</td>
-                    <td style="text-align:right">{{ rupiah($total_im_kinerja_pcf) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_im_kendaraan_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_upah_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_insentif_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_jamkerja_pcf) }}</td>
@@ -2661,6 +2509,8 @@
 
                         $total_im_kinerja_perusahaan = $total_im_kinerja_mp + $total_im_kinerja_pcf;
 
+                        $total_im_kendaraan_perusahaan = $total_im_kendaraan_mp + $total_im_kendaraan_pcf;
+
                         $total_upah_perusahaan = $total_upah_mp + $total_upah_pcf;
 
                         $total_insentif_perusahaan = $total_insentif_mp + $total_insentif_pcf;
@@ -2679,27 +2529,23 @@
 
                         $total_overtime_libur_perusahaan = $total_overtime_libur_mp + $total_overtime_libur_pcf;
 
-                        $total_upah_overtime_libur_perusahaan =
-                            $total_upah_overtime_libur_mp + $total_upah_overtime_libur_pcf;
+                        $total_upah_overtime_libur_perusahaan = $total_upah_overtime_libur_mp + $total_upah_overtime_libur_pcf;
 
                         $total_all_upah_otl_perusahaan = $total_all_upah_otl_mp + $total_all_upah_otl_pcf;
 
                         $total_all_hari_shift_2_perusahaan = $total_all_hari_shift_2_mp + $total_all_hari_shift_2_pcf;
 
-                        $total_all_premi_shift_2_perusahaan =
-                            $total_all_premi_shift_2_mp + $total_all_premi_shift_2_pcf;
+                        $total_all_premi_shift_2_perusahaan = $total_all_premi_shift_2_mp + $total_all_premi_shift_2_pcf;
 
                         $total_all_hari_shift_3_perusahaan = $total_all_hari_shift_3_mp + $total_all_hari_shift_3_pcf;
 
-                        $total_all_premi_shift_3_perusahaan =
-                            $total_all_premi_shift_3_mp + $total_all_premi_shift_3_pcf;
+                        $total_all_premi_shift_3_perusahaan = $total_all_premi_shift_3_mp + $total_all_premi_shift_3_pcf;
 
                         $total_all_bruto_perusahaan = $total_all_bruto_mp + $total_all_bruto_pcf;
 
                         $total_all_potonganjam_perusahaan = $total_all_potonganjam_mp + $total_all_potonganjam_pcf;
 
-                        $total_all_bpjskesehatan_perusahaan =
-                            $total_all_bpjskesehatan_mp + $total_all_bpjskesehatan_pcf;
+                        $total_all_bpjskesehatan_perusahaan = $total_all_bpjskesehatan_mp + $total_all_bpjskesehatan_pcf;
 
                         $total_all_bpjstk_perusahaan = $total_all_bpjstk_mp + $total_all_bpjstk_pcf;
 
@@ -2736,6 +2582,7 @@
                     <th style="text-align: right">{{ rupiah($total_im_ruanglingkup_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_penempatan_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_im_kinerja_perusahaan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_kendaraan_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_upah_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_insentif_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_jamkerja_perusahaan) }}</th>
