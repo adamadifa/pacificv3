@@ -1,3 +1,4 @@
+
 <!-- BEGIN: Main Menu-->
 
 
@@ -829,7 +830,7 @@
                     </ul>
                 </li>
             @endif
-            {{-- @if (in_array($level, $pembelian_menu))
+            @if (in_array($level, $pembelian_menu))
                 <li class=" nav-item">
                     <a href="#"><i class="feather icon-shopping-bag danger"></i><span class="menu-title">Pembelian</span></a>
                     <ul class="menu-content">
@@ -867,8 +868,8 @@
                         @endif
                     </ul>
                 </li>
-            @endif --}}
-            {{-- @if (in_array($level, $keuangan))
+            @endif
+            @if (in_array($level, $keuangan))
                 <li class=" nav-item">
                     <a href="#"><i class="feather icon-dollar-sign warning"></i><span class="menu-title">Keuangan</span></a>
                     <ul class="menu-content">
@@ -1157,12 +1158,13 @@
                         @endif
                         @if (in_array($level, $laporankeuangan_view))
                             <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
-                                @if ($level == 'kasir' ||
-    $level == 'admin persediaan dan kasir' ||
-    $level ==
-        "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <<<<<<< HEAD
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                dan kasir")
+                                @if (
+                                    $level == 'kasir' ||
+                                        $level == 'admin persediaan dan kasir' ||
+                                        $level ==
+                                            "admin penjualan
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <<<<<<< HEAD
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                dan kasir")
                                     =======
                                     dan kasir")
                                     >>>>>>> 009703521354cbb89cdf1e619f44292366c48666
@@ -1191,7 +1193,7 @@
                         @endif
                     </ul>
                 </li>
-            @endif --}}
+            @endif
             @if (in_array($level, $accounting_menu))
                 <li class=" nav-item">
                     <a href="#"><i class="fa fa-balance-scale" style="color:blue"></i><span class="menu-title">Accounting</span></a>
