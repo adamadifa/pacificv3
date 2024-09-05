@@ -44,21 +44,26 @@
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
-        <div class="alert alert-warning mt-12">
-            <p>Dikarenakan Sedang Proses Migrasi dari v3 ke v4, dan mengingat proses migrasi membutuhkan waktu yang cukup lama, maka dari itu akan
-                dilakukan proses migrasi secara bertahap, di mulai dari tanggal 05 September 2024
-                Sehingga Beberapa Menu akan di Non Aktifkan secara bertaap, dan Saat Ini Menu Yang di Nonaktifkan Antara Lain,
-            <ul>
-                <li>Produksi</li>
-                <li>Gudang Bahan</li>
-                <li>Gudang Logistik</li>
-                <li>Gudang jadi Pusat</li>
-                <li>Pembelian</li>
-                <li>Keuangan</li>
-            </ul>
-            dan perkiraan aktif kembali pada hari Senin, 08 September 2024
-            Atas Perhatiannya Kami Ucapkan Terima Kasih !
-            </p>
+        <div class="row mt-25">
+            <div class="col">
+                <div class="alert alert-warning ">
+                    <p>Dikarenakan Sedang Proses Migrasi dari v3 ke v4, dan mengingat proses migrasi membutuhkan waktu yang cukup lama, maka dari itu
+                        akan
+                        dilakukan proses migrasi secara bertahap, di mulai dari tanggal 05 September 2024
+                        Sehingga Beberapa Menu akan di Non Aktifkan secara bertaap, dan Saat Ini Menu Yang di Nonaktifkan Antara Lain,
+                    <ul>
+                        <li>Produksi</li>
+                        <li>Gudang Bahan</li>
+                        <li>Gudang Logistik</li>
+                        <li>Gudang jadi Pusat</li>
+                        <li>Pembelian</li>
+                        <li>Keuangan</li>
+                    </ul>
+                    dan perkiraan aktif kembali pada hari Senin, 08 September 2024
+                    Atas Perhatiannya Kami Ucapkan Terima Kasih !
+                    </p>
+                </div>
+            </div>
         </div>
         @yield('content')
         <!-- BEGIN: Customizer-->
