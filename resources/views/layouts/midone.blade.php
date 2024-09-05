@@ -44,7 +44,7 @@
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
-        <div class="alert alert-warning">
+        <div class="alert alert-warning mt-12">
             <p>Dikarenakan Sedang Proses Migrasi dari v3 ke v4, dan mengingat proses migrasi membutuhkan waktu yang cukup lama, maka dari itu akan
                 dilakukan proses migrasi secara bertahap, di mulai dari tanggal 05 September 2024
                 Sehingga Beberapa Menu akan di Non Aktifkan secara bertaap, dan Saat Ini Menu Yang di Nonaktifkan Antara Lain,
