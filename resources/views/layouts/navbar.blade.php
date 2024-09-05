@@ -644,7 +644,7 @@
                 <li class=" nav-item">
                     <a href="#"><i class="feather icon-radio info"></i><span class="menu-title">Marketing</span></a>
                     <ul class="menu-content">
-                        @if ($level == 'kepala admin' && $getcbg == 'TSM')
+                        {{-- @if ($level == 'kepala admin' && $getcbg == 'TSM')
                             <li class="{{ request()->is(['permintaanpengiriman', 'permintaanpengiriman/*']) ? 'active' : '' }}">
                                 <a href="/permintaanpengiriman">
                                     <i class="feather icon-truck"></i>
@@ -657,7 +657,7 @@
                                     <i class="feather icon-truck"></i>
                                     <span class="menu-item">Permintaan Kirim</span></a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $komisi))
                             <li>
                                 <a href="#">
