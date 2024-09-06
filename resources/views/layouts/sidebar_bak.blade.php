@@ -1,4 +1,3 @@
-
 <!-- BEGIN: Main Menu-->
 
 
@@ -645,7 +644,7 @@
                 <li class=" nav-item">
                     <a href="#"><i class="feather icon-radio info"></i><span class="menu-title">Marketing</span></a>
                     <ul class="menu-content">
-                        @if ($level == 'kepala admin' && $getcbg == 'TSM')
+                        {{-- @if ($level == 'kepala admin' && $getcbg == 'TSM')
                             <li class="{{ request()->is(['permintaanpengiriman', 'permintaanpengiriman/*']) ? 'active' : '' }}">
                                 <a href="/permintaanpengiriman">
                                     <i class="feather icon-truck"></i>
@@ -658,7 +657,7 @@
                                     <i class="feather icon-truck"></i>
                                     <span class="menu-item">Permintaan Kirim</span></a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $komisi))
                             <li>
                                 <a href="#">
@@ -834,7 +833,7 @@
                 <li class=" nav-item">
                     <a href="#"><i class="feather icon-shopping-bag danger"></i><span class="menu-title">Pembelian</span></a>
                     <ul class="menu-content">
-                        @if (in_array($level, $pembelian_view))
+                        {{-- @if (in_array($level, $pembelian_view))
                             <li class="{{ request()->is(['pembelian', 'pembelian/*']) ? 'active' : '' }}">
                                 <a href="/pembelian?ppn=-">
                                     <i class="feather icon-shopping-cart"></i>
@@ -857,7 +856,7 @@
                                     <span class="menu-item">Jurnal Koreksi</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $laporan_pembelian))
                             <li class="{{ request()->is(['laporanpembelian', 'laporanpembelian/*']) ? 'active' : '' }}">
                                 <a href="/laporanpembelian">
@@ -873,7 +872,7 @@
                 <li class=" nav-item">
                     <a href="#"><i class="feather icon-dollar-sign warning"></i><span class="menu-title">Keuangan</span></a>
                     <ul class="menu-content">
-                        @if (in_array($level, $gudang_jadi_keuangan))
+                        {{-- @if (in_array($level, $gudang_jadi_keuangan))
                             <li>
                                 <a href="#">
                                     <i class="feather icon-circle"></i>
@@ -1155,19 +1154,10 @@
                                     <span class="menu-item" data-i18n="Second Level">Ajuan Transfer Dana</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         @if (in_array($level, $laporankeuangan_view))
                             <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
-                                @if (
-                                    $level == 'kasir' ||
-                                        $level == 'admin persediaan dan kasir' ||
-                                        $level ==
-                                            "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <<<<<<< HEAD
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                dan kasir")
-                                    =======
-                                    dan kasir")
-                                    >>>>>>> 009703521354cbb89cdf1e619f44292366c48666
+                                @if ($level == 'kasir' || $level == 'admin persediaan dan kasir' || $level == 'kasir')
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>

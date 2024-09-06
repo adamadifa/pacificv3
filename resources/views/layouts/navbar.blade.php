@@ -1073,7 +1073,7 @@
                                 </ul>
                             </li>
                         @endif
-
+                            --}}
                         @if (in_array($level, $pinjaman_view))
                             <li>
                                 <a href="#">
@@ -1138,6 +1138,7 @@
                                 </ul>
                             </li>
                         @endif
+                        {{--
                         @if (in_array($level, $mutasibank_view))
                             <li class="{{ request()->is(['mutasibank', 'mutasibank/*']) ? 'active' : '' }}">
                                 <a href="/mutasibank">
@@ -1146,7 +1147,7 @@
                                 </a>
                             </li>
                         @endif
-
+                        --}}
                         @if (in_array($level, $ajuantransferdana_view))
                             <li class="{{ request()->is(['ajuantransferdana', 'ajuantransferdana/*']) ? 'active' : '' }}">
                                 <a href="/ajuantransferdana">
@@ -1154,7 +1155,7 @@
                                     <span class="menu-item" data-i18n="Second Level">Ajuan Transfer Dana</span>
                                 </a>
                             </li>
-                        @endif --}}
+                        @endif
                         @if (in_array($level, $laporankeuangan_view))
                             <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
                                 @if ($level == 'kasir' || $level == 'admin persediaan dan kasir' || $level == 'kasir')
