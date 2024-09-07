@@ -44,7 +44,7 @@
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="header-navbar-shadow"></div>
-        <div class="row" style="margin-top: 100px">
+        {{-- <div class="row" style="margin-top: 100px">
             <div class="col">
                 <div class="alert alert-warning ">
                     <p>Dikarenakan Sedang Proses Migrasi dari v3 ke v4, dan mengingat proses migrasi membutuhkan waktu yang cukup lama, maka dari itu
@@ -64,7 +64,7 @@
                     </p>
                 </div>
             </div>
-        </div>
+        </div> --}}
         @yield('content')
         <!-- BEGIN: Customizer-->
         <div class="customizer d-none d-md-block"><a class="customizer-toggle d-flex align-items-center justify-content-center" href="#"><i
