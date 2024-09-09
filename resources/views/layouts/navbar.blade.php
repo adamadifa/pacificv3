@@ -34,7 +34,7 @@
                 <li class=" nav-item">
                     <a href="#"><i class="fa fa-users" style="color:rgb(200, 5, 77)"></i><span class="menu-title">HRD</span></a>
                     <ul class="menu-content">
-                        @if (in_array($level, $penilaian_karyawan) || in_array($kat_jabatan, $penilaian_karyawan))
+                        {{-- @if (in_array($level, $penilaian_karyawan) || in_array($kat_jabatan, $penilaian_karyawan))
                             <li class="{{ request()->is(['penilaiankaryawan', 'penilaiankaryawan/*']) ? 'active' : '' }}">
                                 @if (Auth::user()->level == 'kepala admin')
                                     <a href="/penilaiankaryawan/12/MP/list">
@@ -121,7 +121,7 @@
                                     <span class="menu-item" data-i18n="Second Level">Kontrak</span>
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
 
                         @if (in_array($level, $pengajuan_izin_menu) || Auth::user()->pic_presensi == 1)
                             <li class="{{ request()->is(['pengajuanizin', 'pengajuanizin/*']) ? 'active' : '' }}">
