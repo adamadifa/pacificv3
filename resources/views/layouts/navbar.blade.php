@@ -208,20 +208,18 @@
                                 </li>
                             @endif
                             @if (in_array($level, $lap_hrd) || Auth::user()->pic_presensi == 1)
-                                <
+                                <li
                                     class="{{ request()->is(['laporanhrd/presensi', 'laporanhrd/presensipsm', 'laporanhrd/rekapterlambat', 'laporanhrd/gaji']) ? 'active' : '' }}">
                                     <a href="/laporanhrd/presensi">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>
                                     </a>
+                                </li>
                             @endif
-
+                        </ul>
                     </li>
-        </ul>
-
-        </li>
-        @endif
-
+                @endif
+            @endif
         </ul>
     </div>
 </div>
