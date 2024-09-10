@@ -8,8 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description"
         content="Vuexy admin is super flexible, powerful, clean &amp; modern responsive bootstrap 4 admin template with unlimited possibilities.">
-    <meta name="keywords"
-        content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
+    <meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="PIXINVENT">
     <title>@yield('titlepage')</title>
     @include('layouts.style')
@@ -28,8 +27,8 @@
 
 @endphp
 
-<body class="vertical-layout vertical-menu-modern 2-columns {{ $tema }}  navbar-floating footer-static"
-    data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+<body class="vertical-layout vertical-menu-modern 2-columns {{ $tema }}  navbar-floating footer-static" data-open="click"
+    data-menu="vertical-menu-modern" data-col="2-columns">
 
     <div class="loader-wrapper">
         <span class="loader"><span class="loader-inner"></span></span>
@@ -47,8 +46,7 @@
         <div class="header-navbar-shadow"></div>
         @yield('content')
         <!-- BEGIN: Customizer-->
-        <div class="customizer d-none d-md-block"><a
-                class="customizer-toggle d-flex align-items-center justify-content-center" href="#"><i
+        <div class="customizer d-none d-md-block"><a class="customizer-toggle d-flex align-items-center justify-content-center" href="#"><i
                     class="spinner-grow white"></i></a>
             <div class="customizer-content">
                 <!-- Customizer header -->
@@ -70,8 +68,7 @@
                                     @endphp
                                     <img src="{{ url($path) }}" alt="avtar img holder" height="35" width="35">
                                 @else
-                                    <img src="{{ asset('app-assets/images/avatar.png') }}" alt="avtar img holder"
-                                        height="35" width="35">
+                                    <img src="{{ asset('app-assets/images/avatar.png') }}" alt="avtar img holder" height="35" width="35">
                                 @endif
                             </div>
                             <div class="user-page-info ml-1">
