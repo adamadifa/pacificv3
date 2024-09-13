@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -85,17 +85,16 @@
             background: #eee;
             visibility: visible;
         }
-
     </style>
 </head>
 
 <body>
 
     <b style="font-size:14px;">
-        @if ($cbg->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cbg->kode_cabang == 'PST')
+            PACIFIC PUSAT
         @else
-        PACIFIC CABANG {{ strtoupper($cbg->nama_cabang) }}
+            PACIFIC CABANG {{ strtoupper($cbg->nama_cabang) }}
         @endif
         <br>
         LAPORAN KOMISI DRIVER HELPER<br>

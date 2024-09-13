@@ -29,7 +29,12 @@
                 </a>
             </li>
 
-
+            <li class=" {{ request()->is(['karyawan']) ? 'active' : '' }} nav-item">
+                <a href="/karyawan">
+                    <i class="feather icon-home"></i>
+                    <span class="menu-title" data-i18n="Dashboard">Karyawan</span>
+                </a>
+            </li>
             @if (in_array($level, $hrd_menu) || in_array($kat_jabatan, $hrd_menu) || Auth::user()->pic_presensi == 1)
                 <li class=" nav-item">
                     <a href="#"><i class="fa fa-users" style="color:rgb(200, 5, 77)"></i><span class="menu-title">HRD</span></a>
