@@ -360,16 +360,11 @@
                                                     <tr style="font-weight: bold">
                                                         <td colspan="7">Keterangan</td>
                                                         <td class="text-right">
-                                                            @if ($data->status_batal == 0)
-                                                                @if ($sisabayar != 0)
-                                                                    <span class="badge bg-danger">BELUM LUNAS</span>
-                                                                @else
-                                                                    <span class="badge bg-success">LUNAS</span>
-                                                                @endif
+                                                            @if ($sisabayar != 0)
+                                                                <span class="badge bg-danger">BELUM LUNAS</span>
                                                             @else
-                                                                <span class="badge bg-danger">BATAL</span>
+                                                                <span class="badge bg-success">LUNAS</span>
                                                             @endif
-
                                                         </td>
                                                     </tr>
 
@@ -480,7 +475,7 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
-                                        @if ($data->status_lunas != 1 && $data->status_batal == 0)
+                                        @if ($data->status_lunas != 1)
                                             <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i
                                                     class="feather icon-plus"></i></a>
                                         @endif
@@ -581,7 +576,7 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
-                                        @if ($data->status_lunas != 1 && $data->jenisbayar != 'transfer' && $data->status_batal == 0)
+                                        @if ($data->status_lunas != 1 && $data->jenisbayar != 'transfer')
                                             <a href="#" id="inputgiro" class="btn btn-primary mb-2" class="href"><i
                                                     class="feather icon-plus"></i></a>
                                         @endif
@@ -665,7 +660,7 @@
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="transfer" aria-labelledby="transfer-tab" role="tabpanel">
-                                        @if ($data->status_lunas != 1 && $data->status_batal == 0)
+                                        @if ($data->status_lunas != 1)
                                             <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i
                                                     class="feather icon-plus"></i></a>
                                         @endif
