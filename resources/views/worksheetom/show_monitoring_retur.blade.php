@@ -42,8 +42,8 @@
                     <select name="kode_barang" id="kode_barang" class="form-control">
                         <option value="">Pilih Barang</option>
                         @foreach ($detail as $d)
-                            <option isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}"
-                                value="{{ $d->kode_barang }}">{{ $d->nama_barang }}</option>
+                            <option isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" value="{{ $d->kode_barang }}">{{ $d->nama_barang }}
+                            </option>
                         @endforeach
                     </select>
                     <input type="hidden" id="isipcsdus">
