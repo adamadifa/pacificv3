@@ -531,18 +531,18 @@ function hitungjarak($lat1, $lon1, $lat2, $lon2)
 function lockreport($tanggal)
 {
     $set_tanggal_cabang = [
-        'SKB' => '2018-01-01'
+        'SKB' => '2023-01-01'
     ];
 
     if (auth()->user()->level == 'manager accounting' || auth()->user()->level == 'admin pajak') {
-        if ($tanggal < '2018-01-01' && !empty($tanggal)) {
+        if ($tanggal < '2023-01-01' && !empty($tanggal)) {
             echo "Data Belum Ada / Tidak Ditemukan";
             die;
         } else {
             return "OK";
         }
     } else {
-        if ($tanggal < '2018-01-01' && !empty($tanggal)) {
+        if ($tanggal < '2023-01-01' && !empty($tanggal)) {
             echo "Data Belum Ada / Tidak Ditemukan";
             die;
         } else {
@@ -555,9 +555,9 @@ function lockreport($tanggal)
 function startreport()
 {
     if (auth()->user()->level == 'manager accounting' || auth()->user()->level == 'admin pajak') {
-        $startreport = "2018-01-01";
+        $startreport = "2023-01-01";
     } else {
-        $startreport = "2018-01-01";
+        $startreport = "2023-01-01";
     }
     return $startreport;
 }
@@ -566,11 +566,11 @@ function startreport()
 function startyear()
 {
     if (auth()->user()->level == 'manager accounting' || auth()->user()->level == 'admin pajak') {
-        $startyear = 2018;
+        $startyear = 2023;
     } else {
-        $startyear = 2018;
+        $startyear = 2023;
     }
-    //$startyear = 2018;
+    //$startyear = 2023;
     return $startyear;
 }
 
