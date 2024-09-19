@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Routing Salesman {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Routing Salesman {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,28 +32,28 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN ROUTING SALESMAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
     </b>
@@ -73,49 +74,50 @@
         </thead>
         <tbody>
             @php
-            $no =1;
+                $no = 1;
             @endphp
             @foreach ($penjualan as $d)
-            <?php
+                <?php
                 $day = date('D', strtotime($d->tgltransaksi));
-                $dayList = array(
+                $dayList = [
                     'Sun' => 'Minggu',
                     'Mon' => 'Senin',
                     'Tue' => 'Selasa',
                     'Wed' => 'Rabu',
                     'Thu' => 'Kamis',
                     'Fri' => 'Jumat',
-                    'Sat' => 'Sabtu'
-                );
+                    'Sat' => 'Sabtu',
+                ];
 
-                if(str_contains($d->hari,$dayList[$day])){
-                    $bgcolor="";
-                    $color="";
-                    $ket = "";
-                }else{
-                    $bgcolor = "red";
-                    $color="white";
-                    $ket = "Tidak Sesuai Jadwal";
+                if (str_contains($d->hari, $dayList[$day])) {
+                    $bgcolor = '';
+                    $color = '';
+                    $ket = '';
+                } else {
+                    $bgcolor = 'red';
+                    $color = 'white';
+                    $ket = 'Tidak Sesuai Jadwal';
                 }
-            ?>
+                ?>
 
-            <tr style="background-color:{{ $bgcolor }}; color:{{ $color }}">
-                <td>{{ $no }}</td>
-                <td>{{ $dayList[$day] }}, {{ date("d-m-Y",strtotime($d->tgltransaksi)) }}</td>
-                <td>{{ $d->kode_pelanggan }}</td>
-                <td>{{ $d->nama_pelanggan }}</td>
-                <td>{{ ucwords(strtolower($d->jenistransaksi ))}}</td>
-                <td style="text-align: right">{{ rupiah($d->totalpenjualan) }}</td>
-                <td style="text-align: right">{{ rupiah($d->totalbayar) }}</td>
-                <td>{{ $d->hari }}</td>
-                <td>{{ $ket }}</td>
-            </tr>
-            @php
-            $no++;
-            @endphp
+                <tr style="background-color:{{ $bgcolor }}; color:{{ $color }}">
+                    <td>{{ $no }}</td>
+                    <td>{{ $dayList[$day] }}, {{ date('d-m-Y', strtotime($d->tgltransaksi)) }}</td>
+                    <td>{{ $d->kode_pelanggan }}</td>
+                    <td>{{ $d->nama_pelanggan }}</td>
+                    <td>{{ ucwords(strtolower($d->jenistransaksi)) }}</td>
+                    <td style="text-align: right">{{ rupiah($d->totalpenjualan) }}</td>
+                    <td style="text-align: right">{{ rupiah($d->totalbayar) }}</td>
+                    <td>{{ $d->hari }}</td>
+                    <td>{{ $ket }}</td>
+                </tr>
+                @php
+                    $no++;
+                @endphp
             @endforeach
         </tbody>
     </table>
 
 </body>
+
 </html>

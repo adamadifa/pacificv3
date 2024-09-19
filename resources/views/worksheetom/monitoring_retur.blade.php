@@ -25,12 +25,10 @@
                     <form action="/worksheetom/monitoringretur">
                         <div class="row">
                             <div class="col-lg-6 col-sm-6">
-                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker
-                                    value="{{ Request('dari') }}" />
+                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
                             </div>
                             <div class="col-lg-6 col-sm-6">
-                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker
-                                    value="{{ Request('sampai') }}" />
+                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
                             </div>
                         </div>
                         <div class="row">
@@ -40,8 +38,8 @@
                                         <select name="kode_cabang" id="kode_cabang" class="form-control">
                                             <option value="">Semua Cabang</option>
                                             @foreach ($cabang as $c)
-                                                <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
-                                                    value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
+                                                <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }} value="{{ $c->kode_cabang }}">
+                                                    {{ strtoupper($c->nama_cabang) }}
                                                 </option>
                                             @endforeach
                                         </select>
@@ -49,8 +47,7 @@
                                 </div>
                             @endif
                             <div class="col-lg-3 col-sm-12">
-                                <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card"
-                                    value="{{ Request('no_fak_penj') }}" />
+                                <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
                             </div>
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user"
@@ -65,22 +62,19 @@
                                             <button type="submit" name="submit" value="1" class="btn btn-primary">
                                                 <i class="fa fa-search"></i>
                                             </button>
-                                            <button type="submit" name="cetak" formtarget="_blank" value="1"
-                                                class="btn btn-success">
+                                            <button type="submit" name="cetak" formtarget="_blank" value="1" class="btn btn-success">
                                                 <i class="feather icon-printer"></i>
                                             </button>
                                         </div>
                                     @else
-                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i
-                                                class="fa fa-search"></i></button>
+                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                     @endif
                                 </div>
                             </div>
                         </div>
                     </form>
                     @include('layouts.notification')
-                    <table class="table table-hover-animation"
-                        @if ($level == 'salesman') style="font-size:10px !important" @endif>
+                    <table class="table table-hover-animation" @if ($level == 'salesman') style="font-size:10px !important" @endif>
                         <thead class="thead-dark">
                             <tr>
                                 @if ($level != 'salesman')
@@ -133,12 +127,10 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a class="ml-1 detailretur" href="#"
-                                                no_retur_penj="{{ $d->no_retur_penj }}"><i
+                                            <a class="ml-1 detailretur" href="#" no_retur_penj="{{ $d->no_retur_penj }}"><i
                                                     class=" feather icon-file-text info"></i>
                                             </a>
-                                            <a class="ml-1 validasiretur" href="#"
-                                                no_retur_penj="{{ $d->no_retur_penj }}"><i
+                                            <a class="ml-1 validasiretur" href="#" no_retur_penj="{{ $d->no_retur_penj }}"><i
                                                     class=" feather icon-check-square"></i></a>
                                         </div>
 
@@ -155,8 +147,7 @@
         </div>
     </div>
     <!-- Detail Retur -->
-    <div class="modal fade text-left" id="mdldetailretur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdldetailretur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

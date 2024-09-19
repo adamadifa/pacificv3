@@ -21,8 +21,7 @@
         <td class="text-center">{{ !empty($jmlpcs) ? $jmlpcs : '' }}</td>
         <td>{{ $d->no_dpb }}</td>
         <td>
-            <a href="#" kode_barang="{{ $d->kode_barang }}" no_dpb="{{ $d->no_dpb }}" class="hapus"><i
-                    class="feather icon-trash danger"></i></a>
+            <a href="#" kode_barang="{{ $d->kode_barang }}" no_dpb="{{ $d->no_dpb }}" class="hapus"><i class="feather icon-trash danger"></i></a>
         </td>
     </tr>
 @endforeach
