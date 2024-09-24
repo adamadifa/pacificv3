@@ -2,130 +2,130 @@
 <html lang="en">
 
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <title>Cetak Rekap Retur</title>
-   <style>
-      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cetak Rekap Retur</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
-      body {
-         font-family: 'Poppins'
-      }
+        body {
+            font-family: 'Poppins'
+        }
 
-      .datatable3 {
-         border: 2px solid #D6DDE6;
-         border-collapse: collapse;
-         font-size: 11px;
-      }
+        .datatable3 {
+            border: 2px solid #D6DDE6;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
 
-      .datatable3 td {
-         border: 1px solid #000000;
-         padding: 6px;
-      }
+        .datatable3 td {
+            border: 1px solid #000000;
+            padding: 6px;
+        }
 
-      .datatable3 th {
-         border: 2px solid #828282;
-         font-weight: bold;
-         text-align: left;
-         padding: 10px;
-         text-align: center;
-         font-size: 14px;
-      }
-   </style>
+        .datatable3 th {
+            border: 2px solid #828282;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
 </head>
 
 <body>
-   <b style="font-size:14px;">
-      @if ($cabang != null)
-         @if ($cabang->kode_cabang == 'PST')
-            PACIFIC PUSAT
-         @else
-            PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-         @endif
-      @else
-         PACIFC ALL CABANG
-      @endif
-      <br>
-      REKAP PENJUALAN<br>
-      PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
-      <br>
-      @if ($salesman != null)
-         SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
-      @else
-         SEMUA SALESMAN
-      @endif
-      <br />
-   </b>
-   <table class="datatable3" style="width:150%" border="1">
-      <thead bgcolor="#024a75" style="color:white; font-size:12;">
-         <tr bgcolor="#024a75" style="color:white; font-size:12;">
-            <td rowspan="3">No</td>
-            <td rowspan="3">Nama Sales</td>
-            <td colspan="34">Produk</td>
-            <td rowspan="3" bgcolor="#f5ae15">Total Retur</td>
-            <td rowspan="3" bgcolor="#f5ae15">Penyeseuaian</td>
-            <td rowspan="3" bgcolor="#f5ae15">Total Retur Netto</td>
-         </tr>
-         <tr bgcolor="#024a75" style="color:white; font-size:12;">
-            <td colspan="2">AIDA BESAR 500 GR</td>
-            <td colspan="2">AIDA KECIL SACHET</td>
-            <td colspan="2">AIDA BESAR 250 GR</td>
-            <td colspan="2">SAOS BAWANG BALL</td>
-            <td colspan="2">CABE GILING KG</td>
-            <td colspan="2">CABE GILING MURAH</td>
-            <td colspan="2">SAOS BAWANG DUS</td>
-            <td colspan="2">SAUS EXTRA PEDAS</td>
-            <td colspan="2">KECAP DUS</td>
-            <td colspan="2">SAUS STICK</td>
-            <td colspan="2">SAUS STICK PREMIUM</td>
-            <td colspan="2">SAUS PREMIUM</td>
-            <td colspan="2">SAUS PREMIUM PRORMO</td>
-            <td colspan="2">SAMBAL CABE 200</td>
-            <td colspan="2">SAUS PREMIUM 500</td>
-            <td colspan="2">BUMBU TABUR</td>
-            <td colspan="2">PREMIUM POUCH 1000</td>
+    <b style="font-size:14px;">
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
+        @else
+            PACIFC ALL CABANG
+        @endif
+        <br>
+        REKAP PENJUALAN<br>
+        PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
+        <br>
+        @if ($salesman != null)
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+        @else
+            SEMUA SALESMAN
+        @endif
+        <br />
+    </b>
+    <table class="datatable3" style="width:150%" border="1">
+        <thead bgcolor="#024a75" style="color:white; font-size:12;">
+            <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                <td rowspan="3">No</td>
+                <td rowspan="3">Nama Sales</td>
+                <td colspan="34">Produk</td>
+                <td rowspan="3" bgcolor="#f5ae15">Total Retur</td>
+                <td rowspan="3" bgcolor="#f5ae15">Penyeseuaian</td>
+                <td rowspan="3" bgcolor="#f5ae15">Total Retur Netto</td>
+            </tr>
+            <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                <td colspan="2">AIDA BESAR 500 GR</td>
+                <td colspan="2">AIDA KECIL SACHET</td>
+                <td colspan="2">AIDA BESAR 250 GR</td>
+                <td colspan="2">SAOS BAWANG BALL</td>
+                <td colspan="2">CABE GILING KG</td>
+                <td colspan="2">CABE GILING MURAH</td>
+                <td colspan="2">SAOS BAWANG DUS</td>
+                <td colspan="2">SAUS EXTRA PEDAS</td>
+                <td colspan="2">KECAP DUS</td>
+                <td colspan="2">SAUS STICK</td>
+                <td colspan="2">SAUS STICK PREMIUM</td>
+                <td colspan="2">SAUS PREMIUM</td>
+                <td colspan="2">SAUS PREMIUM PRORMO</td>
+                <td colspan="2">SAMBAL CABE 200</td>
+                <td colspan="2">SAUS PREMIUM 500</td>
+                <td colspan="2">BUMBU TABUR</td>
+                <td colspan="2">PREMIUM POUCH 1000</td>
 
-         </tr>
-         <tr bgcolor="#024a75" style="color:white; font-size:12;">
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-            <td>Qty</td>
-            <td>Rp</td>
-         </tr>
-      </thead>
-      <tbody>
-         <?php
+            </tr>
+            <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+                <td>Qty</td>
+                <td>Rp</td>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
           $no                   = 1;
           $qtytotalAB           = 0;
           $qtytotalAR           = 0;
@@ -294,123 +294,123 @@
             $grandtotalreturnetto       = $grandtotalreturnetto + $totalreturnetto;
             $grandtotalallreturnetto    = $grandtotalallreturnetto + $totalreturnetto;
           ?>
-         <tr>
-            <td><?php echo $no; ?></td>
-            <td><?php echo $p->nama_karyawan; ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_AB)) {
-                echo desimal($p->JML_AB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AB)) {
-                echo rupiah($p->AB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_AR)) {
-                echo desimal($p->JML_AR);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AR)) {
-                echo rupiah($p->AR);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_ASE)) {
-                echo desimal($p->JML_ASE);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->ASE)) {
-                echo rupiah($p->ASE);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_BB)) {
-                echo desimal($p->JML_BB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BB)) {
-                echo rupiah($p->BB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_CG)) {
-                echo desimal($p->JML_CG);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG)) {
-                echo rupiah($p->CG);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_CGG)) {
-                echo desimal($p->JML_CGG);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CGG)) {
-                echo rupiah($p->CGG);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DB)) {
-                echo desimal($p->JML_DB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DB)) {
-                echo rupiah($p->DB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DEP)) {
-                echo desimal($p->JML_DEP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DEP)) {
-                echo rupiah($p->DEP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DK)) {
-                echo desimal($p->JML_DK);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DK)) {
-                echo rupiah($p->DK);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DS)) {
-                echo desimal($p->JML_DS);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DS)) {
-                echo rupiah($p->DS);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP8)) {
-                echo desimal($p->JML_SP8);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {
-                echo rupiah($p->SP8);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP)) {
-                echo desimal($p->JML_SP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP)) {
-                echo rupiah($p->SP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SPP)) {
-                echo desimal($p->JML_SPP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SPP)) {
-                echo rupiah($p->SPP);
-            } ?></td>
+            <tr>
+                <td><?php echo $no; ?></td>
+                <td><?php echo $p->nama_karyawan; ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_AB)) {
+                    echo desimal($p->JML_AB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AB)) {
+                    echo rupiah($p->AB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_AR)) {
+                    echo desimal($p->JML_AR);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AR)) {
+                    echo rupiah($p->AR);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_ASE)) {
+                    echo desimal($p->JML_ASE);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->ASE)) {
+                    echo rupiah($p->ASE);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_BB)) {
+                    echo desimal($p->JML_BB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BB)) {
+                    echo rupiah($p->BB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_CG)) {
+                    echo desimal($p->JML_CG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG)) {
+                    echo rupiah($p->CG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_CGG)) {
+                    echo desimal($p->JML_CGG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CGG)) {
+                    echo rupiah($p->CGG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DB)) {
+                    echo desimal($p->JML_DB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DB)) {
+                    echo rupiah($p->DB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DEP)) {
+                    echo desimal($p->JML_DEP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DEP)) {
+                    echo rupiah($p->DEP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DK)) {
+                    echo desimal($p->JML_DK);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DK)) {
+                    echo rupiah($p->DK);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_DS)) {
+                    echo desimal($p->JML_DS);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DS)) {
+                    echo rupiah($p->DS);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP8)) {
+                    echo desimal($p->JML_SP8);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {
+                    echo rupiah($p->SP8);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP)) {
+                    echo desimal($p->JML_SP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP)) {
+                    echo rupiah($p->SP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SPP)) {
+                    echo desimal($p->JML_SPP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SPP)) {
+                    echo rupiah($p->SPP);
+                } ?></td>
 
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SC)) {
-                echo desimal($p->JML_SC);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {
-                echo rupiah($p->SC);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP500)) {
-                echo desimal($p->JML_SP500);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
-                echo rupiah($p->SP500);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_BR20)) {
-                echo desimal($p->JML_BR20);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BR20)) {
-                echo rupiah($p->BR20);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_P1000)) {
-                echo desimal($p->JML_P1000);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->P1000)) {
-                echo rupiah($p->P1000);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->totalretur)) {
-                echo rupiah($p->totalretur);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($p->total_gb)) {
-                echo rupiah($p->total_gb);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($totalreturnetto)) {
-                echo rupiah($totalreturnetto);
-            } ?></td>
-         </tr>
-         <?php
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SC)) {
+                    echo desimal($p->JML_SC);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {
+                    echo rupiah($p->SC);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP500)) {
+                    echo desimal($p->JML_SP500);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
+                    echo rupiah($p->SP500);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_BR20)) {
+                    echo desimal($p->JML_BR20);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BR20)) {
+                    echo rupiah($p->BR20);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_P1000)) {
+                    echo desimal($p->JML_P1000);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->P1000)) {
+                    echo rupiah($p->P1000);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->totalretur)) {
+                    echo rupiah($p->totalretur);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->total_gb)) {
+                    echo rupiah($p->total_gb);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($totalreturnetto)) {
+                    echo rupiah($totalreturnetto);
+                } ?></td>
+            </tr>
+            <?php
 
             if ($rek != $p->kode_cabang) {
             echo '
@@ -500,171 +500,171 @@
             $no++;
           }
           ?>
-      </tbody>
-      <tfoot>
-         <tr bgcolor="#ec8585" style="font-weight:bold">
-            <td colspan="2">TOTAL RETUR</td>
-            <td align="right"><?php echo desimal($grandtytotalAB); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalAB); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalAR); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalAR); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalASE); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalASE); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalBB); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalBB); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalCG); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalCG); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalCGG); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalCGG); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalDB); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalDB); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalDEP); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalDEP); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalDK); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalDK); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalDS); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalDS); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalSP8); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalSP8); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalSP); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalSP); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalSPP); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalSPP); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalSC); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalSC); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalSP500); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalSP500); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalBR20); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalBR20); ?></td>
-            <td align="right"><?php echo desimal($grandtytotalP1000); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalP1000); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalretur); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalpenyesuaian); ?></td>
-            <td align="right"><?php echo rupiah($grandtotalallreturnetto); ?></td>
-         </tr>
-      </tfoot>
-   </table>
-   <br>
-   <?php
-   $totalqtyretur = $grandtytotalAB + $grandtytotalAR + $grandtytotalASE + $grandtytotalBB + $grandtytotalCG + $grandtytotalCGG + $grandtytotalDB + $grandtytotalDEP + $grandtytotalDK + $grandtytotalDS + $grandtytotalSP + $grandtytotalSPP + $grandtytotalSP8 + $grandtytotalSC + $grandtytotalSP500 + $grandtytotalBR20 + $grandtytotalP1000;
-   $average = $totalqtyretur != 0 ? $grandtotalpenyesuaian / $totalqtyretur : 0;
-   $avgAB = $grandtytotalAB * $average;
-   $avgAR = $grandtytotalAR * $average;
-   $avgASE = $grandtytotalASE * $average;
-   $avgBB = $grandtytotalBB * $average;
-   $avgCG = $grandtytotalCG * $average;
-   $avgCGG = $grandtytotalCGG * $average;
-   $avgDB = $grandtytotalDB * $average;
-   $avgDEP = $grandtytotalDEP * $average;
-   $avgDK = $grandtytotalDK * $average;
-   $avgDS = $grandtytotalDS * $average;
-   $avgSP = $grandtytotalSP * $average;
-   $avgSPP = $grandtytotalSPP * $average;
-   $avgSP8 = $grandtytotalSP8 * $average;
-   $avgSC = $grandtytotalSC * $average;
-   $avgSP500 = $grandtytotalSP500 * $average;
-   $avgBR20 = $grandtytotalBR20 * $average;
-   $avgP1000 = $grandtytotalP1000 * $average;
-   ?>
-   <table class="datatable3" style="width:120%">
-      <thead>
-         <tr bgcolor="#ec8585">
-            <th style="text-align:right; font-weight:bold" colspan="2">PENYESUAIAN RETUR</th>
-            <th>AIDA BESAR 500 GR</th>
-            <th>AIDA KECIL SACHET</th>
-            <th>AIDA BESAR 250 GR</th>
-            <th>SAOS BAWANG BALL</th>
-            <th>CABE GILING KG</th>
-            <th>CABE GILING MURAH</th>
-            <th>SAOS BAWANG DUS</th>
-            <th>SAUS EXTRA PEDAS</th>
-            <th>KECAP DUS</th>
-            <th>SAUS STICK</th>
-            <th>SAUS STICK PREMIUM</th>
-            <th>SAUS PREMIUM</th>
-            <th>SAUS PREMIUM PROMO</th>
-            <th>SAMBAL CABE 200</th>
-            <th>SAUS PREMIUM 500</th>
-            <th>BUMBU TABUR</th>
-            <th>PREMIUM POUCH 1000</th>
-         </tr>
-      </thead>
-      <tbody>
-         <tr>
-            <td>TOTAL QTY RETUR</td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($totalqtyretur)) {
-                echo desimal($totalqtyretur);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgAB)) {
-                echo rupiah($avgAB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgAR)) {
-                echo rupiah($avgAR);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgASE)) {
-                echo rupiah($avgASE);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgBB)) {
-                echo rupiah($avgBB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgCG)) {
-                echo rupiah($avgCG);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgCGG)) {
-                echo rupiah($avgCGG);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDB)) {
-                echo rupiah($avgDB);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDEP)) {
-                echo rupiah($avgDEP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDK)) {
-                echo rupiah($avgDK);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDS)) {
-                echo rupiah($avgDS);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSP8)) {
-                echo rupiah($avgSP8);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSP)) {
-                echo rupiah($avgSP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSPP)) {
-                echo rupiah($avgSPP);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSC)) {
-                echo rupiah($avgSC);
-            } ?></td>
+        </tbody>
+        <tfoot>
+            <tr bgcolor="#ec8585" style="font-weight:bold">
+                <td colspan="2">TOTAL RETUR</td>
+                <td align="right"><?php echo desimal($grandtytotalAB); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalAB); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalAR); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalAR); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalASE); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalASE); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalBB); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalBB); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalCG); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalCG); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalCGG); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalCGG); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalDB); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalDB); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalDEP); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalDEP); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalDK); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalDK); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalDS); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalDS); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalSP8); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalSP8); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalSP); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalSP); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalSPP); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalSPP); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalSC); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalSC); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalSP500); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalSP500); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalBR20); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalBR20); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalP1000); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalP1000); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalretur); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalpenyesuaian); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalallreturnetto); ?></td>
+            </tr>
+        </tfoot>
+    </table>
+    <br>
+    <?php
+    $totalqtyretur = $grandtytotalAB + $grandtytotalAR + $grandtytotalASE + $grandtytotalBB + $grandtytotalCG + $grandtytotalCGG + $grandtytotalDB + $grandtytotalDEP + $grandtytotalDK + $grandtytotalDS + $grandtytotalSP + $grandtytotalSPP + $grandtytotalSP8 + $grandtytotalSC + $grandtytotalSP500 + $grandtytotalBR20 + $grandtytotalP1000;
+    $average = $totalqtyretur != 0 ? $grandtotalpenyesuaian / $totalqtyretur : 0;
+    $avgAB = $grandtytotalAB * $average;
+    $avgAR = $grandtytotalAR * $average;
+    $avgASE = $grandtytotalASE * $average;
+    $avgBB = $grandtytotalBB * $average;
+    $avgCG = $grandtytotalCG * $average;
+    $avgCGG = $grandtytotalCGG * $average;
+    $avgDB = $grandtytotalDB * $average;
+    $avgDEP = $grandtytotalDEP * $average;
+    $avgDK = $grandtytotalDK * $average;
+    $avgDS = $grandtytotalDS * $average;
+    $avgSP = $grandtytotalSP * $average;
+    $avgSPP = $grandtytotalSPP * $average;
+    $avgSP8 = $grandtytotalSP8 * $average;
+    $avgSC = $grandtytotalSC * $average;
+    $avgSP500 = $grandtytotalSP500 * $average;
+    $avgBR20 = $grandtytotalBR20 * $average;
+    $avgP1000 = $grandtytotalP1000 * $average;
+    ?>
+    <table class="datatable3" style="width:120%">
+        <thead>
+            <tr bgcolor="#ec8585">
+                <th style="text-align:right; font-weight:bold" colspan="2">PENYESUAIAN RETUR</th>
+                <th>AIDA BESAR 500 GR</th>
+                <th>AIDA KECIL SACHET</th>
+                <th>AIDA BESAR 250 GR</th>
+                <th>SAOS BAWANG BALL</th>
+                <th>CABE GILING KG</th>
+                <th>CABE GILING MURAH</th>
+                <th>SAOS BAWANG DUS</th>
+                <th>SAUS EXTRA PEDAS</th>
+                <th>KECAP DUS</th>
+                <th>SAUS STICK</th>
+                <th>SAUS STICK PREMIUM</th>
+                <th>SAUS PREMIUM</th>
+                <th>SAUS PREMIUM PROMO</th>
+                <th>SAMBAL CABE 200</th>
+                <th>SAUS PREMIUM 500</th>
+                <th>BUMBU TABUR</th>
+                <th>PREMIUM POUCH 1000</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>TOTAL QTY RETUR</td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($totalqtyretur)) {
+                    echo desimal($totalqtyretur);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgAB)) {
+                    echo rupiah($avgAB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgAR)) {
+                    echo rupiah($avgAR);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgASE)) {
+                    echo rupiah($avgASE);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgBB)) {
+                    echo rupiah($avgBB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgCG)) {
+                    echo rupiah($avgCG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgCGG)) {
+                    echo rupiah($avgCGG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDB)) {
+                    echo rupiah($avgDB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDEP)) {
+                    echo rupiah($avgDEP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDK)) {
+                    echo rupiah($avgDK);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgDS)) {
+                    echo rupiah($avgDS);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSP8)) {
+                    echo rupiah($avgSP8);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSP)) {
+                    echo rupiah($avgSP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSPP)) {
+                    echo rupiah($avgSPP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSC)) {
+                    echo rupiah($avgSC);
+                } ?></td>
 
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSP500)) {
-                echo rupiah($avgSP500);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgBR20)) {
-                echo rupiah($avgBR20);
-            } ?></td>
-            <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgP1000)) {
-                echo rupiah($avgP1000);
-            } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSP500)) {
+                    echo rupiah($avgSP500);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgBR20)) {
+                    echo rupiah($avgBR20);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgP1000)) {
+                    echo rupiah($avgP1000);
+                } ?></td>
 
-         </tr>
-         <tr>
-            <td>PENYESUAIAN HARGA RETUR</td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($grandtotalpenyesuaian)) {
-                echo desimal($grandtotalpenyesuaian);
-            } ?></td>
-         </tr>
-         <tr>
-            <td>AVERAGE</td>
-            <td style="text-align:right; font-weight:bold"><?php if (!empty($average)) {
-                echo rupiah($average);
-            } ?></td>
+            </tr>
+            <tr>
+                <td>PENYESUAIAN HARGA RETUR</td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($grandtotalpenyesuaian)) {
+                    echo desimal($grandtotalpenyesuaian);
+                } ?></td>
+            </tr>
+            <tr>
+                <td>AVERAGE</td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($average)) {
+                    echo rupiah($average);
+                } ?></td>
 
-         </tr>
-      </tbody>
+            </tr>
+        </tbody>
 
-   </table>
+    </table>
 </body>
 
 </html>

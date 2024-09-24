@@ -1257,13 +1257,13 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script type="text/javascript" src="{{ asset('dist/js/freeze/js/freeze-table.js') }}"></script>
-{{-- <script>
+<script>
     $(function() {
         $('.freeze-table').freezeTable({
             'scrollable': true,
             'columnNum': 4
         });
     });
-</script> --}}
+</script>
 
 </html>
