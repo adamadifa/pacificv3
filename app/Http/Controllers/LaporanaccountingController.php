@@ -162,7 +162,8 @@ class LaporanaccountingController extends Controller
    			m.kode_produk,
 			isipcsdus,
 			((IFNULL(saldoawal,0) * IFNULL(harga_awal_produksi,0)) + (IFNULL(jmlbpbj,0) * IFNULL(harga_hpp,0))) / (IFNULL(saldoawal,0)  + IFNULL(jmlbpbj,0)) as harga_gudang,
-			((IFNULL(saldoawal_gd,0) * IFNULL(harga_awal_gudang,0))
+
+            ((IFNULL(saldoawal_gd,0) * IFNULL(harga_awal_gudang,0))
 			+ ((IFNULL(jmlfsthp_gd,0) * IFNULL((SELECT harga_gudang),0)))
 			+ ((IFNULL(jmlrepack_gd,0) * IFNULL((SELECT harga_gudang),0)))
 			+ ((IFNULL(jmllainlain_in_gd,0) * IFNULL((SELECT harga_gudang),0)))

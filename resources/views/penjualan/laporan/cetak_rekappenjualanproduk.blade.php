@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,28 +32,28 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         REKAP PENJUALAN PRODUK<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
 
@@ -81,7 +82,7 @@
             ?>
             <tr>
                 <td style="width:300px; text-align:left"><?php echo $r->nama_barang; ?></td>
-                <td align="right"><?php echo rupiah($r->jumlah);  ?></td>
+                <td align="right"><?php echo rupiah($r->jumlah); ?></td>
             </tr>
             <?php
                 $kategori  = $r->kategori_jenisproduk;
@@ -128,11 +129,12 @@
             <tr>
                 <td><b>PENJUALAN BERSIH</b></td>
                 <?php
-                    $totalnetto = $jumlahall - $penjualan->potongan - $penjualan->potistimewa - $penjualan->penyharga + $penjualan->ppn - $retur->totalretur;
+                $totalnetto = $jumlahall - $penjualan->potongan - $penjualan->potistimewa - $penjualan->penyharga + $penjualan->ppn - $retur->totalretur;
                 ?>
                 <td align="right"><b><i><?php echo rupiah($totalnetto); ?></i></b></td>
             </tr>
         </tfoot>
     </table>
 </body>
+
 </html>

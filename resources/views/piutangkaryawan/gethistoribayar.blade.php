@@ -1,49 +1,49 @@
 @php
-$total = 0;
+    $total = 0;
 @endphp
 @foreach ($histori as $d)
-@php
-$total+= $d->jumlah;
-@endphp
-<tr>
-    <td>{{ $d->no_bukti }}</td>
     @php
-    $tgl = explode("-",$d->tgl_bayar);
-    $bulan = $tgl[1];
-    $tahun = $tgl[0];
-
-    if($bulan == 1){
-    $bln = 12;
-    $thn = $tahun -1;
-    }else{
-    $bln = $bulan - 1;
-    $thn = $tahun;
-    }
-    $tanggal = $thn."-".$bln."-01";
+        $total += $d->jumlah;
     @endphp
-    <td>{{ date("d-m-Y",strtotime($tanggal))}}</td>
-    <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
-    <td>
+    <tr>
+        <td>{{ $d->no_bukti }}</td>
+        @php
+            $tgl = explode('-', $d->tgl_bayar);
+            $bulan = $tgl[1];
+            $tahun = $tgl[0];
 
-        @if ($d->jenis_bayar==1)
-        Potong Gaji
-        @elseif($d->jenis_bayar==2)
-        Potong Komisi
-        @elseif($d->jenis_bayar==3)
-        Titip Pelanggan
-        @elseif($d->jenis_bayar==4)
-        Lainnya
-        @endif
-    </td>
-    <td>{{ $d->name }}</td>
-    <td>
-        @if ($loop->last)
-        <a href="#" no_bukti="{{ $d->no_bukti }}" class="delete-confirm ml-1">
-            <i class="feather icon-trash danger"></i>
-        </a>
-        @endif
-    </td>
-</tr>
+            if ($bulan == 1) {
+                $bln = 12;
+                $thn = $tahun - 1;
+            } else {
+                $bln = $bulan - 1;
+                $thn = $tahun;
+            }
+            $tanggal = $thn . '-' . $bln . '-01';
+        @endphp
+        <td>{{ date('d-m-Y', strtotime($tanggal)) }}</td>
+        <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
+        <td>
+
+            @if ($d->jenis_bayar == 1)
+                Potong Gaji
+            @elseif($d->jenis_bayar == 2)
+                Potong Komisi
+            @elseif($d->jenis_bayar == 3)
+                Titip Pelanggan
+            @elseif($d->jenis_bayar == 4)
+                Lainnya
+            @endif
+        </td>
+        <td>{{ $d->name }}</td>
+        <td>
+            @if ($loop->last)
+                <a href="#" no_bukti="{{ $d->no_bukti }}" class="delete-confirm ml-1">
+                    <i class="feather icon-trash danger"></i>
+                </a>
+            @endif
+        </td>
+    </tr>
 @endforeach
 <tr style="font-weight:bold">
     <td colspan="2">TOTAL</td>
@@ -78,14 +78,14 @@ $total+= $d->jumlah;
         function loadhistoribayar() {
             var no_pinjaman_nonpjp = "{{ $no_pinjaman_nonpjp }}";
             $.ajax({
-                type: 'POST'
-                , url: '/piutangkaryawan/gethistoribayar'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_pinjaman_nonpjp: no_pinjaman_nonpjp
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/piutangkaryawan/gethistoribayar',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_pinjaman_nonpjp: no_pinjaman_nonpjp
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadhistoribayar").html(respond);
                     loadsisatagihan();
                 }
@@ -111,24 +111,24 @@ $total+= $d->jumlah;
             event.preventDefault();
 
             swal({
-                    title: `Are you sure you want to delete this record?`
-                    , text: "If you delete this, it will be gone forever."
-                    , icon: "warning"
-                    , buttons: true
-                    , dangerMode: true
-                , })
+                    title: `Are you sure you want to delete this record?`,
+                    text: "If you delete this, it will be gone forever.",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
                 .then((willDelete) => {
                     if (willDelete) {
                         var no_bukti = $(this).attr('no_bukti');
                         $.ajax({
-                            type: 'POST'
-                            , url: '/pembayaranpiutangkaryawan/delete'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , no_bukti: no_bukti
-                            }
-                            , cache: false
-                            , success: function(respond) {
+                            type: 'POST',
+                            url: '/pembayaranpiutangkaryawan/delete',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                no_bukti: no_bukti
+                            },
+                            cache: false,
+                            success: function(respond) {
                                 loadhistoribayar();
                             }
                         });
@@ -137,5 +137,4 @@ $total+= $d->jumlah;
         });
 
     });
-
 </script>
