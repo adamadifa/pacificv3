@@ -5614,6 +5614,7 @@ class TargetkomisiController extends Controller
         $field_total_retur
         cabang.kode_cabang,nama_cabang,
         ROUND(jmlpengambilan/jmlkapasitas * 100) as ratio_kendaraan,
+        jmlpengambilan,jmlkapasitas,
         ROUND(penjualanbulanberjalan/penjualanbulanlalu*100) as ratio_penjualan,
         ROUND(jmlsesuaijadwal/jmlkunjungan *100) as ratio_routing,
         lama_lpc,jam_lpc,

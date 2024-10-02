@@ -241,6 +241,9 @@
                         echo desimal($hargakeluar);
                     }
                     ?>
+                    <?php
+                    echo desimal(($jmlhsaldoawal + $jmlpembelian + $jmllainnya) / ($qtysaldoawal + $qtypembelian + $qtylainnya + 0.000000001));
+                    ?>
                 </td>
                 <td align="right">
                     <?php
