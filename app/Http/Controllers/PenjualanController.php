@@ -6891,6 +6891,9 @@ class PenjualanController extends Controller
                         move_faktur.id_karyawan_lama,
                         SUM(IF( tgltransaksi < '$dari',( IFNULL( total, 0 ) - IFNULL( totalreturbulanlalu, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutanglama,
                         SUM(IF( tgltransaksi < '$dari',( IFNULL( total, 0 ) - IFNULL( totalreturbulanlalu, 0 ) - IFNULL( totalreturberjalan, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutanglamanow,
+
+
+
                         SUM(IF( tgltransaksi >= '$dari' AND tgltransaksi <= '2022-06-30',( IFNULL( total, 0 ) - IFNULL( totalreturberjalan, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutanglamaberjalan
                     FROM
                         move_faktur
