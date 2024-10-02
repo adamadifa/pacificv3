@@ -19,7 +19,7 @@
         } elseif (empty($d->hargapemasukan) and $d->hargapemasukan == 0) {
             $hasilharga = $d->hargasaldoawal;
         } else {
-            $hasilharga = ($d->totalsa * 1 + $d->totalpemasukan * 1) / $qtyrata;
+            $hasilharga = $d->totalpemasukan;
         }
 
     @endphp
