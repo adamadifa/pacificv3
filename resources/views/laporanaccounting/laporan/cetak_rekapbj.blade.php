@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Rekap Persediaan Barang Jadi {{ date("d-m-y") }}</title>
+    <title>Laporan Rekap Persediaan Barang Jadi {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -80,9 +81,9 @@
             background: #eee;
             visibility: visible;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAPITULASI PERSEDIAAN BARANG JADI<br>
@@ -231,7 +232,7 @@
                 $jmlgdpst = $sa_gdpusat * $d->harga_kirim_cabang;
 
 
-                $totalqty = ROUND($qtytsm) + ROUND($qtybdg, 2) + ROUND($qtyskb, 2) + ROUND($qtybgr, 2) + ROUND($qtytgl, 2) + ROUND($qtypwt, 2) + ROUND($qtysby, 2) + ROUND($qtysmr, 2) + ROUND($qtyklt, 2) + ROUND($qtypst, 2)
+                $totalqty = ROUND($qtytsm,2) + ROUND($qtybdg, 2) + ROUND($qtyskb, 2) + ROUND($qtybgr, 2) + ROUND($qtytgl, 2) + ROUND($qtypwt, 2) + ROUND($qtysby, 2) + ROUND($qtysmr, 2) + ROUND($qtyklt, 2) + ROUND($qtypst, 2)
                   + ROUND($qtygrt, 2) + ROUND($qtypwk, 2)  + ROUND($qtybtn, 2)  + ROUND($qtybki, 2) + ROUND($qtytgr, 2) + $sa_gdpusat;
 
                 $totaljml = $jmltsm + $jmlbdg + $jmlskb + $jmlbgr + $jmltgl + $jmlpwt + $jmlsby + $jmlsmr + $jmlklt + $jmlpst + $jmlgdpst + $jmlgrt + $jmlpwk + $jmlbtn + $jmlbki + $jmltgr;
@@ -261,175 +262,191 @@
                 $grandtotaljml += $totaljml;
               ?>
                     <tr>
-                        <td class="fixed-side" scope="col"><?php echo $no;; ?></td>
+                        <td class="fixed-side" scope="col"><?php echo $no; ?></td>
                         <td class="fixed-side" scope="col"><?php echo $d->nama_barang; ?></td>
                         <td align="right"><?php echo number_format($qtytsm, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_tsm)) {
-                      echo number_format($d->harga_tsm, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_tsm, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmltsm)) {
-                      echo number_format($jmltsm, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmltsm, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtybdg, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_bdg)) {
-                      echo number_format($d->harga_bdg, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_bdg, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlbdg)) {
-                      echo number_format($jmlbdg, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlbdg, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtyskb, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_skb)) {
-                      echo number_format($d->harga_skb, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_skb, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlskb)) {
-                      echo number_format($jmlskb, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlskb, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtybgr, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_bgr)) {
-                      echo number_format($d->harga_bgr, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_bgr, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlbgr)) {
-                      echo number_format($jmlbgr, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlbgr, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtytgl, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_tgl)) {
-                      echo number_format($d->harga_tgl, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_tgl, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmltgl)) {
-                      echo number_format($jmltgl, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmltgl, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtypwt, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_pwt)) {
-                      echo number_format($d->harga_pwt, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_pwt, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlpwt)) {
-                      echo number_format($jmlpwt, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlpwt, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtypst, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_pst)) {
-                      echo number_format($d->harga_pst, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_pst, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlpst)) {
-                      echo number_format($jmlpst, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlpst, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtysby, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_sby)) {
-                      echo number_format($d->harga_sby, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_sby, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlsby)) {
-                      echo number_format($jmlsby, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlsby, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtysmr, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_smr)) {
-                      echo number_format($d->harga_smr, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_smr, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlsmr)) {
-                      echo number_format($jmlsmr, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlsmr, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($qtyklt, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_klt)) {
-                      echo number_format($d->harga_klt, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_klt, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlklt)) {
-                      echo number_format($jmlklt, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlklt, '0', ',', '.');
+                            } ?>
                         </td>
 
                         <td align="right"><?php echo number_format($qtygrt, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_grt)) {
-                      echo number_format($d->harga_grt, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_grt, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlgrt)) {
-                      echo number_format($jmlgrt, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlgrt, '0', ',', '.');
+                            } ?>
                         </td>
                         </td>
 
                         <td align="right"><?php echo number_format($qtypwk, '2', ',', '.'); ?></td>
-                        <td align="right"><?php if (!empty($d->harga_pwk)) {echo number_format($d->harga_pwk, '0', ',', '.');} ?>
+                        <td align="right"><?php if (!empty($d->harga_pwk)) {
+                            echo number_format($d->harga_pwk, '0', ',', '.');
+                        } ?>
                         </td>
-                        <td align="right"><?php if (!empty($jmlpwk)) {echo number_format($jmlpwk, '0', ',', '.');} ?></td>
+                        <td align="right"><?php if (!empty($jmlpwk)) {
+                            echo number_format($jmlpwk, '0', ',', '.');
+                        } ?></td>
 
 
                         <td align="right"><?php echo number_format($qtybtn, '2', ',', '.'); ?></td>
-                        <td align="right"><?php if (!empty($d->harga_btn)) {echo number_format($d->harga_btn, '0', ',', '.');} ?>
+                        <td align="right"><?php if (!empty($d->harga_btn)) {
+                            echo number_format($d->harga_btn, '0', ',', '.');
+                        } ?>
                         </td>
-                        <td align="right"><?php if (!empty($jmlbtn)) {echo number_format($jmlbtn, '0', ',', '.');} ?></td>
+                        <td align="right"><?php if (!empty($jmlbtn)) {
+                            echo number_format($jmlbtn, '0', ',', '.');
+                        } ?></td>
 
 
                         <td align="right"><?php echo number_format($qtybki, '2', ',', '.'); ?></td>
-                        <td align="right"><?php if (!empty($d->harga_bki)) {echo number_format($d->harga_bki, '0', ',', '.');} ?>
+                        <td align="right"><?php if (!empty($d->harga_bki)) {
+                            echo number_format($d->harga_bki, '0', ',', '.');
+                        } ?>
                         </td>
-                        <td align="right"><?php if (!empty($jmlbki)) {echo number_format($jmlbki, '0', ',', '.');} ?></td>
+                        <td align="right"><?php if (!empty($jmlbki)) {
+                            echo number_format($jmlbki, '0', ',', '.');
+                        } ?></td>
 
                         <td align="right"><?php echo number_format($qtytgr, '2', ',', '.'); ?></td>
-                        <td align="right"><?php if (!empty($d->harga_tgr)) {echo number_format($d->harga_tgr, '0', ',', '.');} ?>
+                        <td align="right"><?php if (!empty($d->harga_tgr)) {
+                            echo number_format($d->harga_tgr, '0', ',', '.');
+                        } ?>
                         </td>
-                        <td align="right"><?php if (!empty($jmltgr)) {echo number_format($jmltgr, '0', ',', '.');} ?></td>
+                        <td align="right"><?php if (!empty($jmltgr)) {
+                            echo number_format($jmltgr, '0', ',', '.');
+                        } ?></td>
 
                         <td align="right"><?php echo number_format($sa_gdpusat, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_kirim_cabang)) {
-                      echo number_format($d->harga_kirim_cabang, '0', ',', '.');
-                    } ?>
+                                echo number_format($d->harga_kirim_cabang, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($jmlgdpst)) {
-                      echo number_format($jmlgdpst, '0', ',', '.');
-                    } ?>
+                                echo number_format($jmlgdpst, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right"><?php echo number_format($totalqty, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($hargatotal)) {
-                      echo number_format($hargatotal, '0', ',', '.');
-                    } ?>
+                                echo number_format($hargatotal, '0', ',', '.');
+                            } ?>
                         </td>
                         <td align="right">
                             <?php if (!empty($totaljml)) {
-                      echo number_format($totaljml, '0', ',', '.');
-                    } ?>
+                                echo number_format($totaljml, '0', ',', '.');
+                            } ?>
                         </td>
                     </tr>
                     <?php $no++;
@@ -440,112 +457,120 @@
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totaltsm)) {
-                    echo number_format($totaltsm, '0', ',', '.');
-                  } ?>
+                                echo number_format($totaltsm, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalbdg)) {
-                    echo number_format($totalbdg, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalbdg, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalskb)) {
-                    echo number_format($totalskb, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalskb, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalbgr)) {
-                    echo number_format($totalbgr, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalbgr, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totaltgl)) {
-                    echo number_format($totaltgl, '0', ',', '.');
-                  } ?>
+                                echo number_format($totaltgl, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalpwt)) {
-                    echo number_format($totalpwt, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalpwt, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalpst)) {
-                    echo number_format($totalpst, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalpst, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalsby)) {
-                    echo number_format($totalsby, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalsby, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalsmr)) {
-                    echo number_format($totalsmr, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalsmr, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalklt)) {
-                    echo number_format($totalklt, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalklt, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalgrt)) {
-                    echo number_format($totalgrt, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalgrt, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
-                        <td align="right"><?php if (!empty($totalpwk)) {echo number_format($totalpwk, '0', ',', '.');} ?>
-                        </td>
-
-                        <td></td>
-                        <td></td>
-                        <td align="right"><?php if (!empty($totalbtn)) {echo number_format($totalbtn, '0', ',', '.');} ?>
+                        <td align="right"><?php if (!empty($totalpwk)) {
+                            echo number_format($totalpwk, '0', ',', '.');
+                        } ?>
                         </td>
 
                         <td></td>
                         <td></td>
-                        <td align="right"><?php if (!empty($totalbki)) {echo number_format($totalbki, '0', ',', '.');} ?>
+                        <td align="right"><?php if (!empty($totalbtn)) {
+                            echo number_format($totalbtn, '0', ',', '.');
+                        } ?>
                         </td>
 
                         <td></td>
                         <td></td>
-                        <td align="right"><?php if (!empty($totaltgr)) {echo number_format($totaltgr, '0', ',', '.');} ?>
+                        <td align="right"><?php if (!empty($totalbki)) {
+                            echo number_format($totalbki, '0', ',', '.');
+                        } ?>
+                        </td>
+
+                        <td></td>
+                        <td></td>
+                        <td align="right"><?php if (!empty($totaltgr)) {
+                            echo number_format($totaltgr, '0', ',', '.');
+                        } ?>
                         </td>
 
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($totalgdpst)) {
-                    echo number_format($totalgdpst, '0', ',', '.');
-                  } ?>
+                                echo number_format($totalgdpst, '0', ',', '.');
+                            } ?>
                         </td>
                         <td></td>
                         <td></td>
                         <td align="right">
                             <?php if (!empty($grandtotaljml)) {
-                    echo number_format($grandtotaljml, '0', ',', '.');
-                  } ?>
+                                echo number_format($grandtotaljml, '0', ',', '.');
+                            } ?>
                         </td>
 
                     </tr>
@@ -559,7 +584,7 @@
         jQuery(document).ready(function() {
             jQuery(".datatable3").clone(true).appendTo('#table-scroll').addClass('clone');
         });
-
     </script>
 </body>
+
 </html>

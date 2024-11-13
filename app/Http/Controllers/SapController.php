@@ -494,8 +494,8 @@ class SapController extends Controller
 
     public function rekapactivity(Request $request)
     {
-        $dari = $request->dari;
-        $sampai = $request->sampai;
+        $dari = $request->dari ?? date('Y-m-d');
+        $sampai = $request->sampai ?? date('Y-m-d');
 
         $i = 1;
         $select_date = "";

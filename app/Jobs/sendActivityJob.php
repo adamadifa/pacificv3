@@ -50,7 +50,7 @@ class sendActivityJob implements ShouldQueue
                 $pesan = [
                     'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
                     'sender' => '6289670444321',
-                    'number' => $d,
+                    'number' => '6282220804021',
                     'media_type' => 'image',
                     'caption' => '*' . $this->nama . ': (' . $this->cabang . ')* ' . $this->activity,
                     'url' => $url . $this->foto
